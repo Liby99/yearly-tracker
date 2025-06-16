@@ -12,7 +12,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
@@ -23,4 +23,115 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+  min-width: 1000px;
+  margin: 0 auto;
+  padding: 0 50px;
+}
+
+nav {
+  margin-bottom: 15px;
+}
+
+footer {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.page-title {
+  font-size: bold;
+  letter-spacing: 3px;
+  margin-right: 20px;
+}
+
+.period-header {
+  line-height: 25px;
+}
+
+.quarter-holder + .quarter-holder {
+  margin-top: 15px;
+}
+
+.quarterly-note-holder {
+  width: 200px;
+  margin-right: 25px;
+}
+
+.quarterly-note-content {
+  width: 100%;
+  height: calc(35px * 12);
+}
+
+.quarterly-note-content-row {
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+}
+
+.quarterly-note-content-cell {
+  width: 20px;
+  height: 20px;
+  border-left: 1px dotted rgba(0, 0, 0, 0.3);
+}
+
+.quarterly-note-content-cell:last-child {
+  border-right: 1px dotted rgba(0, 0, 0, 0.3);
+}
+
+.border-bottom {
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.8);
+}
+
+.month-header {
+  writing-mode: vertical-lr;
+  text-align: center;
+  min-height: 100px;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.8);
+  border-right: 1px dotted rgba(0, 0, 0, 0.3);
+  line-height: 25px;
+}
+
+.month-header-holder {
+  width: 220px;
+  margin-right: 25px;
+}
+
+.day-header-holder {
+  width: 30px;
+  line-height: 25px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.month-topic-header {
+  margin-right: 25px;
+  line-height: 35px;
+  height: 35px;
+  width: 194px;
+}
+
+.month-topic-holder + .month-topic-holder > .month-topic-header {
+  border-top: 1px dotted rgba(0, 0, 0, 0.3);
+}
+
+.month-topic-holder:last-child > .month-topic-header {
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.8);
+}
+
+.month-topic-holder + .month-topic-holder > .month-topic-dates {
+  border-top: 1px dotted rgba(0, 0, 0, 0.3);
+}
+
+.month-topic-holder:last-child > .month-topic-dates {
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.8);
+}
+
+.day-holder {
+  width: 30px;
+  min-width: 30px;
+  border-left: 1px dotted rgba(0, 0, 0, 0.3);
+}
+
+.day-holder:last-child {
+  border-right: 1px dotted rgba(0, 0, 0, 0.3);
 }
