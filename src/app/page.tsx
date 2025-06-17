@@ -54,6 +54,12 @@ function Event(
         placeholder="event"
         value={name}
         onChange={e => changeEventName(start, e.target.value)}
+        onKeyDown={e => {
+          if ((e.key === "Backspace" || e.key === "Delete") && name === "") {
+            e.preventDefault();
+            removeEvent(start);
+          }
+        }}
       />
     </div>
   )
