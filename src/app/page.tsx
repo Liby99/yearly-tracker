@@ -23,12 +23,14 @@ function dayOfWeekString(year: number, month: number, day: number) : string {
 function Event(
   {
     start,
-    // end,
+    end,
     name,
     duration,
     isSelecting,
     removeEvent,
     changeEventName,
+    onResizeStart,
+    resize
   }: {
     start: number,
     end: number,
@@ -37,9 +39,14 @@ function Event(
     isSelecting: boolean,
     removeEvent: (start: number) => void,
     changeEventName: (day: number, name: string) => void,
+    onResizeStart: (side: "left" | "right", resizingDay: number, otherDay: number) => void,
+    resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
   }
 ) {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const isResizingLeft = resize && resize.side === "left" && resize.otherDay == end;
+  const isResizingRight = resize && resize.side === "right" && resize.otherDay == start;
 
   return (
     <div
@@ -53,6 +60,13 @@ function Event(
         }
       }}
     >
+      <div
+        className={`event-handle left${isResizingLeft ? " resizing" : ""}`}
+        onMouseDown={e => {
+          e.stopPropagation();
+          onResizeStart && onResizeStart("left", start, end);
+        }}
+      />
       <input
         ref={inputRef}
         placeholder="event"
@@ -63,6 +77,13 @@ function Event(
             e.preventDefault();
             removeEvent(start);
           }
+        }}
+      />
+      <div
+        className={`event-handle right${isResizingRight ? " resizing" : ""}`}
+        onMouseDown={e => {
+          e.stopPropagation();
+          onResizeStart && onResizeStart("right", end, start);
         }}
       />
     </div>
@@ -79,6 +100,8 @@ function Day(
     ranges,
     removeEvent,
     changeEventName,
+    onResizeStart,
+    resize,
   }: {
     year: number,
     month: number,
@@ -88,6 +111,8 @@ function Day(
     ranges: Array<Range>,
     removeEvent: (day: number) => void,
     changeEventName: (day: number, name: string) => void,
+    onResizeStart: (side: "left" | "right", resizingDay: number, otherDay: number) => void,
+    resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
   }
 ) {
   let activeRange: React.ReactElement | null = null;
@@ -107,6 +132,8 @@ function Day(
           isSelecting={true}
           removeEvent={removeEvent}
           changeEventName={changeEventName}
+          onResizeStart={onResizeStart}
+          resize={resize}
         />
       );
     }
@@ -125,6 +152,8 @@ function Day(
             isSelecting={false}
             removeEvent={removeEvent}
             changeEventName={changeEventName}
+            onResizeStart={onResizeStart}
+            resize={resize}
           />
         );
         break;
@@ -133,11 +162,12 @@ function Day(
   }
 
   const invalid = !isValidDate(year, month, day);
+  const noHover = selectedRange.start !== null || resize !== null;
   const dayOfWeek = dayOfWeekString(year, month, day);
 
   return (
     <div
-      className={`day-holder${invalid ? " invalid" : ""}`}
+      className={`day-holder${invalid ? " invalid" : ""}${noHover ? " no-hover" : ""}`}
     >
       <div className="day-hover">
         <div className="day-in-week">{dayOfWeek}</div>
@@ -221,6 +251,13 @@ function MonthTopic(
     setRanges(ranges.filter(range => range.start != day));
   }
 
+  // Related to resizing
+  const [resizing, setResizing] = useState<null | {side: "left"|"right", resizingDay: number, otherDay: number}>(null);
+
+  const handleResizeStart = (side: "left" | "right", resizingDay: number, otherDay: number) => {
+    setResizing({ side, resizingDay, otherDay });
+  };
+
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     // Calculate which day was clicked
     const rect = event.currentTarget.getBoundingClientRect();
@@ -243,28 +280,60 @@ function MonthTopic(
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (!dragging || selectedRange.start === null) return;
+    if (dragging) {
+      if (selectedRange.start === null) return;
 
-    // Get the bounding rect of the container
-    const rect = event.currentTarget.getBoundingClientRect();
+      // Get the bounding rect of the container
+      const rect = event.currentTarget.getBoundingClientRect();
 
-    // Calculate the day index based on mouse X position
-    const x = event.clientX - rect.left;
-    let day = Math.floor(x / 30) + 1; // 30 is the width of .day-holder
-    if (day < 1) day = 1;
-    if (day > 31) day = 31;
+      // Calculate the day index based on mouse X position
+      const x = event.clientX - rect.left;
+      let day = Math.floor(x / 30) + 1; // 30 is the width of .day-holder
+      if (day < 1) day = 1;
+      if (day > 31) day = 31;
 
-    if (selectedRange.end !== day) {
-      setSelectedRange({ start: selectedRange.start, end: day });
+      if (selectedRange.end !== day) {
+        setSelectedRange({ start: selectedRange.start, end: day });
+      }
+    }
+
+    if (resizing) {
+      // Get mouse position relative to the container
+      const rect = event.currentTarget.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const dayHolder = event.currentTarget.querySelector('.day-holder') as HTMLElement;
+      const dayWidth = dayHolder ? dayHolder.offsetWidth : 30;
+      let day = Math.floor(x / dayWidth) + 1;
+      if (day < 1) day = 1;
+      if (day > 31) day = 31;
+
+      setRanges(ranges =>
+        ranges.map(range => {
+          if (resizing.side === "left" && range.end === resizing.otherDay) {
+            // Prevent crossing over the end
+            const newStart = Math.min(day, range.end);
+            return new Range(newStart, range.end, range.name);
+          } else if (resizing.side === "right" && range.start === resizing.otherDay) {
+            // right side
+            const newEnd = Math.max(day, range.start);
+            return new Range(range.start, newEnd, range.name);
+          }
+          return range;
+        })
+      );
     }
   };
 
   const handleMouseUp = () => {
-    setDragging(false);
-    if (selectedRange.start && selectedRange.end) {
-      setRanges([...ranges, new Range(selectedRange.start, selectedRange.end, "")]);
+    if (dragging) {
+      if (selectedRange.start && selectedRange.end) {
+        setRanges([...ranges, new Range(selectedRange.start, selectedRange.end, "")]);
+      }
+      setSelectedRange({ start: null, end: null });
     }
-    setSelectedRange({ start: null, end: null });
+
+    setDragging(false);
+    setResizing(null);
   };
 
   const changeEventName = (day: number, name: string) => {
@@ -306,6 +375,8 @@ function MonthTopic(
             ranges={ranges}
             removeEvent={removeEvent}
             changeEventName={changeEventName}
+            onResizeStart={handleResizeStart}
+            resize={resizing}
           />
         ))}
       </div>

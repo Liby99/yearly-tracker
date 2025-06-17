@@ -178,7 +178,7 @@ input:focus {
   display: none;
 }
 
-.day-holder:not(.invalid):hover:not(:has(.day-event:hover)) > .day-hover {
+.day-holder:not(.invalid):not(.no-hover):hover:not(:has(.day-event:hover)) > .day-hover {
   display: block;
 }
 
@@ -217,6 +217,35 @@ input:focus {
 
 .day-event:hover {
   background-color: var(--accent-bg-dark);
+}
+
+.day-event:hover .event-handle {
+  display: block;
+}
+
+.event-handle {
+  display: none;
+  position: absolute;
+  top: 2px;
+  width: 7px;
+  height: 24px;
+  cursor: ew-resize;
+  z-index: 2;
+}
+
+.event-handle.left {
+  left: -4px;
+  border-left: 1.5px solid var(--accent-dark);
+}
+
+.event-handle.right {
+  right: -4px;
+  border-right: 1.5px solid var(--accent-dark);
+}
+
+.event-handle:hover, .event-handle.resizing {
+  border-left: 1.5px solid var(--accent-dark);
+  border-right: 1.5px solid var(--accent-dark);
 }
 
 .day-in-week {
