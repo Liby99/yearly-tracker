@@ -47,10 +47,11 @@ function Event(
 
   const isResizingLeft = resize && resize.side === "left" && resize.otherDay == end;
   const isResizingRight = resize && resize.side === "right" && resize.otherDay == start;
+  const isResizing = isResizingLeft || isResizingRight;
 
   return (
     <div
-      className={`day-event${isSelecting ? " selecting" : ""}`}
+      className={`day-event${isSelecting ? " selecting" : ""}${isResizing ? " resizing" : ""}`}
       style={{width: `${duration * 30 - 5}px`}}
       onClick={() => inputRef.current?.focus()}
       onContextMenu={(event) => {
@@ -94,7 +95,7 @@ function Day(
   {
     year,
     month,
-    // topicId,
+    topicId,
     day,
     selectedRange,
     ranges,
@@ -115,7 +116,7 @@ function Day(
     onResizeStart: (side: "left" | "right", resizingDay: number, otherDay: number) => void,
   }
 ) {
-  let activeRange: React.ReactElement | null = null;
+  let activeEvent: React.ReactElement | null = null;
 
   // First check if we need to render an active range
   if (selectedRange.start !== null && selectedRange.end !== null) {
@@ -123,7 +124,7 @@ function Day(
     const end = Math.max(selectedRange.start, selectedRange.end);
     if (start == day) {
       const length = end - start + 1;
-      activeRange = (
+      activeEvent = (
         <Event
           start={start}
           end={end}
@@ -140,10 +141,10 @@ function Day(
   }
 
   // Then check if we can render an event based on existing ones
-  if (activeRange === null) {
+  if (activeEvent === null) {
     for (const range of ranges) {
       if (range.start == day) {
-        activeRange = (
+        activeEvent = (
           <Event
             start={range.start}
             end={range.end}
@@ -160,6 +161,16 @@ function Day(
       }
     }
   }
+
+  const isToday =
+    year === new Date().getFullYear() &&
+    month === new Date().getMonth() + 1 &&
+    day === new Date().getDate();
+  const todayFrame = isToday ? (
+    <div className="today">
+      {topicId == 3 ? (<div className="today-mark">TODAY</div>) : null}
+    </div>
+  ) : null;
 
   let noHover = selectedRange.start !== null || resize !== null;
   for (const range of ranges) {
@@ -178,7 +189,8 @@ function Day(
       <div className="day-hover">
         <div className="day-in-week">{dayOfWeek}</div>
       </div>
-      {activeRange}
+      {todayFrame}
+      {activeEvent}
     </div>
   )
 }

@@ -8,6 +8,8 @@
   --accent-bg: rgba(76, 45, 20, 0.05);
   --accent-bg-hover: rgba(76, 45, 20, 0.03);
   --accent-bg-dark: rgba(76, 45, 20, 0.1);
+  --highlight: rgba(185, 88, 8, 0.9);
+  --highlight-bg: rgba(236, 216, 199, 0.2);
 }
 
 body {
@@ -140,13 +142,17 @@ footer {
   padding-left: 10px;
 }
 
+input {
+  font-family: 'Comic Sans MS', 'Comic Sans', 'Bradley Hand', 'Segoe Script', 'Caveat', 'Indie Flower', cursive;
+}
+
 input:focus {
   outline: none;
   box-shadow: none;
 }
 
 .month-topic-input-holder input {
-  width: 100%;
+  width: calc(100% + 15px);
   font-size: 14px;
   line-height: 30px;
   height: 30px;
@@ -215,8 +221,9 @@ input:focus {
   opacity: 0;
 }
 
-.day-event:hover {
+.day-event:hover, .day-event.resizing {
   background-color: var(--accent-bg-dark);
+  border-color: var(--highlight);
 }
 
 .day-event:hover .event-handle {
@@ -244,8 +251,8 @@ input:focus {
 }
 
 .event-handle:hover, .event-handle.resizing {
-  border-left: 1.5px solid var(--accent-dark);
-  border-right: 1.5px solid var(--accent-dark);
+  border-left: 1.5px solid var(--highlight);
+  border-right: 1.5px solid var(--highlight);
 }
 
 .day-in-week {
@@ -255,4 +262,26 @@ input:focus {
   margin-left: -4px;
   width: 30px;
   text-align: center;
+}
+
+.today {
+  position: absolute;
+  margin: 0 1px;
+  width: 27px;
+  height: 34px;
+  border-radius: 1px;
+  border-left: 1px solid var(--highlight);
+  border-right: 1px solid var(--highlight);
+  background-color: var(--highlight-bg);
+}
+
+.today-mark {
+  position: absolute;
+  width: 50px;
+  margin-left: -12px;
+  margin-top: 35px;
+  font-size: 10px;
+  text-align: center;
+  color: var(--highlight);
+  font-weight: bold;
 }
