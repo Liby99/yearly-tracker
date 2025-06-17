@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #fefcfb;
   --foreground: #171717;
+  --accent-dark: rgba(76, 45, 20, 0.9);
+  --accent-grey: rgba(76, 45, 20, 0.3);
+  --accent-bg: rgba(76, 45, 20, 0.05);
+  --accent-bg-hover: rgba(76, 45, 20, 0.03);
 }
 
 @theme inline {
@@ -21,14 +25,14 @@
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--accent-dark);
+  font-family: Helvetica, sans-serif;
 }
 
 main {
-  min-width: 1000px;
+  width: 1450px;
   margin: 0 auto;
-  padding: 0 50px;
+  padding: 0 25px;
 }
 
 nav {
@@ -48,6 +52,7 @@ footer {
 
 .period-header {
   line-height: 25px;
+  font-size: 13px;
 }
 
 .quarter-holder + .quarter-holder {
@@ -65,35 +70,43 @@ footer {
 }
 
 .quarterly-note-content-row {
-  border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+  border-bottom: 1px dotted var(--accent-grey);
 }
 
 .quarterly-note-content-cell {
   width: 20px;
   height: 20px;
-  border-left: 1px dotted rgba(0, 0, 0, 0.3);
+  border-left: 1px dotted var(--accent-grey);
 }
 
 .quarterly-note-content-cell:last-child {
-  border-right: 1px dotted rgba(0, 0, 0, 0.3);
+  border-right: 1px dotted var(--accent-grey);
+}
+
+.quarterly-note-content-cell:hover {
+  background-color: var(--accent-bg-hover);
 }
 
 .border-bottom {
-  border-bottom: 1.5px solid rgba(0, 0, 0, 0.8);
+  border-bottom: 1.5px solid var(--accent-dark);
 }
 
 .month-header {
   writing-mode: vertical-lr;
   text-align: center;
   min-height: 100px;
-  border-bottom: 1.5px solid rgba(0, 0, 0, 0.8);
-  border-right: 1px dotted rgba(0, 0, 0, 0.3);
+  border-bottom: 1.5px solid var(--accent-dark);
+  border-right: 1px dotted var(--accent-grey);
   line-height: 25px;
 }
 
 .month-header-holder {
   width: 220px;
   margin-right: 25px;
+}
+
+.month-topic-holder:hover .month-topic-header, .month-topic-holder:hover .month-topic-dates {
+  background-color: var(--accent-bg-hover);
 }
 
 .day-header-holder {
@@ -111,27 +124,58 @@ footer {
 }
 
 .month-topic-holder + .month-topic-holder > .month-topic-header {
-  border-top: 1px dotted rgba(0, 0, 0, 0.3);
+  border-top: 1px dotted var(--accent-grey);
 }
 
 .month-topic-holder:last-child > .month-topic-header {
-  border-bottom: 1.5px solid rgba(0, 0, 0, 0.8);
+  border-bottom: 1.5px solid var(--accent-dark);
 }
 
 .month-topic-holder + .month-topic-holder > .month-topic-dates {
-  border-top: 1px dotted rgba(0, 0, 0, 0.3);
+  border-top: 1px dotted var(--accent-grey);
 }
 
 .month-topic-holder:last-child > .month-topic-dates {
-  border-bottom: 1.5px solid rgba(0, 0, 0, 0.8);
+  border-bottom: 1.5px solid var(--accent-dark);
+}
+
+.month-topic-input-holder {
+  padding-left: 10px;
+}
+
+.month-topic-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.month-topic-input-holder input {
+  width: 100%;
+  font-size: 14px;
+  line-height: 30px;
+  height: 30px;
 }
 
 .day-holder {
   width: 30px;
   min-width: 30px;
-  border-left: 1px dotted rgba(0, 0, 0, 0.3);
+  border-left: 1px dotted var(--accent-grey);
 }
 
 .day-holder:last-child {
-  border-right: 1px dotted rgba(0, 0, 0, 0.3);
+  border-right: 1px dotted var(--accent-dark);
+}
+
+.day-event {
+  position: absolute;
+  margin: 2px;
+  width: 25px;
+  height: 30px;
+  border-radius: 3px;
+  border: 1px dashed var(--accent-dark);
+  background-color: var(--accent-bg);
+  display: none;
+}
+
+.day-holder:hover > .day-event {
+  display: block;
 }

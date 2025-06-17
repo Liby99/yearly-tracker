@@ -7,7 +7,7 @@ class Topic {
 function Day({ month, topicId, day }: { month: number, topicId: number, day: number }) {
   return (
     <div className="day-holder">
-      <div></div>
+      <div className="day-event"></div>
     </div>
   )
 }
@@ -15,7 +15,12 @@ function Day({ month, topicId, day }: { month: number, topicId: number, day: num
 function MonthTopic({ month, topicId, topic }: { month: number, topicId: number, topic: Topic | undefined }) {
   return (
     <div className="flex month-topic-holder">
-      <div className="month-topic-header"></div>
+      <div className="month-topic-header flex">
+        <div className="month-topic-input-holder">
+          <input className="month-topic-input" />
+        </div>
+
+      </div>
       <div className="flex month-topic-dates">
         {Array.from({ length: 31 }, (_, i) => i + 1).map(i => (
           <Day key={`month-${month}-topic-${topicId}-day-${i}`} month={month} topicId={topicId} day={i} />
