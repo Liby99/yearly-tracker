@@ -65,7 +65,7 @@ function Event(
         className={`event-handle left${isResizingLeft ? " resizing" : ""}`}
         onMouseDown={e => {
           e.stopPropagation();
-          onResizeStart && onResizeStart("left", start, end);
+          onResizeStart("left", start, end);
         }}
       />
       <input
@@ -84,7 +84,7 @@ function Event(
         className={`event-handle right${isResizingRight ? " resizing" : ""}`}
         onMouseDown={e => {
           e.stopPropagation();
-          onResizeStart && onResizeStart("right", end, start);
+          onResizeStart("right", end, start);
         }}
       />
     </div>
