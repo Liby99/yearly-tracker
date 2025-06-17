@@ -8,19 +8,41 @@ class Topic {
 
 }
 
+function isValidDate(year: number, month: number, day: number): boolean {
+  // JS months are 0-based, so subtract 1 from month
+  const date = new Date(year, month - 1, day);
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  );
+}
+
 function Event(
   {
+    start,
+    end,
     duration,
-    isSelecting
+    isSelecting,
+    removeEvent,
   }: {
+    start: number,
+    end: number,
     duration: number,
     isSelecting: boolean,
+    removeEvent: (start: number) => void,
   }
 ) {
   return (
     <div
       className={`day-event${isSelecting ? " selecting" : ""}`}
       style={{width: `${duration * 30 - 5}px`}}
+      onContextMenu={(event) => {
+        event.preventDefault();
+        if (confirm("Are you sure you want to delete the event")) {
+          removeEvent(start);
+        }
+      }}
     >
       <input />
     </div>
@@ -35,8 +57,7 @@ function Day(
     day,
     selectedRange,
     ranges,
-    onMouseDown,
-    onMouseEnter,
+    removeEvent,
   }: {
     year: number,
     month: number,
@@ -44,39 +65,48 @@ function Day(
     day: number,
     selectedRange: { start: number | null, end: number | null },
     ranges: Array<Range>,
-    onMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void,
-    onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void,
+    removeEvent: (day: number) => void,
   }
 ) {
-  let activeRangeLength: number | null = null;
-  let isSelecting = false;
+  let activeRange: React.ReactElement | null = null;
   if (selectedRange.start == day && selectedRange.end) {
     let start = Math.min(selectedRange.start, selectedRange.end);
     let end = Math.min(selectedRange.start, selectedRange.end);
-    activeRangeLength = end - start + 1;
-    isSelecting = true;
+    let length = end - start + 1;
+    activeRange = (
+      <Event
+        start={start}
+        end={end}
+        duration={length}
+        isSelecting={true}
+        removeEvent={removeEvent}
+      />
+    );
   } else {
     for (let range of ranges) {
       if (range.start == day) {
-        activeRangeLength = range.duration();
+        activeRange = (
+          <Event
+            start={range.start}
+            end={range.end}
+            duration={range.duration()}
+            isSelecting={false}
+            removeEvent={removeEvent}
+          />
+        );
         break;
       }
     }
   }
 
+  const invalid = !isValidDate(year, month, day);
+
   return (
     <div
-      className="day-holder"
-      onMouseDown={onMouseDown}
-      onMouseEnter={onMouseEnter}
+      className={`day-holder${invalid ? " invalid" : ""}`}
     >
-      {activeRangeLength && (
-        <Event
-          duration={activeRangeLength}
-          isSelecting={isSelecting}
-        />
-      )}
       <div className="day-hover"></div>
+      {activeRange}
     </div>
   )
 }
@@ -116,7 +146,21 @@ function MonthTopic(
   const [selectedRange, setSelectedRange] = useState<{ start: number | null, end: number | null}>({ start: null, end: null });
   const [ranges, setRanges] = useState<Array<Range>>([]);
 
-  const handleMouseDown = (day: number) => {
+  const removeEvent = (day: number) => {
+    setRanges(ranges.filter(range => range.start != day));
+  }
+
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    // Calculate which day was clicked
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const dayHolder = event.currentTarget.querySelector('.day-holder') as HTMLElement;
+    const dayWidth = dayHolder ? dayHolder.offsetWidth : 30;
+    let day = Math.floor(x / dayWidth) + 1;
+    if (day < 1) day = 1;
+    if (day > 31) day = 31;
+
+    // Prevent starting selection if clicking on an existing range
     for (let range of ranges) {
       if (range.contains(day)) {
         return;
@@ -127,8 +171,19 @@ function MonthTopic(
     setSelectedRange({ start: day, end: day });
   };
 
-  const handleMouseEnter = (day: number) => {
-    if (dragging && selectedRange.start !== null) {
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!dragging || selectedRange.start === null) return;
+
+    // Get the bounding rect of the container
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    // Calculate the day index based on mouse X position
+    let x = event.clientX - rect.left;
+    let day = Math.floor(x / 30) + 1; // 30 is the width of .day-holder
+    if (day < 1) day = 1;
+    if (day > 31) day = 31;
+
+    if (selectedRange.end !== day) {
       setSelectedRange({ start: selectedRange.start, end: day });
     }
   };
@@ -150,8 +205,9 @@ function MonthTopic(
       </div>
       <div
         className="flex month-topic-dates"
-        // onMouseLeave={() => setDragging(false)}
+        onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
       >
         {Array.from({ length: 31 }, (_, i) => i + 1).map(i => (
           <Day
@@ -162,8 +218,7 @@ function MonthTopic(
             day={i}
             selectedRange={selectedRange}
             ranges={ranges}
-            onMouseDown={(event) => handleMouseDown(i)}
-            onMouseEnter={(event) => handleMouseEnter(i)}
+            removeEvent={removeEvent}
           />
         ))}
       </div>
@@ -287,7 +342,7 @@ export default function Home() {
       </nav>
       <Calendar year={year} />
       <footer>
-        &copy; all rights reserved
+        &copy; 2025 Ziyang Li, all rights reserved
       </footer>
     </main>
   );

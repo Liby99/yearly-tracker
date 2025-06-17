@@ -7,6 +7,7 @@
   --accent-grey: rgba(76, 45, 20, 0.3);
   --accent-bg: rgba(76, 45, 20, 0.05);
   --accent-bg-hover: rgba(76, 45, 20, 0.03);
+  --accent-bg-dark: rgba(76, 45, 20, 0.1);
 }
 
 @theme inline {
@@ -46,6 +47,8 @@ nav {
 footer {
   margin-top: 15px;
   text-align: center;
+  font-size: 10px;
+  line-height: 25px;
 }
 
 .page-title {
@@ -102,6 +105,10 @@ footer {
   border-bottom: 1.5px solid var(--accent-dark);
   border-right: 1px dotted var(--accent-grey);
   line-height: 25px;
+}
+
+.month-bar:hover .month-header {
+  background-color: var(--accent-bg-hover);
 }
 
 .month-header-holder {
@@ -163,24 +170,29 @@ input:focus {
   width: 30px;
   min-width: 30px;
   border-left: 1px dotted var(--accent-grey);
+  box-sizing: border-box;
 }
 
 .day-holder:last-child {
   border-right: 1px dotted var(--accent-dark);
 }
 
+.day-holder.invalid {
+  background-color: var(--accent-bg);
+}
+
 .day-hover {
   position: absolute;
-  margin: 2px;
-  width: 25px;
-  height: 30px;
+  margin: 3px;
+  width: 23px;
+  height: 28px;
   border-radius: 3px;
   border: 1px dashed var(--accent-dark);
   background-color: var(--accent-bg);
   display: none;
 }
 
-.day-holder:hover:not(:has(.day-event:hover)) > .day-hover {
+.day-holder:not(.invalid):hover:not(:has(.day-event:hover)) > .day-hover {
   display: block;
 }
 
@@ -206,4 +218,8 @@ input:focus {
   font-size: 14px;
   line-height: 30px;
   height: 30px;
+}
+
+.day-event:hover {
+  background-color: var(--accent-bg-dark);
 }
