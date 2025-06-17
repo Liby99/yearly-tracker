@@ -69,20 +69,27 @@ function Day(
   }
 ) {
   let activeRange: React.ReactElement | null = null;
-  if (selectedRange.start == day && selectedRange.end) {
+
+  // First check if we need to render an active range
+  if (selectedRange.start !== null && selectedRange.end !== null) {
     let start = Math.min(selectedRange.start, selectedRange.end);
-    let end = Math.min(selectedRange.start, selectedRange.end);
-    let length = end - start + 1;
-    activeRange = (
-      <Event
-        start={start}
-        end={end}
-        duration={length}
-        isSelecting={true}
-        removeEvent={removeEvent}
-      />
-    );
-  } else {
+    let end = Math.max(selectedRange.start, selectedRange.end);
+    if (start == day) {
+      let length = end - start + 1;
+      activeRange = (
+        <Event
+          start={start}
+          end={end}
+          duration={length}
+          isSelecting={true}
+          removeEvent={removeEvent}
+        />
+      );
+    }
+  }
+
+  // Then check if we can render an event based on existing ones
+  if (activeRange === null) {
     for (let range of ranges) {
       if (range.start == day) {
         activeRange = (
