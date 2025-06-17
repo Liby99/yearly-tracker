@@ -1,12 +1,6 @@
 'use client'
 
-import React, { useState } from "react"
-
-import Image from "next/image";
-
-class Topic {
-
-}
+import React, { useState, useEffect } from "react"
 
 function isValidDate(year: number, month: number, day: number): boolean {
   // JS months are 0-based, so subtract 1 from month
@@ -30,15 +24,19 @@ function Event(
   {
     start,
     end,
+    name,
     duration,
     isSelecting,
     removeEvent,
+    changeEventName,
   }: {
     start: number,
     end: number,
+    name: string,
     duration: number,
     isSelecting: boolean,
     removeEvent: (start: number) => void,
+    changeEventName: (day: number, name: string) => void,
   }
 ) {
   return (
@@ -52,7 +50,11 @@ function Event(
         }
       }}
     >
-      <input placeholder="event" />
+      <input
+        placeholder="event"
+        value={name}
+        onChange={e => changeEventName(start, e.target.value)}
+      />
     </div>
   )
 }
@@ -66,6 +68,7 @@ function Day(
     selectedRange,
     ranges,
     removeEvent,
+    changeEventName,
   }: {
     year: number,
     month: number,
@@ -74,6 +77,7 @@ function Day(
     selectedRange: { start: number | null, end: number | null },
     ranges: Array<Range>,
     removeEvent: (day: number) => void,
+    changeEventName: (day: number, name: string) => void,
   }
 ) {
   let activeRange: React.ReactElement | null = null;
@@ -88,9 +92,11 @@ function Day(
         <Event
           start={start}
           end={end}
+          name={""}
           duration={length}
           isSelecting={true}
           removeEvent={removeEvent}
+          changeEventName={changeEventName}
         />
       );
     }
@@ -104,9 +110,11 @@ function Day(
           <Event
             start={range.start}
             end={range.end}
+            name={range.name}
             duration={range.duration()}
             isSelecting={false}
             removeEvent={removeEvent}
+            changeEventName={changeEventName}
           />
         );
         break;
@@ -132,10 +140,12 @@ function Day(
 class Range {
   start: number;
   end: number;
+  name: string;
 
-  constructor(start: number, end: number) {
+  constructor(start: number, end: number, name: string) {
     this.start = Math.min(start, end);
     this.end = Math.max(start, end);
+    this.name = name;
   }
 
   contains(day: number) {
@@ -152,17 +162,50 @@ function MonthTopic(
     year,
     month,
     topicId,
-    topic,
   }: {
     year: number,
     month: number,
     topicId: number,
-    topic: Topic | undefined
   }
 ) {
+  // Related to topic
+  const [topic, setTopic] = useState("");
+
+  // Load from localStorage when year changes
+  useEffect(() => {
+    const saved = localStorage.getItem(`year-${year}/month-${month}/topic-${topicId}/topic`);
+    if (saved) {
+      setTopic(saved);
+    } else {
+      setTopic("");
+    }
+  }, [year]);
+
+  // Save to localStorage whenever topics change
+  useEffect(() => {
+    localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/topic`, topic);
+  }, [topic, year]);
+
+  // Related to event ranges
   const [dragging, setDragging] = useState(false);
   const [selectedRange, setSelectedRange] = useState<{ start: number | null, end: number | null}>({ start: null, end: null });
   const [ranges, setRanges] = useState<Array<Range>>([]);
+
+  // Load from localStorage when year changes
+  useEffect(() => {
+    const saved = localStorage.getItem(`year-${year}/month-${month}/topic-${topicId}/events`);
+    if (saved) {
+      setRanges(JSON.parse(saved).map(({start, end, name}: {start: number, end: number, name: string}) => new Range(start, end, name)));
+    } else {
+      setRanges([]);
+    }
+  }, [year]);
+
+  // Save to localStorage whenever ranges change
+  useEffect(() => {
+    const toStore = ranges.map(range => ({start: range.start, end: range.end, name: range.name}));
+    localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/events`, JSON.stringify(toStore));
+  }, [ranges, year]);
 
   const removeEvent = (day: number) => {
     setRanges(ranges.filter(range => range.start != day));
@@ -209,16 +252,31 @@ function MonthTopic(
   const handleMouseUp = () => {
     setDragging(false);
     if (selectedRange.start && selectedRange.end) {
-      setRanges([...ranges, new Range(selectedRange.start, selectedRange.end)]);
+      setRanges([...ranges, new Range(selectedRange.start, selectedRange.end, "")]);
     }
     setSelectedRange({ start: null, end: null });
+  };
+
+  const changeEventName = (day: number, name: string) => {
+    const newRanges = ranges.map(range => {
+      if (range.start === day) {
+        return new Range(range.start, range.end, name);
+      } else {
+        return range
+      }
+    });
+    setRanges(newRanges);
   };
 
   return (
     <div className="flex month-topic-holder">
       <div className="month-topic-header flex">
         <div className="month-topic-input-holder">
-          <input className="month-topic-input" />
+          <input
+            className="month-topic-input"
+            value={topic}
+            onChange={e => setTopic(e.target.value)}
+          />
         </div>
       </div>
       <div
@@ -237,6 +295,7 @@ function MonthTopic(
             selectedRange={selectedRange}
             ranges={ranges}
             removeEvent={removeEvent}
+            changeEventName={changeEventName}
           />
         ))}
       </div>
@@ -273,7 +332,6 @@ function Month({ year, month }: { year: number, month: number }) {
             year={year}
             month={month}
             topicId={i}
-            topic={undefined}
           />
         ))}
       </div>
