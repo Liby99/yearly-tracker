@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 
 function isValidDate(year: number, month: number, day: number): boolean {
   // JS months are 0-based, so subtract 1 from month
@@ -39,10 +39,13 @@ function Event(
     changeEventName: (day: number, name: string) => void,
   }
 ) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <div
       className={`day-event${isSelecting ? " selecting" : ""}`}
       style={{width: `${duration * 30 - 5}px`}}
+      onClick={() => inputRef.current?.focus()}
       onContextMenu={(event) => {
         event.preventDefault();
         if (confirm("Are you sure you want to delete the event")) {
@@ -51,6 +54,7 @@ function Event(
       }}
     >
       <input
+        ref={inputRef}
         placeholder="event"
         value={name}
         onChange={e => changeEventName(start, e.target.value)}
