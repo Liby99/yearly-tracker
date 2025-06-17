@@ -23,7 +23,7 @@ function dayOfWeekString(year: number, month: number, day: number) : string {
 function Event(
   {
     start,
-    end,
+    // end,
     name,
     duration,
     isSelecting,
@@ -63,7 +63,7 @@ function Day(
   {
     year,
     month,
-    topicId,
+    // topicId,
     day,
     selectedRange,
     ranges,
@@ -84,10 +84,10 @@ function Day(
 
   // First check if we need to render an active range
   if (selectedRange.start !== null && selectedRange.end !== null) {
-    let start = Math.min(selectedRange.start, selectedRange.end);
-    let end = Math.max(selectedRange.start, selectedRange.end);
+    const start = Math.min(selectedRange.start, selectedRange.end);
+    const end = Math.max(selectedRange.start, selectedRange.end);
     if (start == day) {
-      let length = end - start + 1;
+      const length = end - start + 1;
       activeRange = (
         <Event
           start={start}
@@ -104,7 +104,7 @@ function Day(
 
   // Then check if we can render an event based on existing ones
   if (activeRange === null) {
-    for (let range of ranges) {
+    for (const range of ranges) {
       if (range.start == day) {
         activeRange = (
           <Event
@@ -222,7 +222,7 @@ function MonthTopic(
     if (day > 31) day = 31;
 
     // Prevent starting selection if clicking on an existing range
-    for (let range of ranges) {
+    for (const range of ranges) {
       if (range.contains(day)) {
         return;
       }
@@ -239,7 +239,7 @@ function MonthTopic(
     const rect = event.currentTarget.getBoundingClientRect();
 
     // Calculate the day index based on mouse X position
-    let x = event.clientX - rect.left;
+    const x = event.clientX - rect.left;
     let day = Math.floor(x / 30) + 1; // 30 is the width of .day-holder
     if (day < 1) day = 1;
     if (day > 31) day = 31;
