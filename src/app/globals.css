@@ -220,6 +220,24 @@ input:focus {
   height: 30px;
 }
 
+.day-event input:placeholder-shown {
+  min-width: 0;
+}
+
+.day-event input::placeholder {
+  color: rgba(0, 0, 0, 0);
+  opacity: 0;
+}
+
 .day-event:hover {
   background-color: var(--accent-bg-dark);
+}
+
+.day-in-week {
+  position: absolute;
+  margin-top: -11px;
+  font-size: 10px;
+  margin-left: -4px;
+  width: 30px;
+  text-align: center;
 }

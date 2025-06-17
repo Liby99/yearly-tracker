@@ -18,6 +18,14 @@ function isValidDate(year: number, month: number, day: number): boolean {
   );
 }
 
+function dayOfWeekString(year: number, month: number, day: number) : string {
+  const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const dateObj = new Date(year, month - 1, day);
+  const dayOfWeek = dateObj.getDay(); // 0 (Sun) - 6 (Sat)
+  const dayOfWeekStr = dayNames[dayOfWeek];
+  return dayOfWeekStr;
+}
+
 function Event(
   {
     start,
@@ -44,7 +52,7 @@ function Event(
         }
       }}
     >
-      <input />
+      <input placeholder="event" />
     </div>
   )
 }
@@ -107,12 +115,15 @@ function Day(
   }
 
   const invalid = !isValidDate(year, month, day);
+  const dayOfWeek = dayOfWeekString(year, month, day);
 
   return (
     <div
       className={`day-holder${invalid ? " invalid" : ""}`}
     >
-      <div className="day-hover"></div>
+      <div className="day-hover">
+        <div className="day-in-week">{dayOfWeek}</div>
+      </div>
       {activeRange}
     </div>
   )
