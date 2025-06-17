@@ -27,20 +27,20 @@ function Event(
     name,
     duration,
     isSelecting,
+    resize,
     removeEvent,
     changeEventName,
     onResizeStart,
-    resize
   }: {
     start: number,
     end: number,
     name: string,
     duration: number,
     isSelecting: boolean,
+    resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
     removeEvent: (start: number) => void,
     changeEventName: (day: number, name: string) => void,
     onResizeStart: (side: "left" | "right", resizingDay: number, otherDay: number) => void,
-    resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
   }
 ) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -98,10 +98,10 @@ function Day(
     day,
     selectedRange,
     ranges,
+    resize,
     removeEvent,
     changeEventName,
     onResizeStart,
-    resize,
   }: {
     year: number,
     month: number,
@@ -109,10 +109,10 @@ function Day(
     day: number,
     selectedRange: { start: number | null, end: number | null },
     ranges: Array<Range>,
+    resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
     removeEvent: (day: number) => void,
     changeEventName: (day: number, name: string) => void,
     onResizeStart: (side: "left" | "right", resizingDay: number, otherDay: number) => void,
-    resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
   }
 ) {
   let activeRange: React.ReactElement | null = null;
@@ -130,10 +130,10 @@ function Day(
           name={""}
           duration={length}
           isSelecting={true}
+          resize={resize}
           removeEvent={removeEvent}
           changeEventName={changeEventName}
           onResizeStart={onResizeStart}
-          resize={resize}
         />
       );
     }
@@ -150,10 +150,10 @@ function Day(
             name={range.name}
             duration={range.duration()}
             isSelecting={false}
+            resize={resize}
             removeEvent={removeEvent}
             changeEventName={changeEventName}
             onResizeStart={onResizeStart}
-            resize={resize}
           />
         );
         break;
@@ -373,10 +373,10 @@ function MonthTopic(
             day={i}
             selectedRange={selectedRange}
             ranges={ranges}
+            resize={resizing}
             removeEvent={removeEvent}
             changeEventName={changeEventName}
             onResizeStart={handleResizeStart}
-            resize={resizing}
           />
         ))}
       </div>
