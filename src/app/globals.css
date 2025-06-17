@@ -175,11 +175,11 @@ input:focus {
   border-radius: 3px;
   border: 1px dashed var(--accent-dark);
   background-color: var(--accent-bg);
-  display: none;
+  opacity: 0;
 }
 
 .day-holder:not(.invalid):not(.no-hover):hover:not(:has(.day-event:hover)) > .day-hover {
-  display: block;
+  opacity: 1;
 }
 
 .day-event {

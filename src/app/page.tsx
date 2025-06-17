@@ -161,8 +161,14 @@ function Day(
     }
   }
 
+  let noHover = selectedRange.start !== null || resize !== null;
+  for (const range of ranges) {
+    if (range.contains(day)) {
+      noHover = noHover || true;
+    }
+  }
+
   const invalid = !isValidDate(year, month, day);
-  const noHover = selectedRange.start !== null || resize !== null;
   const dayOfWeek = dayOfWeekString(year, month, day);
 
   return (
@@ -249,6 +255,8 @@ function MonthTopic(
 
   const removeEvent = (day: number) => {
     setRanges(ranges.filter(range => range.start != day));
+    setResizing(null);
+    setDragging(false);
   }
 
   // Related to resizing
