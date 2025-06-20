@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 
-import MonthTopic from "./MonthTopic"
+import MonthlyTopic from "./MonthlyTopic"
 
 function monthName(month: number) : string {
   switch (month) {
@@ -21,12 +21,55 @@ function monthName(month: number) : string {
 }
 
 export default function Month({ year, month }: { year: number, month: number }) {
+  const storageKey = `year-${year}/month-${month}/topic-order`;
+  const defaultOrder = [0, 1, 2, 3];
+  const [topicOrder, setTopicOrder] = useState(defaultOrder);
+  const dragItem = useRef<number | null>(null);
+
+  // useEffect(() => {
+  //   localStorage.setItem(storageKey, JSON.stringify(topicOrder));
+  // }, [topicOrder, storageKey]);
+
+  // useEffect(() => {
+  //   const saved = localStorage.getItem(storageKey);
+  //   setTopicOrder(saved ? JSON.parse(saved) : defaultOrder);
+  //   // eslint-disable-next-line
+  // }, [year, month]);
+
+  const handleDragStart = (idx: number) => {
+    dragItem.current = idx;
+  };
+
+  const handleDragOver = (idx: number, e: React.DragEvent) => {
+    e.preventDefault();
+    if (dragItem.current === null || dragItem.current === idx) return;
+    setTopicOrder((prev) => {
+      const newOrder = [...prev];
+      const [removed] = newOrder.splice(dragItem.current!, 1);
+      newOrder.splice(idx, 0, removed);
+      dragItem.current = idx;
+      return newOrder;
+    });
+  };
+
+  const handleDragEnd = () => {
+    dragItem.current = null;
+  };
+
   return (
     <div className="month-bar flex">
       <div className="month-header period-header items-center justify-center">{monthName(month)}</div>
       <div className="month-topics">
-        {Array.from({ length: 4 }, (_, i) => i).map((i) => (
-          <MonthTopic key={`month-${month}-topic-${i}`} year={year} month={month} topicId={i} />
+        {topicOrder.map((i, idx) => (
+          <MonthlyTopic
+            key={`month-${month}-topic-${i}`}
+            year={year}
+            month={month}
+            topicId={i}
+            onTopicDragStart={() => handleDragStart(idx)}
+            onTopicDragOver={(e) => handleDragOver(idx, e)}
+            onTopicDragEnd={handleDragEnd}
+          />
         ))}
       </div>
     </div>

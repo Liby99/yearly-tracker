@@ -1,17 +1,23 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 
 import Day from "./Day"
 import EventData from "../utils/EventData"
 
-export default function MonthTopic(
+export default function MonthlyTopic(
   {
     year,
     month,
     topicId,
+    onTopicDragStart,
+    onTopicDragOver,
+    onTopicDragEnd,
   }: {
     year: number,
     month: number,
     topicId: number,
+    onTopicDragStart: () => void,
+    onTopicDragOver: (e: React.DragEvent) => void,
+    onTopicDragEnd: () => void,
   }
 ) {
   // Related to topic
@@ -25,11 +31,13 @@ export default function MonthTopic(
     } else {
       setTopic("");
     }
+    // eslint-disable-next-line
   }, [year]);
 
   // Save to localStorage whenever topics change
   useEffect(() => {
     localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/topic`, topic);
+    // eslint-disable-next-line
   }, [topic, year]);
 
   // Related to event ranges
@@ -45,12 +53,14 @@ export default function MonthTopic(
     } else {
       setRanges([]);
     }
+    // eslint-disable-next-line
   }, [year]);
 
   // Save to localStorage whenever ranges change
   useEffect(() => {
     const toStore = ranges.map(range => ({start: range.start, end: range.end, name: range.name}));
     localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/events`, JSON.stringify(toStore));
+    // eslint-disable-next-line
   }, [ranges, year]);
 
   const removeEvent = (day: number) => {
@@ -156,14 +166,26 @@ export default function MonthTopic(
   };
 
   return (
-    <div className="flex month-topic-holder">
+    <div
+      className="flex month-topic-holder"
+      onDragOver={onTopicDragOver}
+      onDragEnd={onTopicDragEnd}
+    >
       <div className="month-topic-header flex">
-        <div className="month-topic-input-holder">
+        <div className="flex month-topic-input-holder">
           <input
             className="month-topic-input"
             value={topic}
             onChange={e => setTopic(e.target.value)}
           />
+          <div
+            className={`monthly-topic-drag-handle`}
+            draggable={true}
+            onMouseDown={onTopicDragStart}
+            onMouseUp={onTopicDragEnd}
+          >
+            <i className="fa fa-bars"></i>
+          </div>
         </div>
       </div>
       <div
