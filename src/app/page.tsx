@@ -2,6 +2,34 @@
 
 import React, { useState, useEffect, useRef } from "react"
 
+function quarterHeader(quarter: number) : string {
+  switch (quarter) {
+    case 1: return "1st";
+    case 2: return "2nd";
+    case 3: return "3rd";
+    case 4: return "4th";
+    default: throw new DOMException(`Unknown quarter ${quarter}`);
+  }
+}
+
+function monthName(month: number) : string {
+  switch (month) {
+    case 1: return "jan";
+    case 2: return "feb";
+    case 3: return "mar";
+    case 4: return "apr";
+    case 5: return "may";
+    case 6: return "jun";
+    case 7: return "jul";
+    case 8: return "aug";
+    case 9: return "sep";
+    case 10: return "oct";
+    case 11: return "nov";
+    case 12: return "dec";
+    default: throw new DOMException(`Unknown month ${month}`);
+  }
+}
+
 function isValidDate(year: number, month: number, day: number): boolean {
   // JS months are 0-based, so subtract 1 from month
   const date = new Date(year, month - 1, day);
@@ -13,7 +41,7 @@ function isValidDate(year: number, month: number, day: number): boolean {
 }
 
 function dayOfWeekString(year: number, month: number, day: number) : string {
-  const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const dayNames = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
   const dateObj = new Date(year, month - 1, day);
   const dayOfWeek = dateObj.getDay(); // 0 (Sun) - 6 (Sat)
   const dayOfWeekStr = dayNames[dayOfWeek];
@@ -404,24 +432,6 @@ function MonthTopic(
   );
 }
 
-function monthName(month: number) : string {
-  switch (month) {
-    case 1: return "jan";
-    case 2: return "feb";
-    case 3: return "mar";
-    case 4: return "apr";
-    case 5: return "may";
-    case 6: return "jun";
-    case 7: return "jul";
-    case 8: return "aug";
-    case 9: return "sep";
-    case 10: return "oct";
-    case 11: return "nov";
-    case 12: return "dec";
-    default: throw new DOMException(`Unknown month ${month}`);
-  }
-}
-
 function Month({ year, month }: { year: number, month: number }) {
   return (
     <div className="month-bar flex">
@@ -438,16 +448,6 @@ function Month({ year, month }: { year: number, month: number }) {
       </div>
     </div>
   );
-}
-
-function quarterHeader(quarter: number) : string {
-  switch (quarter) {
-    case 1: return "1st";
-    case 2: return "2nd";
-    case 3: return "3rd";
-    case 4: return "4th";
-    default: throw new DOMException(`Unknown quarter ${quarter}`);
-  }
 }
 
 function Quarter(
