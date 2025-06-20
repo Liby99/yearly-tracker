@@ -26,12 +26,7 @@ export default function Month({ year, month }: { year: number, month: number }) 
       <div className="month-header period-header items-center justify-center">{monthName(month)}</div>
       <div className="month-topics">
         {Array.from({ length: 4 }, (_, i) => i).map((i) => (
-          <MonthTopic
-            key={`month-${month}-topic-${i}`}
-            year={year}
-            month={month}
-            topicId={i}
-          />
+          <MonthTopic key={`month-${month}-topic-${i}`} year={year} month={month} topicId={i} />
         ))}
       </div>
     </div>
