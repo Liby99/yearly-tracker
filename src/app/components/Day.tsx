@@ -13,6 +13,7 @@ export default function Day(
     resize,
     removeEvent,
     changeEventName,
+    changeEventColor,
     onResizeStart,
   }: {
     year: number,
@@ -23,6 +24,7 @@ export default function Day(
     resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
     removeEvent: (day: number) => void,
     changeEventName: (day: number, name: string) => void,
+    changeEventColor: (day: number, color: string) => void,
     onResizeStart: (side: "left" | "right", resizingDay: number, otherDay: number) => void,
   }
 ) {
@@ -39,11 +41,13 @@ export default function Day(
           start={start}
           end={end}
           name={""}
+          color={null}
           duration={length}
           isSelecting={true}
           resize={resize}
           removeEvent={removeEvent}
           changeEventName={changeEventName}
+          changeEventColor={changeEventColor}
           onResizeStart={onResizeStart}
         />
       );
@@ -59,11 +63,13 @@ export default function Day(
             start={event.start}
             end={event.end}
             name={event.name}
+            color={event.color}
             duration={eventDataDuration(event)}
             isSelecting={false}
             resize={resize}
             removeEvent={removeEvent}
             changeEventName={changeEventName}
+            changeEventColor={changeEventColor}
             onResizeStart={onResizeStart}
           />
         );

@@ -128,11 +128,11 @@ export default function MonthlyTopic(
           if (resizing.side === "left" && event.end === resizing.otherDay) {
             // Prevent crossing over the end
             const newStart = Math.min(day, event.end);
-            return createEventData(newStart, event.end, event.name);
+            return {...event, start: newStart};
           } else if (resizing.side === "right" && event.start === resizing.otherDay) {
             // right side
             const newEnd = Math.max(day, event.start);
-            return createEventData(event.start, newEnd, event.name);
+            return {...event, end: newEnd};
           }
           return event;
         })
@@ -143,7 +143,7 @@ export default function MonthlyTopic(
   const handleMouseUp = () => {
     if (dragging) {
       if (selectedRange.start && selectedRange.end) {
-        setEvents([...events, createEventData(selectedRange.start, selectedRange.end, "")]);
+        setEvents([...events, createEventData(selectedRange.start, selectedRange.end, "", null)]);
       }
       setSelectedRange({ start: null, end: null });
     }
@@ -158,7 +158,11 @@ export default function MonthlyTopic(
   };
 
   const changeEventName = (day: number, name: string) => {
-    modifyEvent(day, (oldEvent) => createEventData(oldEvent.start, oldEvent.end, name));
+    modifyEvent(day, (oldEvent) => createEventData(oldEvent.start, oldEvent.end, name, oldEvent.color));
+  };
+
+  const changeEventColor = (day: number, color: string) => {
+    modifyEvent(day, (oldEvent) => createEventData(oldEvent.start, oldEvent.end, oldEvent.name, color));
   };
 
   return (
@@ -212,6 +216,7 @@ export default function MonthlyTopic(
             resize={resizing}
             removeEvent={removeEvent}
             changeEventName={changeEventName}
+            changeEventColor={changeEventColor}
             onResizeStart={handleResizeStart}
           />
         ))}

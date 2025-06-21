@@ -9,8 +9,38 @@
   --accent-bg-hover: rgba(76, 45, 20, 0.03);
   --accent-bg-active: rgba(76, 45, 20, 0.06);
   --accent-bg-dark: rgba(76, 45, 20, 0.1);
-  --highlight: rgba(185, 88, 8, 0.9);
+  --highlight: rgba(76, 45, 20, 0.9);
   --highlight-bg: rgba(236, 216, 199, 0.2);
+
+  --event-default: rgba(76, 45, 20, 0.102);
+  --event-default-hover: rgba(76, 45, 20, 0.15);
+  --event-default-border: rgba(76, 45, 20, 0.4);
+  --event-default-border-dark: rgba(76, 45, 20, 0.7);
+
+  --event-red: rgba(253, 169, 124, 0.2);
+  --event-red-hover: rgba(253, 169, 124, 0.3);
+  --event-red-border: rgba(253, 169, 124, 1);
+  --event-red-border-dark: rgb(246, 133, 72);
+
+  --event-yellow: rgba(239, 208, 134, 0.2);
+  --event-yellow-hover: rgba(239, 208, 134, 0.3);
+  --event-yellow-border: rgba(239, 208, 134, 1);
+  --event-yellow-border-dark: rgb(223, 182, 86);
+
+  --event-green: rgba(187, 206, 130, 0.2);
+  --event-green-hover: rgba(187, 206, 130, 0.3);
+  --event-green-border: rgba(187, 206, 130, 1);
+  --event-green-border-dark: rgb(149, 173, 75);
+
+  --event-blue: rgba(136, 195, 181, 0.2);
+  --event-blue-hover: rgba(136, 195, 181, 0.3);
+  --event-blue-border: rgba(136, 195, 181, 1);
+  --event-blue-border-dark: rgb(88, 169, 150);
+
+  --event-purple: rgba(219, 165, 171, 0.2);
+  --event-purple-hover: rgba(219, 165, 171, 0.3);
+  --event-purple-border: rgba(219, 165, 171, 1);
+  --event-purple-border-dark: rgb(176, 97, 106);
 }
 
 body {
@@ -244,6 +274,109 @@ input:focus {
   z-index: -1;
 }
 
+.day-event.default {
+  background-color: var(--event-default);
+  border-color: var(--event-default-border);
+}
+
+.day-event.default:hover, .day-event.default.resizing {
+  background-color: var(--event-default-hover);
+  border-color: var(--event-default-border-dark);
+}
+
+.day-event.default .event-handle {
+  border-color: var(--event-default-border);
+}
+
+.day-event.default .event-handle:hover, .day-event.default .event-handle.resizing {
+  border-color: var(--event-default-border-dark);
+}
+
+.day-event.blue {
+  background-color: var(--event-blue);
+  border-color: var(--event-blue-border);
+}
+
+.day-event.blue:hover, .day-event.blue.resizing {
+  background-color: var(--event-blue-hover);
+}
+
+.day-event.blue .event-handle {
+  border-color: var(--event-blue-border);
+}
+
+.day-event.blue .event-handle:hover, .day-event.blue .event-handle.resizing {
+  border-color: var(--event-blue-border-dark);
+}
+
+.day-event.purple {
+  background-color: var(--event-purple);
+  border-color: var(--event-purple-border);
+}
+
+.day-event.purple:hover, .day-event.purple.resizing {
+  background-color: var(--event-purple-hover);
+}
+
+.day-event.purple .event-handle {
+  border-color: var(--event-purple-border);
+}
+
+.day-event.purple .event-handle:hover, .day-event.purple .event-handle.resizing {
+  border-color: var(--event-purple-border-dark);
+}
+
+.day-event.green {
+  background-color: var(--event-green);
+  border-color: var(--event-green-border);
+}
+
+.day-event.green:hover, .day-event.green.resizing {
+  background-color: var(--event-green-hover);
+}
+
+.day-event.green .event-handle {
+  border-color: var(--event-green-border);
+}
+
+.day-event.green .event-handle:hover, .day-event.green .event-handle.resizing {
+  border-color: var(--event-green-border-dark);
+}
+
+.day-event.yellow {
+  background-color: var(--event-yellow);
+  border-color: var(--event-yellow-border);
+}
+
+.day-event.yellow:hover, .day-event.yellow.resizing {
+  background-color: var(--event-yellow-hover);
+}
+
+.day-event.yellow .event-handle {
+  border-color: var(--event-yellow-border);
+}
+
+.day-event.yellow .event-handle:hover, .day-event.yellow .event-handle.resizing {
+  border-color: var(--event-yellow-border-dark);
+}
+
+.day-event.red {
+  background-color: var(--event-red);
+  border-color: var(--event-red-border);
+}
+
+.day-event.red:hover, .day-event.red.resizing {
+  background-color: var(--event-red-hover);
+}
+
+.day-event.red .event-handle {
+  border-color: var(--event-red-border);
+}
+
+.day-event.red .event-handle:hover, .day-event.red .event-handle.resizing {
+  border-color: var(--event-red-border-dark);
+}
+
 .day-event input {
   margin: 0 5px;
   width: calc(100% - 10px);
@@ -262,11 +395,6 @@ input:focus {
   opacity: 0;
 }
 
-.day-event:hover, .day-event.resizing {
-  background-color: var(--accent-bg-dark);
-  border-color: var(--highlight);
-}
-
 .day-event:hover .event-handle {
   display: block;
 }
@@ -283,12 +411,12 @@ input:focus {
 
 .event-handle.left {
   left: -4px;
-  border-left: 1.5px solid var(--accent-dark);
+  border-left: 1px solid var(--accent-dark);
 }
 
 .event-handle.right {
   right: -4px;
-  border-right: 1.5px solid var(--accent-dark);
+  border-right: 1px solid var(--accent-dark);
 }
 
 .event-handle:hover, .event-handle.resizing {
@@ -326,4 +454,98 @@ input:focus {
   color: var(--highlight);
   font-weight: bold;
   display: none;
+}
+
+.event-menu-holder {
+  position: absolute;
+  margin-top: -63px;
+  height: 30px;
+  z-index: 1000;
+}
+
+.event-menu {
+  width: 100%;
+  height: 30px;
+  border-radius: 8px;
+  background-color: white;
+  line-height: 20px;
+  font-size: 13px;
+  padding: 5px 8px;
+  box-shadow: 0 0 10px var(--accent-grey);
+  border: 1px solid var(--accent-grey);
+}
+
+.event-menu-color-picker {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: var(--accent-bg);
+  opacity: 0.6;
+}
+
+.event-menu-color-picker:hover, .event-menu-color-picker.active {
+  border-style: dashed;
+  border-width: 1px;
+  opacity: 1;
+}
+
+.event-menu-color-picker.default {
+  background-color: var(--accent-bg-dark);
+  border-color: var(--accent-dark);
+}
+
+.event-menu-color-picker.blue {
+  background-color: var(--event-blue);
+  border-color: var(--event-blue-border);
+}
+
+.event-menu-color-picker.purple {
+  background-color: var(--event-purple);
+  border-color: var(--event-purple-border);
+}
+
+.event-menu-color-picker.yellow {
+  background-color: var(--event-yellow);
+  border-color: var(--event-yellow-border);
+}
+
+.event-menu-color-picker.red {
+  background-color: var(--event-red);
+  border-color: var(--event-red-border);
+}
+
+.event-menu-color-picker.green {
+  background-color: var(--event-green);
+  border-color: var(--event-green-border);
+}
+
+.event-menu-color-picker.active {
+  border: 1px solid var(--accent-dark);
+}
+
+.event-menu-color-picker + .event-menu-color-picker {
+  margin-left: 5px;
+}
+
+.event-menu-div {
+  display: inline-block;
+  margin: 0 7px;
+  width: 1px;
+  background-color: var(--accent-grey);
+}
+
+.event-menu-delete-button {
+  border-radius: 5px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.event-menu-delete-button:hover {
+  background-color: var(--accent-bg-hover);
+}
+
+.event-menu-delete-button:active {
+  background-color: var(--accent-bg-active);
 }
