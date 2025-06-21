@@ -31,19 +31,18 @@ export default function MonthlyTopic(
   const [isDraggingTopic, setIsDraggingTopic] = useState(false);
 
   // Related to topic
-  const [topic, setTopic] = useState<string>(() => {
-    if (typeof window !== "undefined" && window.localStorage) {
-      return localStorageMonthlyTopicName(year, month, topicId);
-    } else {
-      return "";
-    }
-  });
+  const [topicName, setTopicName] = useState<string>("");
+
+  useEffect(() => {
+    setTopicName(localStorageMonthlyTopicName(year, month, topicId));
+    // eslint-disable-next-line
+  }, [year, month]);
 
   // Save to localStorage whenever topics change
   useEffect(() => {
-    localStorageSetMonthlyTopicName(year, month, topicId, topic);
+    localStorageSetMonthlyTopicName(year, month, topicId, topicName);
     // eslint-disable-next-line
-  }, [topic, year]);
+  }, [topicName, year, month]);
 
   // Related to event ranges
   const [dragging, setDragging] = useState(false);
@@ -54,13 +53,13 @@ export default function MonthlyTopic(
   useEffect(() => {
     setEvents(localStorageMonthlyTopicEvents(year, month, topicId));
     // eslint-disable-next-line
-  }, [year]);
+  }, [year, month]);
 
   // Save to localStorage whenever ranges change
   useEffect(() => {
     localStorageSetMonthlyTopicEvents(year, month, topicId, events);
     // eslint-disable-next-line
-  }, [events, year]);
+  }, [events, year, month]);
 
   const removeEvent = (day: number) => {
     setEvents(events.filter(range => range.start != day));
@@ -177,8 +176,8 @@ export default function MonthlyTopic(
         <div className="flex month-topic-input-holder">
           <input
             className="month-topic-input"
-            value={topic}
-            onChange={e => setTopic(e.target.value)}
+            value={topicName}
+            onChange={e => setTopicName(e.target.value)}
           />
           <div
             className={`monthly-topic-drag-handle${isDraggingTopic ? " active" : ""}`}

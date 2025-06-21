@@ -7,6 +7,14 @@ type MonthlyTopicData = {
 
 export default MonthlyTopicData;
 
+export function localStorageMonthlyTopicNameKey(year: number, month: number, topicId: number) : string {
+  return `year-${year}/month-${month}/topic-${topicId}/name`;
+}
+
+export function localStorageMonthlyTopicEventsKey(year: number, month: number, topicId: number) : string {
+  return `year-${year}/month-${month}/topic-${topicId}/events`;
+}
+
 export function localStorageMonthlyTopicData(year: number, month: number, topicId: number) : MonthlyTopicData {
   return {
     name: localStorageMonthlyTopicName(year, month, topicId),
@@ -15,20 +23,20 @@ export function localStorageMonthlyTopicData(year: number, month: number, topicI
 }
 
 export function localStorageMonthlyTopicName(year: number, month: number, topicId: number) : string {
-  return localStorage.getItem(`year-${year}/month-${month}/topic-${topicId}/topic`) || "";
+  return localStorage.getItem(localStorageMonthlyTopicNameKey(year, month, topicId)) || "";
 }
 
 export function localStorageMonthlyTopicEvents(year: number, month: number, topicId: number) : Array<EventData> {
-  const saved = localStorage.getItem(`year-${year}/month-${month}/topic-${topicId}/events`);
+  const saved = localStorage.getItem(localStorageMonthlyTopicEventsKey(year, month, topicId));
   return saved ? JSON.parse(saved) : [];
 }
 
 export function localStorageSetMonthlyTopicName(year: number, month: number, topicId: number, topicName: string) {
-  localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/topic`, topicName);
+  localStorage.setItem(localStorageMonthlyTopicNameKey(year, month, topicId), topicName);
 }
 
 export function localStorageSetMonthlyTopicEvents(year: number, month: number, topicId: number, events: Array<EventData>) {
-  localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/events`, JSON.stringify(events));
+  localStorage.setItem(localStorageMonthlyTopicEventsKey(year, month, topicId), JSON.stringify(events));
 }
 
 export function localStorageSetMonthlyTopicData(year: number, month: number, topicId: number, topic: MonthlyTopicData) {

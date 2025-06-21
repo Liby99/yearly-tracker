@@ -1,11 +1,25 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 
 import Calendar from "./Calendar";
 import { downloadCalendarData, localStorageSetCalendarData } from "../utils/CalendarData"
 
 export default function YearlyTracker() {
   const currentYear = new Date().getFullYear();
-  const [year, setYear] = useState(currentYear);
+  const [year, setYear] = useState<number>(currentYear);
+
+  // Set year from URL or current year on client only
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    setYear(getYearFromUrl(currentYear));
+  }, []);
+
+  // Update URL when year changes
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("year", String(year));
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", newUrl);
+  }, [year]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -25,8 +39,8 @@ export default function YearlyTracker() {
       try {
         json = JSON.parse(event.target?.result as string);
       } catch (err) {
-        alert("Invalid file format.");
-        console.log(err);
+        alert(`Error parsing input file "${file}". Please check console for error information.`);
+        console.error(err);
         return;
       }
 
@@ -94,4 +108,12 @@ export default function YearlyTracker() {
       </footer>
     </main>
   );
+}
+
+function getYearFromUrl(defaultYear: number) {
+  if (typeof window === "undefined") return defaultYear;
+  const params = new URLSearchParams(window.location.search);
+  const yearParam = params.get("year");
+  const yearNum = yearParam ? parseInt(yearParam, 10) : NaN;
+  return !isNaN(yearNum) ? yearNum : defaultYear;
 }

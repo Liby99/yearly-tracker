@@ -13,9 +13,18 @@ export default function Month({ year, month }: { year: number, month: number }) 
     }
   });
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      setTopicOrder(localStorageMonthlyTopicOrder(year, month));
+    } else {
+      setTopicOrder(DEFAULT_TOPICS_IDS);
+    }
+  }, [year, month]);
+
   // The topic ordering
   useEffect(() => {
     localStorageSetMonthlyTopicOrder(year, month, topicOrder);
+    // eslint-disable-next-line
   }, [topicOrder]);
 
   // What is the monthly topic that is being dragged right now
