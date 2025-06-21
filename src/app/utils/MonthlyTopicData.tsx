@@ -30,3 +30,8 @@ export function localStorageSetMonthlyTopicName(year: number, month: number, top
 export function localStorageSetMonthlyTopicEvents(year: number, month: number, topicId: number, events: Array<EventData>) {
   localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/events`, JSON.stringify(events));
 }
+
+export function localStorageSetMonthlyTopicData(year: number, month: number, topicId: number, topic: MonthlyTopicData) {
+  localStorageSetMonthlyTopicName(year, month, topicId, topic.name);
+  localStorageSetMonthlyTopicEvents(year, month, topicId, topic.events);
+}
