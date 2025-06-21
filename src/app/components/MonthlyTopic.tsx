@@ -152,15 +152,13 @@ export default function MonthlyTopic(
     setResizing(null);
   };
 
-  const changeEventName = (day: number, name: string) => {
-    const newEvents = events.map(event => {
-      if (event.start === day) {
-        return createEventData(event.start, event.end, name);
-      } else {
-        return event
-      }
-    });
+  const modifyEvent = (day: number, update: (event: EventData) => EventData) => {
+    const newEvents = events.map(event => event.start === day ? update(event) : event);
     setEvents(newEvents);
+  };
+
+  const changeEventName = (day: number, name: string) => {
+    modifyEvent(day, (oldEvent) => createEventData(oldEvent.start, oldEvent.end, name));
   };
 
   return (
