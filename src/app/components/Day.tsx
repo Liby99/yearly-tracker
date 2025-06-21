@@ -98,7 +98,7 @@ export default function Day(
     day === new Date().getDate();
   const todayFrame = isToday ? (
     <div className="today">
-      {topicId == 3 ? (<div className="today-mark">TODAY</div>) : null}
+      <div className="today-mark">TODAY</div>
     </div>
   ) : null;
 

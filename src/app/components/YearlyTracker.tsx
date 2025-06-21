@@ -30,6 +30,12 @@ export default function YearlyTracker() {
             ))}
           </select>
         </span>
+        <span style={{ display: "inline-block", flex: 1 }}></span>
+        <span style={{ fontSize: "12px" }}>
+          <button className="save-upload-button" onClick={() => downloadYearlyTrackerData(year)}>Save</button>
+          <span style={{ display: "inline-block", margin: "0 5px" }}></span>
+          <button className="save-upload-button" onClick={() => uploadYearlyTrackerData(year)}>Upload</button>
+        </span>
       </nav>
       <Calendar year={year} />
       <footer>
@@ -37,4 +43,12 @@ export default function YearlyTracker() {
       </footer>
     </main>
   );
+}
+
+function downloadYearlyTrackerData(year: number) {
+
+}
+
+function uploadYearlyTrackerData(year: number) {
+
 }

@@ -21,6 +21,7 @@ function monthName(month: number) : string {
 }
 
 export default function Month({ year, month }: { year: number, month: number }) {
+  // The current ordering of the monthly topics
   const topicOrderStorageKey = `year-${year}/month-${month}/topic-order`;
   const defaultOrder = [0, 1, 2, 3];
   const [topicOrder, setTopicOrder] = useState<Array<number>>(() => {
@@ -31,12 +32,15 @@ export default function Month({ year, month }: { year: number, month: number }) 
       return defaultOrder;
     }
   });
-  const dragItem = useRef<number | null>(null);
 
+  // The topic ordering
   useEffect(() => {
-    console.log(`Saving topic order ${topicOrder}`);
+    console.log(`Saving topic order ${year} ${month} ${topicOrder}`);
     localStorage.setItem(topicOrderStorageKey, JSON.stringify(topicOrder));
   }, [topicOrder]);
+
+  // What is the monthly topic that is being dragged right now
+  const dragItem = useRef<number | null>(null);
 
   const handleDragStart = (idx: number) => {
     dragItem.current = idx;
@@ -50,7 +54,6 @@ export default function Month({ year, month }: { year: number, month: number }) 
       const [removed] = newOrder.splice(dragItem.current!, 1);
       newOrder.splice(idx, 0, removed);
       dragItem.current = idx;
-      console.log(`Setting topic order ${newOrder}`);
       return newOrder;
     });
   };
