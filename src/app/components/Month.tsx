@@ -1,24 +1,21 @@
 import React, { useState, useEffect, useRef } from "react"
 
 import MonthlyTopic from "./MonthlyTopic"
+import { DEFAULT_TOPICS_IDS, localStorageMonthlyTopicOrder, localStorageSaveMonthlyTopicOrder } from "../utils/MonthData"
 
 export default function Month({ year, month }: { year: number, month: number }) {
   // The current ordering of the monthly topics
-  const topicOrderStorageKey = `year-${year}/month-${month}/topic-order`;
-  const defaultOrder = [0, 1, 2, 3];
   const [topicOrder, setTopicOrder] = useState<Array<number>>(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      const saved = localStorage.getItem(topicOrderStorageKey);
-      return saved ? JSON.parse(saved) : defaultOrder;
+      return localStorageMonthlyTopicOrder(year, month);
     } else {
-      return defaultOrder;
+      return DEFAULT_TOPICS_IDS;
     }
   });
 
   // The topic ordering
   useEffect(() => {
-    console.log(`Saving topic order ${year} ${month} ${topicOrder}`);
-    localStorage.setItem(topicOrderStorageKey, JSON.stringify(topicOrder));
+    localStorageSaveMonthlyTopicOrder(year, month, topicOrder);
   }, [topicOrder]);
 
   // What is the monthly topic that is being dragged right now
