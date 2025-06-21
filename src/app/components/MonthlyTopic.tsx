@@ -20,19 +20,17 @@ export default function MonthlyTopic(
     onTopicDragEnd: () => void,
   }
 ) {
-  // Related to topic
-  const [topic, setTopic] = useState("");
+  const [isDraggingTopic, setIsDraggingTopic] = useState(false);
 
-  // Load from localStorage when year changes
-  useEffect(() => {
-    const saved = localStorage.getItem(`year-${year}/month-${month}/topic-${topicId}/topic`);
-    if (saved) {
-      setTopic(saved);
+  // Related to topic
+  const [topic, setTopic] = useState<string>(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const saved = localStorage.getItem(`year-${year}/month-${month}/topic-${topicId}/topic`);
+      return saved ? saved : "";
     } else {
-      setTopic("");
+      return "";
     }
-    // eslint-disable-next-line
-  }, [year]);
+  });
 
   // Save to localStorage whenever topics change
   useEffect(() => {
@@ -169,7 +167,10 @@ export default function MonthlyTopic(
     <div
       className="flex month-topic-holder"
       onDragOver={onTopicDragOver}
-      onDragEnd={onTopicDragEnd}
+      onDragEnd={() => {
+        onTopicDragEnd();
+        setIsDraggingTopic(false);
+      }}
     >
       <div className="month-topic-header flex">
         <div className="flex month-topic-input-holder">
@@ -179,10 +180,16 @@ export default function MonthlyTopic(
             onChange={e => setTopic(e.target.value)}
           />
           <div
-            className={`monthly-topic-drag-handle`}
+            className={`monthly-topic-drag-handle${isDraggingTopic ? " active" : ""}`}
             draggable={true}
-            onMouseDown={onTopicDragStart}
-            onMouseUp={onTopicDragEnd}
+            onMouseDown={() => {
+              onTopicDragStart();
+              setIsDraggingTopic(true);
+            }}
+            onMouseUp={() => {
+              onTopicDragEnd();
+              setIsDraggingTopic(false);
+            }}
           >
             <i className="fa fa-bars"></i>
           </div>

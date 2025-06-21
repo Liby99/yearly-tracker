@@ -21,20 +21,22 @@ function monthName(month: number) : string {
 }
 
 export default function Month({ year, month }: { year: number, month: number }) {
-  const storageKey = `year-${year}/month-${month}/topic-order`;
+  const topicOrderStorageKey = `year-${year}/month-${month}/topic-order`;
   const defaultOrder = [0, 1, 2, 3];
-  const [topicOrder, setTopicOrder] = useState(defaultOrder);
+  const [topicOrder, setTopicOrder] = useState<Array<number>>(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const saved = localStorage.getItem(topicOrderStorageKey);
+      return saved ? JSON.parse(saved) : defaultOrder;
+    } else {
+      return defaultOrder;
+    }
+  });
   const dragItem = useRef<number | null>(null);
 
-  // useEffect(() => {
-  //   localStorage.setItem(storageKey, JSON.stringify(topicOrder));
-  // }, [topicOrder, storageKey]);
-
-  // useEffect(() => {
-  //   const saved = localStorage.getItem(storageKey);
-  //   setTopicOrder(saved ? JSON.parse(saved) : defaultOrder);
-  //   // eslint-disable-next-line
-  // }, [year, month]);
+  useEffect(() => {
+    console.log(`Saving topic order ${topicOrder}`);
+    localStorage.setItem(topicOrderStorageKey, JSON.stringify(topicOrder));
+  }, [topicOrder]);
 
   const handleDragStart = (idx: number) => {
     dragItem.current = idx;
@@ -48,6 +50,7 @@ export default function Month({ year, month }: { year: number, month: number }) 
       const [removed] = newOrder.splice(dragItem.current!, 1);
       newOrder.splice(idx, 0, removed);
       dragItem.current = idx;
+      console.log(`Setting topic order ${newOrder}`);
       return newOrder;
     });
   };
