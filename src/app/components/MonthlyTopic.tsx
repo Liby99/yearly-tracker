@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react"
 
 import Day from "./Day"
 import EventData, { createEventData, eventDataContains } from "../utils/EventData"
+import {
+  localStorageMonthlyTopicName,
+  localStorageSetMonthlyTopicName,
+  localStorageMonthlyTopicEvents,
+  localStorageSetMonthlyTopicEvents
+} from "../utils/MonthlyTopicData"
 
 const MAX_DAYS_IN_MONTH = 31;
 
@@ -27,8 +33,7 @@ export default function MonthlyTopic(
   // Related to topic
   const [topic, setTopic] = useState<string>(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      const saved = localStorage.getItem(`year-${year}/month-${month}/topic-${topicId}/topic`);
-      return saved ? saved : "";
+      return localStorageMonthlyTopicName(year, month, topicId);
     } else {
       return "";
     }
@@ -36,7 +41,7 @@ export default function MonthlyTopic(
 
   // Save to localStorage whenever topics change
   useEffect(() => {
-    localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/topic`, topic);
+    localStorageSetMonthlyTopicName(year, month, topicId, topic);
     // eslint-disable-next-line
   }, [topic, year]);
 
@@ -47,18 +52,13 @@ export default function MonthlyTopic(
 
   // Load from localStorage when year changes
   useEffect(() => {
-    const saved = localStorage.getItem(`year-${year}/month-${month}/topic-${topicId}/events`);
-    if (saved) {
-      setRanges(JSON.parse(saved));
-    } else {
-      setRanges([]);
-    }
+    setRanges(localStorageMonthlyTopicEvents(year, month, topicId));
     // eslint-disable-next-line
   }, [year]);
 
   // Save to localStorage whenever ranges change
   useEffect(() => {
-    localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/events`, JSON.stringify(ranges));
+    localStorageSetMonthlyTopicEvents(year, month, topicId, ranges);
     // eslint-disable-next-line
   }, [ranges, year]);
 

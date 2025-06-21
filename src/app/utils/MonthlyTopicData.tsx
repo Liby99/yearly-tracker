@@ -22,3 +22,11 @@ export function localStorageMonthlyTopicEvents(year: number, month: number, topi
   const saved = localStorage.getItem(`year-${year}/month-${month}/topic-${topicId}/events`);
   return saved ? JSON.parse(saved) : [];
 }
+
+export function localStorageSetMonthlyTopicName(year: number, month: number, topicId: number, topicName: string) {
+  localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/topic`, topicName);
+}
+
+export function localStorageSetMonthlyTopicEvents(year: number, month: number, topicId: number, events: Array<EventData>) {
+  localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/events`, JSON.stringify(events));
+}
