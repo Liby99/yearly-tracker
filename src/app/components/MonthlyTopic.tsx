@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 import Day from "./Day"
-import EventData from "../utils/EventData"
+import EventData, { createEventData, eventDataContains } from "../utils/EventData"
 
 const MAX_DAYS_IN_MONTH = 31;
 
@@ -49,7 +49,7 @@ export default function MonthlyTopic(
   useEffect(() => {
     const saved = localStorage.getItem(`year-${year}/month-${month}/topic-${topicId}/events`);
     if (saved) {
-      setRanges(JSON.parse(saved).map(({start, end, name}: {start: number, end: number, name: string}) => new EventData(start, end, name)));
+      setRanges(JSON.parse(saved));
     } else {
       setRanges([]);
     }
@@ -58,8 +58,7 @@ export default function MonthlyTopic(
 
   // Save to localStorage whenever ranges change
   useEffect(() => {
-    const toStore = ranges.map(range => ({start: range.start, end: range.end, name: range.name}));
-    localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/events`, JSON.stringify(toStore));
+    localStorage.setItem(`year-${year}/month-${month}/topic-${topicId}/events`, JSON.stringify(ranges));
     // eslint-disable-next-line
   }, [ranges, year]);
 
@@ -88,7 +87,7 @@ export default function MonthlyTopic(
 
     // Prevent starting selection if clicking on an existing range
     for (const range of ranges) {
-      if (range.contains(day)) {
+      if (eventDataContains(range, day)) {
         return;
       }
     }
@@ -130,11 +129,11 @@ export default function MonthlyTopic(
           if (resizing.side === "left" && range.end === resizing.otherDay) {
             // Prevent crossing over the end
             const newStart = Math.min(day, range.end);
-            return new EventData(newStart, range.end, range.name);
+            return createEventData(newStart, range.end, range.name);
           } else if (resizing.side === "right" && range.start === resizing.otherDay) {
             // right side
             const newEnd = Math.max(day, range.start);
-            return new EventData(range.start, newEnd, range.name);
+            return createEventData(range.start, newEnd, range.name);
           }
           return range;
         })
@@ -145,7 +144,7 @@ export default function MonthlyTopic(
   const handleMouseUp = () => {
     if (dragging) {
       if (selectedRange.start && selectedRange.end) {
-        setRanges([...ranges, new EventData(selectedRange.start, selectedRange.end, "")]);
+        setRanges([...ranges, createEventData(selectedRange.start, selectedRange.end, "")]);
       }
       setSelectedRange({ start: null, end: null });
     }
@@ -157,7 +156,7 @@ export default function MonthlyTopic(
   const changeEventName = (day: number, name: string) => {
     const newRanges = ranges.map(range => {
       if (range.start === day) {
-        return new EventData(range.start, range.end, name);
+        return createEventData(range.start, range.end, name);
       } else {
         return range
       }

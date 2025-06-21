@@ -1,19 +1,23 @@
-export default class EventData {
-  start: number;
-  end: number;
-  name: string;
+type EventData = {
+  start: number,
+  end: number,
+  name: string,
+}
 
-  constructor(start: number, end: number, name: string) {
-    this.start = Math.min(start, end);
-    this.end = Math.max(start, end);
-    this.name = name;
-  }
+export default EventData;
 
-  contains(day: number) {
-    return this.start <= day && day <= this.end;
+export function createEventData(start: number, end: number, name: string) {
+  return {
+    start: Math.min(start, end),
+    end: Math.max(start, end),
+    name: name,
   }
+}
 
-  duration() {
-    return this.end - this.start + 1;
-  }
+export function eventDataContains(event: EventData, day: number) {
+  return event.start <= day && day <= event.end;
+}
+
+export function eventDataDuration(event: EventData) {
+  return event.end - event.start + 1;
 }

@@ -1,7 +1,7 @@
 import React from "react"
 
 import Event from "./Event"
-import EventData from "../utils/EventData"
+import EventData, { eventDataContains, eventDataDuration } from "../utils/EventData"
 
 export default function Day(
   {
@@ -59,7 +59,7 @@ export default function Day(
             start={range.start}
             end={range.end}
             name={range.name}
-            duration={range.duration()}
+            duration={eventDataDuration(range)}
             isSelecting={false}
             resize={resize}
             removeEvent={removeEvent}
@@ -84,7 +84,7 @@ export default function Day(
 
   let noHover = selectedRange.start !== null || resize !== null;
   for (const range of ranges) {
-    if (range.contains(day)) {
+    if (eventDataContains(range, day)) {
       noHover = noHover || true;
     }
   }
