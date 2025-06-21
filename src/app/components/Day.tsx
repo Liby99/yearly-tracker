@@ -9,7 +9,7 @@ export default function Day(
     month,
     day,
     selectedRange,
-    ranges,
+    events,
     resize,
     removeEvent,
     changeEventName,
@@ -19,7 +19,7 @@ export default function Day(
     month: number,
     day: number,
     selectedRange: { start: number | null, end: number | null },
-    ranges: Array<EventData>,
+    events: Array<EventData>,
     resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
     removeEvent: (day: number) => void,
     changeEventName: (day: number, name: string) => void,
@@ -52,14 +52,14 @@ export default function Day(
 
   // Then check if we can render an event based on existing ones
   if (activeEvent === null) {
-    for (const range of ranges) {
-      if (range.start == day) {
+    for (const event of events) {
+      if (event.start == day) {
         activeEvent = (
           <Event
-            start={range.start}
-            end={range.end}
-            name={range.name}
-            duration={eventDataDuration(range)}
+            start={event.start}
+            end={event.end}
+            name={event.name}
+            duration={eventDataDuration(event)}
             isSelecting={false}
             resize={resize}
             removeEvent={removeEvent}
@@ -83,8 +83,8 @@ export default function Day(
   ) : null;
 
   let noHover = selectedRange.start !== null || resize !== null;
-  for (const range of ranges) {
-    if (eventDataContains(range, day)) {
+  for (const event of events) {
+    if (eventDataContains(event, day)) {
       noHover = noHover || true;
     }
   }
