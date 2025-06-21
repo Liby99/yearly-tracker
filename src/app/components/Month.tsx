@@ -2,24 +2,6 @@ import React, { useState, useEffect, useRef } from "react"
 
 import MonthlyTopic from "./MonthlyTopic"
 
-function monthName(month: number) : string {
-  switch (month) {
-    case 1: return "jan";
-    case 2: return "feb";
-    case 3: return "mar";
-    case 4: return "apr";
-    case 5: return "may";
-    case 6: return "jun";
-    case 7: return "jul";
-    case 8: return "aug";
-    case 9: return "sep";
-    case 10: return "oct";
-    case 11: return "nov";
-    case 12: return "dec";
-    default: throw new DOMException(`Unknown month ${month}`);
-  }
-}
-
 export default function Month({ year, month }: { year: number, month: number }) {
   // The current ordering of the monthly topics
   const topicOrderStorageKey = `year-${year}/month-${month}/topic-order`;
@@ -80,4 +62,22 @@ export default function Month({ year, month }: { year: number, month: number }) 
       </div>
     </div>
   );
+}
+
+function monthName(month: number) : string {
+  switch (month) {
+    case 1: return "jan";
+    case 2: return "feb";
+    case 3: return "mar";
+    case 4: return "apr";
+    case 5: return "may";
+    case 6: return "jun";
+    case 7: return "jul";
+    case 8: return "aug";
+    case 9: return "sep";
+    case 10: return "oct";
+    case 11: return "nov";
+    case 12: return "dec";
+    default: throw new DOMException(`Unknown month ${month}`);
+  }
 }

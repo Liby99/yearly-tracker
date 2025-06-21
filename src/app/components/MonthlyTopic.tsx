@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react"
 import Day from "./Day"
 import EventData from "../utils/EventData"
 
+const MAX_DAYS_IN_MONTH = 31;
+
 export default function MonthlyTopic(
   {
     year,
@@ -201,12 +203,11 @@ export default function MonthlyTopic(
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
       >
-        {Array.from({ length: 31 }, (_, i) => i + 1).map(i => (
+        {Array.from({ length: MAX_DAYS_IN_MONTH }, (_, i) => i + 1).map(i => (
           <Day
             key={`month-${month}-topic-${topicId}-day-${i}`}
             year={year}
             month={month}
-            topicId={topicId}
             day={i}
             selectedRange={selectedRange}
             ranges={ranges}

@@ -3,29 +3,10 @@ import React from "react"
 import Event from "./Event"
 import EventData from "../utils/EventData"
 
-function isValidDate(year: number, month: number, day: number): boolean {
-  // JS months are 0-based, so subtract 1 from month
-  const date = new Date(year, month - 1, day);
-  return (
-    date.getFullYear() === year &&
-    date.getMonth() === month - 1 &&
-    date.getDate() === day
-  );
-}
-
-function dayOfWeekString(year: number, month: number, day: number) : string {
-  const dayNames = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-  const dateObj = new Date(year, month - 1, day);
-  const dayOfWeek = dateObj.getDay(); // 0 (Sun) - 6 (Sat)
-  const dayOfWeekStr = dayNames[dayOfWeek];
-  return dayOfWeekStr;
-}
-
 export default function Day(
   {
     year,
     month,
-    topicId,
     day,
     selectedRange,
     ranges,
@@ -36,7 +17,6 @@ export default function Day(
   }: {
     year: number,
     month: number,
-    topicId: number,
     day: number,
     selectedRange: { start: number | null, end: number | null },
     ranges: Array<EventData>,
@@ -123,4 +103,22 @@ export default function Day(
       {activeEvent}
     </div>
   )
+}
+
+function isValidDate(year: number, month: number, day: number): boolean {
+  // JS months are 0-based, so subtract 1 from month
+  const date = new Date(year, month - 1, day);
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  );
+}
+
+function dayOfWeekString(year: number, month: number, day: number) : string {
+  const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const dateObj = new Date(year, month - 1, day);
+  const dayOfWeek = dateObj.getDay(); // 0 (Sun) - 6 (Sat)
+  const dayOfWeekStr = dayNames[dayOfWeek];
+  return dayOfWeekStr;
 }
