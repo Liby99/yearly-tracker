@@ -2,7 +2,7 @@ import React from "react"
 
 import Quarter from "./Quarter"
 
-export default function Calendar({ year }: { year: number }) {
+export default function Year({ year }: { year: number }) {
   return (
     <div>
       <Quarter year={year} quarter={1} />

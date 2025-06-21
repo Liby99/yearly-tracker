@@ -170,7 +170,10 @@ export default function MonthlyTopic(
         setIsDraggingTopic(false);
       }}
     >
-      <div className="month-topic-header flex">
+      <div
+        className="month-topic-header flex"
+        draggable={true}
+      >
         <div className="flex month-topic-input-holder">
           <input
             className="month-topic-input"
@@ -179,7 +182,6 @@ export default function MonthlyTopic(
           />
           <div
             className={`monthly-topic-drag-handle${isDraggingTopic ? " active" : ""}`}
-            draggable={true}
             onMouseDown={() => {
               onTopicDragStart();
               setIsDraggingTopic(true);

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react"
 
-import Calendar from "./Calendar";
+import Year from "./Year";
 import { downloadCalendarData, localStorageSetCalendarData } from "../utils/CalendarData"
 
 export default function YearlyTracker() {
@@ -102,9 +102,9 @@ export default function YearlyTracker() {
           />
         </span>
       </nav>
-      <Calendar year={year} />
+      <Year year={year} />
       <footer>
-        &copy; 2025 Ziyang Li, all rights reserved
+        &copy; 2025 Liby99, all rights reserved.
       </footer>
     </main>
   );
