@@ -638,15 +638,60 @@ input:focus, textarea:focus {
 
 .note-move-handle {
   position: absolute;
-  left: -3px;
-  top: -3px;
-  width: 8px;
-  height: 8px;
+  left: -5px;
+  top: -4.5px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   border: 1px solid var(--event-default-border-dark);
   background-color: var(--event-default-hover);
   cursor: move;
   opacity: 0;
+}
+
+.sticker.blue .note-move-handle {
+  background-color: var(--event-blue-border);
+  border-color: var(--event-blue-border-dark);
+}
+
+.sticker.blue .note-resize-handle {
+  border-color: var(--event-blue-border-dark);
+}
+
+.sticker.purple .note-move-handle {
+  background-color: var(--event-purple-border);
+  border-color: var(--event-purple-border-dark);
+}
+
+.sticker.purple .note-resize-handle {
+  border-color: var(--event-purple-border-dark);
+}
+
+.sticker.green .note-move-handle {
+  background-color: var(--event-green-border);
+  border-color: var(--event-green-border-dark);
+}
+
+.sticker.green .note-resize-handle {
+  border-color: var(--event-green-border-dark);
+}
+
+.sticker.yellow .note-move-handle {
+  background-color: var(--event-yellow-border);
+  border-color: var(--event-yellow-border-dark);
+}
+
+.sticker.yellow .note-resize-handle {
+  border-color: var(--event-yellow-border-dark);
+}
+
+.sticker.red .note-move-handle {
+  background-color: var(--event-red-border);
+  border-color: var(--event-red-border-dark);
+}
+
+.sticker.red .note-resize-handle {
+  border-color: var(--event-red-border-dark);
 }
 
 .sticker:hover .note-move-handle, .sticker.operating .note-move-handle {
