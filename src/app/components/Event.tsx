@@ -78,7 +78,6 @@ export default function Event(
   return (
     <div
       ref={eventRef}
-      draggable={true}
       className={`day-event ${displayColor}${isSelecting ? " selecting" : ""}${isResizing ? " resizing" : ""}`}
       style={{width: `${eventWidth}px`}}
       onClick={() => inputRef.current?.focus()}

@@ -78,7 +78,7 @@ export default function Event(
   return (
     <div
       ref={eventRef}
-      className={`day-event ${displayColor}${isCreating ? " selecting" : ""}${isResizing ? " resizing" : ""}`}
+      className={`day-event ${displayColor}${isCreating ? " selecting" : ""}${isResizing ? " resizing" : ""}${h === 1 ? " h1" : ""}`}
       style={{width: `${noteWidth}px`, height: `${noteHeight}px`}}
       onMouseDown={(e) => {
         e.stopPropagation();

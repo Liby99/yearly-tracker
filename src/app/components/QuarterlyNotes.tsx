@@ -81,7 +81,7 @@ export default function QuarterlyNotes(
 
   const handleCreatingMouseUp = () => {
     if (!dragging || !creatingNote) return;
-    if (creatingNote.w > 1 && creatingNote.h > 1) {
+    if (creatingNote.w >= 1 && creatingNote.h >= 1) {
       setNotes(prev => [
         ...prev,
         {
