@@ -69,7 +69,7 @@ export default function Event(
     return (
       <span
         key={c}
-        className={`event-menu-color-picker ${c}${active ? " active" : ""}`}
+        className={`sticker-menu-color-picker ${c}${active ? " active" : ""}`}
         onClick={() => changeEventColor(start, c)}
         onMouseEnter={() => setHoverColor(c)}
         onMouseLeave={() => setHoverColor(null)}
@@ -150,12 +150,12 @@ export default function Event(
         }}
       />
       {menuOpen && (
-        <div className="event-menu-holder" style={{ marginLeft: `${marginLeft}px`, width: menuWidth }}>
-          <div className="flex event-menu" onMouseDown={e => e.stopPropagation()}>
+        <div className="sticker-menu-holder" style={{ marginLeft: `${marginLeft}px`, width: menuWidth }}>
+          <div className="flex sticker-menu" onMouseDown={e => e.stopPropagation()}>
             {colorPickers}
-            <span className="event-menu-div"></span>
+            <span className="sticker-menu-div"></span>
             <span
-              className="event-menu-delete-button"
+              className="sticker-menu-delete-button"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -165,7 +165,7 @@ export default function Event(
               <i className="fa fa-trash"></i>
             </span>
           </div>
-          <div className="event-menu-caret-holder">
+          <div className="sticker-menu-caret-holder">
             <i className="fa fa-caret-down"></i>
           </div>
         </div>
