@@ -397,7 +397,7 @@ input:focus, textarea:focus {
   left: 0;
   margin: 0 5px;
   width: calc(100% - 10px);
-  /* min-width: 100px; */
+  min-width: 24px;
   font-size: 14px;
   line-height: 30px;
   height: 30px;
@@ -649,7 +649,7 @@ input:focus, textarea:focus {
   opacity: 0;
 }
 
-.sticker:hover .note-move-handle {
+.sticker:hover .note-move-handle, .sticker.operating .note-move-handle {
   opacity: 1;
 }
 
@@ -668,6 +668,6 @@ input:focus, textarea:focus {
   opacity: 0;
 }
 
-.sticker:hover .note-resize-handle {
+.sticker:hover .note-resize-handle, .sticker.operating .note-resize-handle {
   opacity: 1;
 }

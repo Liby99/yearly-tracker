@@ -12,6 +12,7 @@ export default function Event(
     color,
     isCreating,
     isResizing,
+    isMoving,
     removeNote,
     changeContent,
     changeColor,
@@ -26,6 +27,7 @@ export default function Event(
     color: string | null,
     isCreating: boolean,
     isResizing: boolean,
+    isMoving: boolean,
     removeNote: (i: number, j: number) => void,
     changeContent: (i: number, j: number, content: string) => void,
     changeColor: (i: number, j: number, color: string | null) => void,
@@ -75,10 +77,12 @@ export default function Event(
     );
   });
 
+  const isOperating = isResizing || isMoving;
+
   return (
     <div
       ref={eventRef}
-      className={`sticker ${displayColor}${isCreating ? " selecting" : ""}${isResizing ? " resizing" : ""}${h === 1 ? " h1" : ""}`}
+      className={`sticker ${displayColor}${isCreating ? " selecting" : ""}${isResizing ? " resizing" : ""}${h === 1 ? " h1" : ""}${isOperating ? " operating" : ""}`}
       style={{width: `${noteWidth}px`, height: `${noteHeight}px`}}
       onMouseDown={(e) => {
         e.stopPropagation();

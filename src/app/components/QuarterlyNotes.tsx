@@ -246,6 +246,7 @@ export default function QuarterlyNotes(
                   color="default"
                   isCreating={true}
                   isResizing={false}
+                  isMoving={false}
                   removeNote={() => {}}
                   changeContent={changeContent}
                   changeColor={changeColor}
@@ -265,7 +266,8 @@ export default function QuarterlyNotes(
                     content={note.content}
                     color={note.color}
                     isCreating={false}
-                    isResizing={false}
+                    isResizing={(resizing && resizing.i == i && resizing.j == j) || false}
+                    isMoving={(movingNote && movingNote.i == i && movingNote.j == j) || false}
                     removeNote={handleRemoveNote}
                     changeContent={changeContent}
                     changeColor={changeColor}
