@@ -57,7 +57,7 @@ export default function Event(
   // Close menu on click outside
   useEffect(() => {
     if (!menuOpen) return;
-    const handleClick = (e: MouseEvent) => setMenuOpen(false);
+    const handleClick = () => setMenuOpen(false);
     window.addEventListener("mousedown", handleClick);
     return () => window.removeEventListener("mousedown", handleClick);
   }, [menuOpen]);

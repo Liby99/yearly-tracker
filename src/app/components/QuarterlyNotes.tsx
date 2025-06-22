@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 
 import QuarterlyNote from "./QuarterlyNote";
 import
@@ -31,13 +31,11 @@ export default function QuarterlyNotes(
   // Load from localStorage when year changes
   useEffect(() => {
     setNotes(localStorageQuarterlyNotes(year, quarter));
-    // eslint-disable-next-line
   }, [year, quarter]);
 
   // Save to localStorage whenever ranges change
   useEffect(() => {
     localStorageSetQuarterlyNotes(year, quarter, notes);
-    // eslint-disable-next-line
   }, [notes, year, quarter]);
 
   const cellCanHover: Array<Array<boolean>> =
