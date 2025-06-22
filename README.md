@@ -66,6 +66,14 @@ Saved calendars work across any year—so you can plan ahead (or backtrack) anyt
 
 ![6-change-year](docs/6-change-year.gif)
 
+### 🖨️ Print and Make It Your Own
+
+GridCal is made to be printer friendly—because sometimes, nothing beats pen and paper.
+When you print in landscape mode, the year is split into two pages:
+Q1 + Q2 on the first, and Q3 + Q4 on the second.
+
+Feel free to jot, doodle, or color in your calendar by hand. Make it personal. Make it yours.
+
 ## Developing
 
 First, run the development server:
