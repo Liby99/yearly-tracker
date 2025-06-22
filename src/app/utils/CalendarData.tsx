@@ -1,4 +1,4 @@
-import YearData, { localStorageYearData, localStorageSetYearData } from "./YearData";
+import YearData, { localStorageYearData, localStorageSetYearData, localStorageClearYearData } from "./YearData";
 
 export const YEARS = [2024, 2025, 2026, 2027, 2028, 2029, 2030];
 
@@ -36,6 +36,12 @@ export function downloadCalendarData(filename: string) {
 export function localStorageSetCalendarData(calendar: CalendarData) {
   for (const yearString in calendar.years) {
     const year = parseInt(yearString);
-    localStorageSetYearData(year, calendar.years[yearString])
+    localStorageSetYearData(year, calendar.years[yearString]);
+  }
+}
+
+export function localStorageClearCalendarData() {
+  for (const year of YEARS) {
+    localStorageClearYearData(year);
   }
 }

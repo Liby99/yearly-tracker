@@ -1,4 +1,4 @@
-import MonthlyTopicData, { localStorageMonthlyTopicData, localStorageSetMonthlyTopicData } from "./MonthlyTopicData";
+import MonthlyTopicData, { localStorageMonthlyTopicData, localStorageSetMonthlyTopicData, localStorageClearMonthlyTopic } from "./MonthlyTopicData";
 
 type MonthData = {
   order: Array<number>,
@@ -36,4 +36,11 @@ export function localStorageSetMonthlyTopics(year: number, month: number, topics
 export function localStorageSetMonthData(year: number, month: number, monthData: MonthData) {
   localStorageSetMonthlyTopicOrder(year, month, monthData.order);
   localStorageSetMonthlyTopics(year, month, monthData.topics);
+}
+
+export function localStorageClearMonthData(year: number, month: number) {
+  localStorageSetMonthlyTopicOrder(year, month, DEFAULT_TOPICS_IDS);
+  for (const topicId of DEFAULT_TOPICS_IDS) {
+    localStorageClearMonthlyTopic(year, month, topicId);
+  }
 }

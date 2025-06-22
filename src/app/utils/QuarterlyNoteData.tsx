@@ -30,3 +30,7 @@ export function localStorageQuarterlyNotes(year: number, quarter: number) : Arra
 export function localStorageSetQuarterlyNotes(year: number, quarter: number, notes: Array<QuarterlyNoteData>) {
   localStorage.setItem(localStorageQuarterlyNotesKey(year, quarter), JSON.stringify(notes));
 }
+
+export function localStorageClearQuarterlyNotes(year: number, quarter: number) {
+  localStorageSetQuarterlyNotes(year, quarter, [])
+}

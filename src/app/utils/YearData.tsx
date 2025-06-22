@@ -1,5 +1,5 @@
-import MonthData, { localStorageMonthData, localStorageSetMonthData } from "./MonthData"
-import QuarterlyNoteData, { localStorageQuarterlyNotes, localStorageSetQuarterlyNotes } from "./QuarterlyNoteData";
+import MonthData, { localStorageMonthData, localStorageSetMonthData, localStorageClearMonthData } from "./MonthData"
+import QuarterlyNoteData, { localStorageQuarterlyNotes, localStorageSetQuarterlyNotes, localStorageClearQuarterlyNotes } from "./QuarterlyNoteData";
 
 type YearData = {
   notes: {[quarter: number]: Array<QuarterlyNoteData>},
@@ -29,5 +29,15 @@ export function localStorageSetYearData(year: number, data: YearData) {
   // Months
   for (const month of MONTHS) {
     localStorageSetMonthData(year, month, data.months[month - 1]);
+  }
+}
+
+export function localStorageClearYearData(year: number) {
+  for (const quarter of QUARTERS) {
+    localStorageClearQuarterlyNotes(year, quarter);
+  }
+
+  for (const month of MONTHS) {
+    localStorageClearMonthData(year, month);
   }
 }

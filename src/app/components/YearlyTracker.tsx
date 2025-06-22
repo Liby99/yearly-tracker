@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react"
 
 import Year from "./Year";
-import { downloadCalendarData, localStorageSetCalendarData } from "../utils/CalendarData"
+import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../utils/CalendarData"
 
 export default function YearlyTracker() {
   const currentYear = new Date().getFullYear();
@@ -52,6 +52,13 @@ export default function YearlyTracker() {
     e.target.value = "";
   };
 
+  const handleErase = () => {
+    if (confirm(`Do you want to erase all notes and events in the year of ${year}?`)) {
+      localStorageClearCalendarData();
+      window.location.reload(); // Reload to reflect changes
+    }
+  };
+
   return (
     <main>
       <nav className="flex">
@@ -84,13 +91,15 @@ export default function YearlyTracker() {
               downloadCalendarData("yearly-tracker-calendar.json");
             }}
           >
+            <i className="fa fa-save" style={{marginRight: 5}}></i>
             Save
           </button>
-          <span style={{ display: "inline-block", margin: "0 5px" }}></span>
+          <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
           <button
             className="save-upload-button"
             onClick={handleUploadClick}
           >
+            <i className="fa fa-upload" style={{marginRight: 5}}></i>
             Upload
           </button>
           <input
@@ -100,6 +109,14 @@ export default function YearlyTracker() {
             style={{ display: "none" }}
             onChange={handleFileChange}
           />
+          <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
+          <button
+            className="save-upload-button"
+            onClick={handleErase}
+          >
+            <i className="fa fa-eraser" style={{marginRight: 5}}></i>
+            Erase
+          </button>
         </span>
       </nav>
       <Year year={year} />

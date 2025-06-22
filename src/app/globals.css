@@ -441,7 +441,7 @@ input:focus, textarea:focus {
 }
 
 .sticker input:placeholder-shown {
-  min-width: 0;
+  min-width: 24px;
 }
 
 .sticker input::placeholder, .sticker textarea::placeholder {

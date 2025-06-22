@@ -43,3 +43,10 @@ export function localStorageSetMonthlyTopicData(year: number, month: number, top
   localStorageSetMonthlyTopicName(year, month, topicId, topic.name);
   localStorageSetMonthlyTopicEvents(year, month, topicId, topic.events);
 }
+
+export function localStorageClearMonthlyTopic(year: number, month: number, topicId: number) {
+  localStorageSetMonthlyTopicData(year, month, topicId, {
+    name: "",
+    events: [],
+  })
+}
