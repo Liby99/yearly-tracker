@@ -10,7 +10,7 @@ export default function Event(
     h,
     content,
     color,
-    isSelecting,
+    isCreating,
     isResizing,
     removeNote,
     changeContent,
@@ -23,7 +23,7 @@ export default function Event(
     h: number,
     content: string,
     color: string | null,
-    isSelecting: boolean,
+    isCreating: boolean,
     isResizing: boolean,
     removeNote: (i: number, j: number) => void,
     changeContent: (i: number, j: number, content: string) => void,
@@ -31,7 +31,7 @@ export default function Event(
     onResizeStart: (i: number, j: number) => void,
   }
 ) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const eventRef = useRef<HTMLDivElement>(null);
 
   const [hoverColor, setHoverColor] = useState<string | null>(null);
@@ -40,7 +40,7 @@ export default function Event(
   const [menuOpen, setMenuOpen] = useState(false);
 
   const noteWidth = w * 20 - 5;
-  const noteHeight = h * 20 - 5;
+  const noteHeight = h * 21 - 5;
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -73,23 +73,35 @@ export default function Event(
   return (
     <div
       ref={eventRef}
-      className={`day-event ${displayColor}${isSelecting ? " selecting" : ""}${isResizing ? " resizing" : ""}`}
+      className={`day-event ${displayColor}${isCreating ? " selecting" : ""}${isResizing ? " resizing" : ""}`}
       style={{width: `${noteWidth}px`, height: `${noteHeight}px`}}
-      onClick={() => inputRef.current?.focus()}
+      onMouseDown={(e) => {
+        e.stopPropagation();
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        inputRef.current?.focus()
+      }}
       onContextMenu={handleContextMenu}
     >
-      <input
-        ref={inputRef}
-        placeholder="event"
-        value={content}
-        onChange={e => changeContent(i, j, e.target.value)}
-        onKeyDown={e => {
-          if ((e.key === "Backspace" || e.key === "Delete") && content === "") {
-            e.preventDefault();
-            removeNote(i, j);
-          }
-        }}
-      />
+      {!isCreating && (
+        <textarea
+          ref={inputRef}
+          style={{width: `${noteWidth - 2}px`, height: `${noteHeight - 2}px`}}
+          placeholder="event"
+          value={content}
+          onChange={e => {
+            changeContent(i, j, e.target.value);
+          }}
+          onKeyDown={e => {
+            if ((e.key === "Backspace" || e.key === "Delete") && content === "") {
+              e.preventDefault();
+              removeNote(i, j);
+            }
+          }}
+        />
+      )}
     </div>
   );
 }
