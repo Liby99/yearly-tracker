@@ -12,6 +12,8 @@
   --highlight: rgba(76, 45, 20, 0.9);
   --highlight-bg: rgba(236, 216, 199, 0.2);
 
+  --mirror-ref-bg: rgb(248, 246, 244);
+
   --event-default: rgba(76, 45, 20, 0.102);
   --event-default-hover: rgba(76, 45, 20, 0.15);
   --event-default-border: rgba(76, 45, 20, 0.4);
@@ -250,6 +252,12 @@ input:focus, textarea:focus {
   background-color: var(--accent-bg);
 }
 
+.day-holder.pop:hover {
+  position: relative;
+  background-color: var(--mirror-ref-bg);
+  z-index: 5;
+}
+
 .day-hover {
   position: absolute;
   margin: 3px;
@@ -384,12 +392,51 @@ input:focus, textarea:focus {
 }
 
 .day-event input {
+  position: absolute;
+  top: 0;
+  left: 0;
   margin: 0 5px;
   width: calc(100% - 10px);
-  min-width: 100px;
+  /* min-width: 100px; */
   font-size: 14px;
   line-height: 30px;
   height: 30px;
+  z-index: 3;
+}
+
+.day-event:hover {
+  z-index: 8;
+}
+
+.day-event:hover input {
+  z-index: 10;
+}
+
+.day-event .event-input-bg {
+  position: absolute;
+  top: -3px;
+  left: 0;
+  height: 32px;
+  background-color: var(--mirror-ref-bg);
+  box-shadow: 5px 0px 10px -5px var(--accent-grey);
+  opacity: 0;
+}
+
+.day-event:hover .event-input-bg {
+  z-index: 6;
+  width: 300px;
+  opacity: 1;
+}
+
+.mirror-ref {
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  font: inherit;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-family: 'Comic Sans MS', 'Comic Sans', 'Bradley Hand', 'Segoe Script', 'Caveat', 'Indie Flower', cursive;
 }
 
 .day-event input:placeholder-shown {

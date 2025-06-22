@@ -45,6 +45,7 @@ export default function Day(
           duration={length}
           isSelecting={true}
           resize={resize}
+          events={events}
           removeEvent={removeEvent}
           changeEventName={changeEventName}
           changeEventColor={changeEventColor}
@@ -67,6 +68,7 @@ export default function Day(
             duration={eventDataDuration(event)}
             isSelecting={false}
             resize={resize}
+            events={events}
             removeEvent={removeEvent}
             changeEventName={changeEventName}
             changeEventColor={changeEventColor}
@@ -89,18 +91,19 @@ export default function Day(
   ) : null;
 
   let noHover = selectedRange.start !== null || resize !== null;
-  for (const event of events) {
-    if (eventDataContains(event, day)) {
-      noHover = noHover || true;
-    }
-  }
+  noHover = noHover || events.some(e => eventDataContains(e, day));
 
   const invalid = !isValidDate(year, month, day);
   const dayOfWeek = dayOfWeekString(year, month, day);
 
+  let pop = !noHover && !invalid;
+  if (activeEvent !== null) {
+    pop = true;
+  }
+
   return (
     <div
-      className={`day-holder${invalid ? " invalid" : ""}${noHover ? " no-hover" : ""}`}
+      className={`day-holder${invalid ? " invalid" : ""}${noHover ? " no-hover" : ""}${pop ? " pop" : ""}`}
     >
       <div className="day-hover">
         <div className="day-in-week">{dayOfWeek}</div>

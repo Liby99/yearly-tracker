@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from "react"
 
+import EventData from "../utils/EventData";
+
 const COLORS = ["default", "blue", "purple", "green", "yellow", "red"];
 
 export default function Event(
@@ -11,6 +13,7 @@ export default function Event(
     duration,
     isSelecting,
     resize,
+    events,
     removeEvent,
     changeEventName,
     changeEventColor,
@@ -23,6 +26,7 @@ export default function Event(
     duration: number,
     isSelecting: boolean,
     resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
+    events: Array<EventData>,
     removeEvent: (start: number) => void,
     changeEventName: (day: number, name: string) => void,
     changeEventColor: (day: number, color: string) => void,
@@ -73,12 +77,41 @@ export default function Event(
     );
   });
 
+  const mirrorRef = useRef<HTMLSpanElement>(null);
+  const [isHoveringInput, setIsHoveringInput] = useState(false);
+
+  // Compute input style based on mirror ref
+  let inputWidth = null;
+  // Check if there is an immediate next event; if so, set a maximum width so that there is no overlap
+  const nextEvent = events.filter(e => e.start > end).sort((a, b) => a.start - b.start)[0];
+  if (nextEvent) {
+    const gapDays = nextEvent.start - end - 1;
+    const maxWidth = eventWidth + gapDays * 30;
+    inputWidth = maxWidth;
+  } else {
+    inputWidth = mirrorRef.current?.offsetWidth || (eventWidth + 100);
+  }
+
+  if (isHoveringInput && mirrorRef.current) {
+    inputWidth = mirrorRef.current.offsetWidth;
+  }
+
+  let inputStyle: React.CSSProperties = {};
+  if (inputWidth != null) {
+    inputStyle.width = `${inputWidth}px`;
+  }
+
   return (
     <div
       ref={eventRef}
       className={`day-event ${displayColor}${isSelecting ? " selecting" : ""}${isResizing ? " resizing" : ""}`}
       style={{width: `${eventWidth}px`}}
-      onClick={() => inputRef.current?.focus()}
+      onClick={(e) => {
+        e.stopPropagation();
+        inputRef.current?.focus();
+      }}
+      onMouseEnter={() => setIsHoveringInput(true)}
+      onMouseLeave={() => setIsHoveringInput(false)}
       onContextMenu={handleContextMenu}
     >
       <div
@@ -92,12 +125,21 @@ export default function Event(
         ref={inputRef}
         placeholder="event"
         value={name}
+        style={inputStyle}
         onChange={e => changeEventName(start, e.target.value)}
+        onMouseDown={e => e.stopPropagation()}
         onKeyDown={e => {
           if ((e.key === "Backspace" || e.key === "Delete") && name === "") {
             e.preventDefault();
             removeEvent(start);
           }
+        }}
+      />
+      <div
+        className="event-input-bg"
+        style={{
+          left: `${eventWidth}px`,
+          width: `${Math.max(0, (mirrorRef.current?.offsetWidth || 0) - eventWidth + 10)}px`
         }}
       />
       <div
@@ -128,6 +170,7 @@ export default function Event(
           </div>
         </div>
       )}
+      <span ref={mirrorRef} className="mirror-ref">{name}</span>
     </div>
   )
 }
