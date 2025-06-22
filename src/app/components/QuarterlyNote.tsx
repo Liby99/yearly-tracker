@@ -15,6 +15,7 @@ export default function Event(
     removeNote,
     changeContent,
     changeEventColor,
+    onMoveStart,
     onResizeStart,
   }: {
     i: number,
@@ -28,7 +29,8 @@ export default function Event(
     removeNote: (i: number, j: number) => void,
     changeContent: (i: number, j: number, content: string) => void,
     changeEventColor: (i: number, j: number, color: string) => void,
-    onResizeStart: (i: number, j: number) => void,
+    onMoveStart: (i: number, j: number, e: React.MouseEvent) => void,
+    onResizeStart: (i: number, j: number, e: React.MouseEvent) => void,
   }
 ) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -85,6 +87,14 @@ export default function Event(
       }}
       onContextMenu={handleContextMenu}
     >
+      <div
+        className="note-move-handle"
+        onMouseDown={e => {
+          e.stopPropagation();
+          onMoveStart(i, j, e);
+        }}
+      />
+
       {!isCreating && (
         <textarea
           ref={inputRef}
@@ -102,6 +112,14 @@ export default function Event(
           }}
         />
       )}
+
+      <div
+        className="note-resize-handle"
+        onMouseDown={e => {
+          e.stopPropagation();
+          onResizeStart(i, j, e);
+        }}
+      />
     </div>
   );
 }

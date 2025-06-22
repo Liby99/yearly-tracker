@@ -65,7 +65,7 @@ export default function QuarterlyNotes(
     setDragging(true);
   };
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleCreatingMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!dragging || !dragStart) return;
     const cell = getCellFromEvent(event);
     if (!cell) return;
@@ -79,7 +79,7 @@ export default function QuarterlyNotes(
     });
   };
 
-  const handleMouseUp = () => {
+  const handleCreatingMouseUp = () => {
     if (!dragging || !creatingNote) return;
     if (creatingNote.w > 1 && creatingNote.h > 1) {
       setNotes(prev => [
@@ -100,6 +100,112 @@ export default function QuarterlyNotes(
     setNotes(notes => notes.filter(n => !(n.i == i && n.j == j)));
   };
 
+  const [resizing, setResizing] = useState<{
+    i: number,
+    j: number,
+    startX: number,
+    startY: number,
+    origW: number,
+    origH: number
+  } | null>(null);
+
+  const handleOnResizeStart = (i: number, j: number, e: React.MouseEvent) => {
+    const note = notes.find(n => n.i === i && n.j === j);
+    if (!note) return;
+    setResizing({
+      i,
+      j,
+      startX: e.clientX,
+      startY: e.clientY,
+      origW: note.w,
+      origH: note.h,
+    });
+  };
+
+  const handleResizeMouseMove = (e: React.MouseEvent) => {
+    if (!resizing) return;
+    const dx = Math.max(1, resizing.origW + Math.round((e.clientX - resizing.startX) / 20));
+    const dy = Math.max(1, resizing.origH + Math.round((e.clientY - resizing.startY) / 20));
+    modifyNote(resizing.i, resizing.j, n => ({
+      ...n,
+      w: dx,
+      h: dy,
+    }));
+  };
+
+  const handleResizeMouseUp = () => {
+    if (resizing) setResizing(null);
+  };
+
+  const [movingNote, setMovingNote] = useState<{
+    i: number,
+    j: number,
+    startX: number,
+    startY: number,
+    origI: number,
+    origJ: number,
+  } | null>(null);
+
+  const handleOnMoveNoteStart = (i: number, j: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMovingNote({
+      i,
+      j,
+      startX: e.clientX,
+      startY: e.clientY,
+      origI: i,
+      origJ: j,
+    });
+  };
+
+  const handleMoveNoteMouseMove = (e: React.MouseEvent) => {
+    if (!movingNote) return;
+
+    // delta x, y
+    const deltaX = e.clientX > movingNote.startX
+      ? Math.floor((e.clientX - movingNote.startX) / 20)
+      : Math.ceil((e.clientX - movingNote.startX) / 20);
+    const deltaY = e.clientY > movingNote.startY
+      ? Math.floor((e.clientY - movingNote.startY) / 20)
+      : Math.ceil((e.clientY - movingNote.startY) / 20);
+
+    // note i, j
+    const note = notes.find(n => n.i === movingNote.origI && n.j === movingNote.origJ);
+    if (!note) return;
+    const maxI = gridY - note.h;
+    const maxJ = gridX - note.w;
+    const newI = Math.max(0, Math.min(maxI, movingNote.origI + deltaY));
+    const newJ = Math.max(0, Math.min(maxJ, movingNote.origJ + deltaX));
+
+    // check for overlap with other notes
+    const isOccupied = notes.some(n => n !== note && n.i == newI && n.j == newJ);
+
+    // isOccupied
+    if ((newI !== movingNote.i || newJ !== movingNote.j) && !isOccupied) {
+      setMovingNote({
+        i: newI,
+        j: newJ,
+        origI: newI,
+        origJ: newJ,
+        startX: movingNote.startX + (e.clientX - movingNote.startX),
+        startY: movingNote.startY + (e.clientY - movingNote.startY),
+      });
+      setNotes(notes => {
+        return notes.map(n => {
+          if (n.i === movingNote.i && n.j === movingNote.j) {
+            return { ...n, i: newI, j: newJ };
+          } else {
+            return n;
+          }
+        });
+      });
+    }
+  };
+
+  const handleMoveNoteMouseUp = () => {
+    if (movingNote) setMovingNote(null);
+  };
+
   const modifyNote = (i: number, j: number, update: (note: QuarterlyNoteData) => QuarterlyNoteData) => {
     setNotes(notes => notes.map(n => n.i == i && n.j == j ? update(n) : n));
   };
@@ -112,8 +218,16 @@ export default function QuarterlyNotes(
     <div
       className="quarterly-note-content"
       onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
+      onMouseUp={() => {
+        handleCreatingMouseUp();
+        handleResizeMouseUp();
+        handleMoveNoteMouseUp();
+      }}
+      onMouseMove={(e) => {
+        handleCreatingMouseMove(e);
+        handleResizeMouseMove(e);
+        handleMoveNoteMouseMove(e);
+      }}
     >
       {Array.from({length: gridY}, (_, i) => (
         <div key={i} className="quarterly-note-content-row flex">
@@ -133,7 +247,8 @@ export default function QuarterlyNotes(
                   removeNote={() => {}}
                   changeContent={changeContent}
                   changeEventColor={() => {}}
-                  onResizeStart={() => {}}
+                  onResizeStart={handleOnResizeStart}
+                  onMoveStart={handleOnMoveNoteStart}
                 />
               );
             } else {
@@ -152,7 +267,8 @@ export default function QuarterlyNotes(
                     removeNote={handleRemoveNote}
                     changeContent={changeContent}
                     changeEventColor={() => {}}
-                    onResizeStart={() => {}}
+                    onResizeStart={handleOnResizeStart}
+                    onMoveStart={handleOnMoveNoteStart}
                   />
                 );
               }

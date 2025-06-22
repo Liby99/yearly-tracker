@@ -563,3 +563,39 @@ input:focus, textarea:focus {
 .day-event textarea::-webkit-scrollbar {
   display: none;
 }
+
+.note-move-handle {
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--event-default-border-dark);
+  background-color: var(--event-default-hover);
+  cursor: move;
+  opacity: 0;
+}
+
+.day-event:hover .note-move-handle {
+  opacity: 1;
+}
+
+.note-resize-handle {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 10px;
+  height: 10px;
+  cursor: nwse-resize;
+  border-radius: 0 0 7px 0;
+  border-right: 1px solid var(--event-default-border-dark);
+  border-bottom: 1px solid var(--event-default-border-dark);
+  border-left: none;
+  border-top: none;
+  opacity: 0;
+}
+
+.day-event:hover .note-resize-handle {
+  opacity: 1;
+}
