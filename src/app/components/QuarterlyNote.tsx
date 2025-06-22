@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react"
 
-const COLORS = ["default", "blue", "purple", "green", "yellow", "red"];
+import ColorPicker from "./ColorPicker";
 
 export default function Event(
   {
@@ -63,19 +63,6 @@ export default function Event(
     window.addEventListener("mousedown", handleClick);
     return () => window.removeEventListener("mousedown", handleClick);
   }, [menuOpen]);
-
-  const colorPickers = COLORS.map(c => {
-    const active = color === c || (!color && c === "default");
-    return (
-      <span
-        key={c}
-        className={`sticker-menu-color-picker ${c}${active ? " active" : ""}`}
-        onClick={() => changeColor(i, j, c)}
-        onMouseEnter={() => setHoverColor(c)}
-        onMouseLeave={() => setHoverColor(null)}
-      />
-    );
-  });
 
   const isOperating = isResizing || isMoving;
 
@@ -140,7 +127,11 @@ export default function Event(
           }}
         >
           <div className="flex sticker-menu" onMouseDown={e => e.stopPropagation()}>
-            {colorPickers}
+            <ColorPicker
+              color={color}
+              onSelectColor={(c) => changeColor(i, j, c)}
+              onHoverColor={(c) => setHoverColor(c)}
+            />
             <span className="sticker-menu-div"></span>
             <span
               className="sticker-menu-delete-button"

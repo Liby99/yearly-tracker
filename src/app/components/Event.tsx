@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from "react"
 
 import EventData from "../utils/EventData";
-
-const COLORS = ["default", "blue", "purple", "green", "yellow", "red"];
+import ColorPicker from "./ColorPicker";
 
 export default function Event(
   {
@@ -63,19 +62,6 @@ export default function Event(
     window.addEventListener("mousedown", handleClick);
     return () => window.removeEventListener("mousedown", handleClick);
   }, [menuOpen]);
-
-  const colorPickers = COLORS.map(c => {
-    const active = color === c || (!color && c === "default");
-    return (
-      <span
-        key={c}
-        className={`sticker-menu-color-picker ${c}${active ? " active" : ""}`}
-        onClick={() => changeEventColor(start, c)}
-        onMouseEnter={() => setHoverColor(c)}
-        onMouseLeave={() => setHoverColor(null)}
-      />
-    );
-  });
 
   // A mirror reference element that is used to estimate how long is the input
   const mirrorRef = useRef<HTMLSpanElement>(null);
@@ -152,7 +138,11 @@ export default function Event(
       {menuOpen && (
         <div className="sticker-menu-holder" style={{ marginLeft: `${marginLeft}px`, width: menuWidth }}>
           <div className="flex sticker-menu" onMouseDown={e => e.stopPropagation()}>
-            {colorPickers}
+            <ColorPicker
+              color={color}
+              onSelectColor={(c) => changeEventColor(start, c)}
+              onHoverColor={(c) => setHoverColor(c)}
+            />
             <span className="sticker-menu-div"></span>
             <span
               className="sticker-menu-delete-button"
