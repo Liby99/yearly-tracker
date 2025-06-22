@@ -95,7 +95,7 @@ export default function Event(
 
   // If we have hovered on the input, we immediately overwrite the input width to be the mirror-ref's width
   if (isHoveringInput && mirrorRef.current) {
-    inputWidth = mirrorRef.current.offsetWidth;
+    inputWidth = Math.max(mirrorRef.current.offsetWidth, eventWidth);
   }
 
   return (

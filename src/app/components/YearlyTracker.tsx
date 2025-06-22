@@ -62,7 +62,7 @@ export default function YearlyTracker() {
   return (
     <main>
       <nav className="flex">
-        <span className="page-title">YEARLY TRACKER</span>
+        <span className="page-title">GRIDCAL YEARLY TRACKER</span>
         <span style={{ position: "relative", display: "inline-block" }}>
           {year}
           <select
