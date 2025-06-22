@@ -32,33 +32,25 @@ export default function StickerMenu(
     return () => window.removeEventListener("mousedown", handleClick);
   }, [menuOpen]);
 
+  const menuHolderStyle = {
+    marginLeft: `${marginLeft}px`,
+    width: menuWidth,
+  };
+
+  const onRemoveClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onRemove();
+  };
+
   return (
     <>
       {menuOpen && (
-        <div
-          className="sticker-menu-holder"
-          style={{
-            top: -36,
-            marginTop: 0,
-            marginLeft: `${marginLeft}px`,
-            width: menuWidth,
-          }}
-        >
+        <div className="sticker-menu-holder" style={menuHolderStyle}>
           <div className="flex sticker-menu" onMouseDown={e => e.stopPropagation()}>
-            <ColorPicker
-              color={color}
-              onSelectColor={onSelectColor}
-              onHoverColor={onHoverColor}
-            />
+            <ColorPicker color={color} onSelectColor={onSelectColor} onHoverColor={onHoverColor} />
             <span className="sticker-menu-div"></span>
-            <span
-              className="sticker-menu-delete-button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onRemove();
-              }}
-            >
+            <span className="sticker-menu-delete-button" onClick={onRemoveClick}>
               <i className="fa fa-trash"></i>
             </span>
           </div>

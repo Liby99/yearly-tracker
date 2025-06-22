@@ -534,13 +534,13 @@ input:focus, textarea:focus {
   height: 18px;
   border-radius: 50%;
   background-color: var(--accent-bg);
-  opacity: 0.6;
+  opacity: 0.3;
 }
 
 .sticker-menu-color-picker:hover, .sticker-menu-color-picker.active {
   border-style: dashed;
   border-width: 1px;
-  opacity: 1;
+  opacity: 0.7;
 }
 
 .sticker-menu-color-picker.default {
@@ -549,28 +549,28 @@ input:focus, textarea:focus {
 }
 
 .sticker-menu-color-picker.blue {
-  background-color: var(--event-blue);
-  border-color: var(--event-blue-border);
+  background-color: var(--event-blue-border);
+  border-color: var(--event-blue-border-dark);
 }
 
 .sticker-menu-color-picker.purple {
-  background-color: var(--event-purple);
-  border-color: var(--event-purple-border);
+  background-color: var(--event-purple-border);
+  border-color: var(--event-purple-border-dark);
 }
 
 .sticker-menu-color-picker.yellow {
-  background-color: var(--event-yellow);
-  border-color: var(--event-yellow-border);
+  background-color: var(--event-yellow-border);
+  border-color: var(--event-yellow-border-dark);
 }
 
 .sticker-menu-color-picker.red {
-  background-color: var(--event-red);
-  border-color: var(--event-red-border);
+  background-color: var(--event-red-border);
+  border-color: var(--event-red-border-dark);
 }
 
 .sticker-menu-color-picker.green {
-  background-color: var(--event-green);
-  border-color: var(--event-green-border);
+  background-color: var(--event-green-border);
+  border-color: var(--event-green-border-dark);
 }
 
 .sticker-menu-color-picker.active {

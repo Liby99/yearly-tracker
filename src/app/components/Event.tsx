@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react"
 
 import EventData from "../utils/EventData";
-import ColorPicker from "./ColorPicker";
+import StickerMenu from "./StickerMenu";
 
 export default function Event(
   {
@@ -41,9 +41,7 @@ export default function Event(
   const eventRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const menuWidth = 180;
   const eventWidth = duration * 30 - 5;
-  const marginLeft = (eventWidth - menuWidth) / 2;
 
   const [hoverColor, setHoverColor] = useState<string | null>(null);
   const displayColor = hoverColor ?? color ?? "default";
@@ -54,14 +52,6 @@ export default function Event(
       setMenuOpen(true);
     }
   };
-
-  // Close menu on click outside
-  useEffect(() => {
-    if (!menuOpen) return;
-    const handleClick = () => setMenuOpen(false);
-    window.addEventListener("mousedown", handleClick);
-    return () => window.removeEventListener("mousedown", handleClick);
-  }, [menuOpen]);
 
   // A mirror reference element that is used to estimate how long is the input
   const mirrorRef = useRef<HTMLSpanElement>(null);
@@ -135,31 +125,15 @@ export default function Event(
           onResizeStart("right", end, start);
         }}
       />
-      {menuOpen && (
-        <div className="sticker-menu-holder" style={{ marginLeft: `${marginLeft}px`, width: menuWidth }}>
-          <div className="flex sticker-menu" onMouseDown={e => e.stopPropagation()}>
-            <ColorPicker
-              color={color}
-              onSelectColor={(c) => changeEventColor(start, c)}
-              onHoverColor={(c) => setHoverColor(c)}
-            />
-            <span className="sticker-menu-div"></span>
-            <span
-              className="sticker-menu-delete-button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                removeEvent(start);
-              }}
-            >
-              <i className="fa fa-trash"></i>
-            </span>
-          </div>
-          <div className="sticker-menu-caret-holder">
-            <i className="fa fa-caret-down"></i>
-          </div>
-        </div>
-      )}
+      <StickerMenu
+        menuOpen={menuOpen}
+        parentWidth={eventWidth}
+        color={color}
+        setMenuOpen={setMenuOpen}
+        onSelectColor={(c) => changeEventColor(start, c)}
+        onHoverColor={(c) => setHoverColor(c)}
+        onRemove={() => removeEvent(start)}
+      />
       <span ref={mirrorRef} className="mirror-ref">{name}</span>
     </div>
   )
