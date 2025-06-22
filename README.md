@@ -24,6 +24,9 @@ Type directly inside an event box to name it!
 
 ![1-topic-events](docs/1-topic-events.gif)
 
+When you hover over the calendar grid, you’ll see the weekday labels (like “MON”, “TUE”) to help you stay oriented.
+We also highlight “TODAY” so you always know where you are in the year.
+
 ### 🎨 Edit, Delete, and Add Color
 
 Right-click on an event to reveal a quick menu.
