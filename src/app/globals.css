@@ -554,4 +554,12 @@ input:focus, textarea:focus {
   padding: 5px;
   resize: none;
   font-size: 14px;
+
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+/* Chrome, Safari, Opera */
+.day-event textarea::-webkit-scrollbar {
+  display: none;
 }

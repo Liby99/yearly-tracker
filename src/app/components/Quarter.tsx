@@ -33,6 +33,7 @@ export default function Quarter(
         <Month year={year} month={(quarter - 1) * 3 + 2} />
         <Month year={year} month={(quarter - 1) * 3 + 3} />
       </div>
+
     </section>
   );
 }
