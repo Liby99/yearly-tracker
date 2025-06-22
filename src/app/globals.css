@@ -269,11 +269,11 @@ input:focus, textarea:focus {
   opacity: 0;
 }
 
-.day-holder:not(.invalid):not(.no-hover):hover:not(:has(.day-event:hover)) > .day-hover {
+.day-holder:not(.invalid):not(.no-hover):hover:not(:has(.sticker:hover)) > .day-hover {
   opacity: 1;
 }
 
-.day-event {
+.sticker {
   display: block;
   background-color: var(--accent-bg);
   height: 30px;
@@ -284,114 +284,114 @@ input:focus, textarea:focus {
   z-index: 1;
 }
 
-.day-event.selecting {
+.sticker.selecting {
   z-index: -1;
 }
 
-.day-event.default {
+.sticker.default {
   background-color: var(--event-default);
   border-color: var(--event-default-border);
 }
 
-.day-event.default:hover, .day-event.default.resizing {
+.sticker.default:hover, .sticker.default.resizing {
   background-color: var(--event-default-hover);
   border-color: var(--event-default-border-dark);
 }
 
-.day-event.default .event-handle {
+.sticker.default .event-handle {
   border-color: var(--event-default-border);
 }
 
-.day-event.default .event-handle:hover, .day-event.default .event-handle.resizing {
+.sticker.default .event-handle:hover, .sticker.default .event-handle.resizing {
   border-color: var(--event-default-border-dark);
 }
 
-.day-event.blue {
+.sticker.blue {
   background-color: var(--event-blue);
   border-color: var(--event-blue-border);
 }
 
-.day-event.blue:hover, .day-event.blue.resizing {
+.sticker.blue:hover, .sticker.blue.resizing {
   background-color: var(--event-blue-hover);
 }
 
-.day-event.blue .event-handle {
+.sticker.blue .event-handle {
   border-color: var(--event-blue-border);
 }
 
-.day-event.blue .event-handle:hover, .day-event.blue .event-handle.resizing {
+.sticker.blue .event-handle:hover, .sticker.blue .event-handle.resizing {
   border-color: var(--event-blue-border-dark);
 }
 
-.day-event.purple {
+.sticker.purple {
   background-color: var(--event-purple);
   border-color: var(--event-purple-border);
 }
 
-.day-event.purple:hover, .day-event.purple.resizing {
+.sticker.purple:hover, .sticker.purple.resizing {
   background-color: var(--event-purple-hover);
 }
 
-.day-event.purple .event-handle {
+.sticker.purple .event-handle {
   border-color: var(--event-purple-border);
 }
 
-.day-event.purple .event-handle:hover, .day-event.purple .event-handle.resizing {
+.sticker.purple .event-handle:hover, .sticker.purple .event-handle.resizing {
   border-color: var(--event-purple-border-dark);
 }
 
-.day-event.green {
+.sticker.green {
   background-color: var(--event-green);
   border-color: var(--event-green-border);
 }
 
-.day-event.green:hover, .day-event.green.resizing {
+.sticker.green:hover, .sticker.green.resizing {
   background-color: var(--event-green-hover);
 }
 
-.day-event.green .event-handle {
+.sticker.green .event-handle {
   border-color: var(--event-green-border);
 }
 
-.day-event.green .event-handle:hover, .day-event.green .event-handle.resizing {
+.sticker.green .event-handle:hover, .sticker.green .event-handle.resizing {
   border-color: var(--event-green-border-dark);
 }
 
-.day-event.yellow {
+.sticker.yellow {
   background-color: var(--event-yellow);
   border-color: var(--event-yellow-border);
 }
 
-.day-event.yellow:hover, .day-event.yellow.resizing {
+.sticker.yellow:hover, .sticker.yellow.resizing {
   background-color: var(--event-yellow-hover);
 }
 
-.day-event.yellow .event-handle {
+.sticker.yellow .event-handle {
   border-color: var(--event-yellow-border);
 }
 
-.day-event.yellow .event-handle:hover, .day-event.yellow .event-handle.resizing {
+.sticker.yellow .event-handle:hover, .sticker.yellow .event-handle.resizing {
   border-color: var(--event-yellow-border-dark);
 }
 
-.day-event.red {
+.sticker.red {
   background-color: var(--event-red);
   border-color: var(--event-red-border);
 }
 
-.day-event.red:hover, .day-event.red.resizing {
+.sticker.red:hover, .sticker.red.resizing {
   background-color: var(--event-red-hover);
 }
 
-.day-event.red .event-handle {
+.sticker.red .event-handle {
   border-color: var(--event-red-border);
 }
 
-.day-event.red .event-handle:hover, .day-event.red .event-handle.resizing {
+.sticker.red .event-handle:hover, .sticker.red .event-handle.resizing {
   border-color: var(--event-red-border-dark);
 }
 
-.day-event input {
+.sticker input {
   position: absolute;
   top: 0;
   left: 0;
@@ -404,25 +404,26 @@ input:focus, textarea:focus {
   z-index: 3;
 }
 
-.day-event:hover {
+.sticker:hover {
   z-index: 8;
 }
 
-.day-event:hover input {
+.sticker:hover input {
   z-index: 10;
 }
 
-.day-event .event-input-bg {
+.sticker .event-input-bg {
   position: absolute;
   top: -3px;
   left: 0;
   height: 32px;
   background-color: var(--mirror-ref-bg);
   box-shadow: 5px 0px 10px -5px var(--accent-grey);
-  opacity: 0;
+  display: none;
 }
 
-.day-event:hover .event-input-bg {
+.sticker:hover .event-input-bg {
+  display: block;
   z-index: 6;
   width: 300px;
   opacity: 1;
@@ -439,16 +440,16 @@ input:focus, textarea:focus {
   font-family: 'Comic Sans MS', 'Comic Sans', 'Bradley Hand', 'Segoe Script', 'Caveat', 'Indie Flower', cursive;
 }
 
-.day-event input:placeholder-shown {
+.sticker input:placeholder-shown {
   min-width: 0;
 }
 
-.day-event input::placeholder, .day-event textarea::placeholder {
+.sticker input::placeholder, .sticker textarea::placeholder {
   color: rgba(0, 0, 0, 0);
   opacity: 0;
 }
 
-.day-event:hover .event-handle {
+.sticker:hover .event-handle {
   display: block;
 }
 
@@ -610,7 +611,7 @@ input:focus, textarea:focus {
   color: white;
 }
 
-.day-event textarea {
+.sticker textarea {
   position: absolute;
   top: 0;
   left: 0;
@@ -622,7 +623,7 @@ input:focus, textarea:focus {
   -ms-overflow-style: none;  /* IE and Edge */
 }
 
-.day-event.h1 textarea {
+.sticker.h1 textarea {
   padding: 0;
   font-size: 14px;
   line-height: 14px;
@@ -631,7 +632,7 @@ input:focus, textarea:focus {
 }
 
 /* Chrome, Safari, Opera */
-.day-event textarea::-webkit-scrollbar {
+.sticker textarea::-webkit-scrollbar {
   display: none;
 }
 
@@ -648,7 +649,7 @@ input:focus, textarea:focus {
   opacity: 0;
 }
 
-.day-event:hover .note-move-handle {
+.sticker:hover .note-move-handle {
   opacity: 1;
 }
 
@@ -667,6 +668,6 @@ input:focus, textarea:focus {
   opacity: 0;
 }
 
-.day-event:hover .note-resize-handle {
+.sticker:hover .note-resize-handle {
   opacity: 1;
 }

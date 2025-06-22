@@ -77,34 +77,31 @@ export default function Event(
     );
   });
 
+  // A mirror reference element that is used to estimate how long is the input
   const mirrorRef = useRef<HTMLSpanElement>(null);
   const [isHoveringInput, setIsHoveringInput] = useState(false);
 
-  // Compute input style based on mirror ref
-  let inputWidth = null;
   // Check if there is an immediate next event; if so, set a maximum width so that there is no overlap
+  let inputWidth = eventWidth + 100;
   const nextEvent = events.filter(e => e.start > end).sort((a, b) => a.start - b.start)[0];
   if (nextEvent) {
     const gapDays = nextEvent.start - end - 1;
     const maxWidth = eventWidth + gapDays * 30;
     inputWidth = maxWidth;
-  } else {
-    inputWidth = mirrorRef.current?.offsetWidth || (eventWidth + 100);
-  }
-
-  if (isHoveringInput && mirrorRef.current) {
+  } else if (mirrorRef.current) {
+    // If no immediate next event, can set the width to be whatever it needs to be (mirror-ref)
     inputWidth = mirrorRef.current.offsetWidth;
   }
 
-  let inputStyle: React.CSSProperties = {};
-  if (inputWidth != null) {
-    inputStyle.width = `${inputWidth}px`;
+  // If we have hovered on the input, we immediately overwrite the input width to be the mirror-ref's width
+  if (isHoveringInput && mirrorRef.current) {
+    inputWidth = mirrorRef.current.offsetWidth;
   }
 
   return (
     <div
       ref={eventRef}
-      className={`day-event ${displayColor}${isSelecting ? " selecting" : ""}${isResizing ? " resizing" : ""}`}
+      className={`sticker ${displayColor}${isSelecting ? " selecting" : ""}${isResizing ? " resizing" : ""}`}
       style={{width: `${eventWidth}px`}}
       onClick={(e) => {
         e.stopPropagation();
@@ -125,7 +122,7 @@ export default function Event(
         ref={inputRef}
         placeholder="event"
         value={name}
-        style={inputStyle}
+        style={{width: `${inputWidth}px`}}
         onChange={e => changeEventName(start, e.target.value)}
         onMouseDown={e => {
           e.stopPropagation();
