@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"
+import React, { useEffect } from "react"
 
 import ColorPicker from "./ColorPicker";
 
@@ -30,6 +30,7 @@ export default function StickerMenu(
     const handleClick = () => setMenuOpen(false);
     window.addEventListener("mousedown", handleClick);
     return () => window.removeEventListener("mousedown", handleClick);
+    // eslint-disable-next-line
   }, [menuOpen]);
 
   const menuHolderStyle = {
