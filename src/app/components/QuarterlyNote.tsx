@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react"
 
-import ColorPicker from "./ColorPicker";
+import StickerMenu from "./StickerMenu";
 
 export default function Event(
   {
@@ -46,23 +46,12 @@ export default function Event(
   const noteWidth = w * 20 - 5;
   const noteHeight = h * 21 - 5;
 
-  const menuWidth = 180;
-  const marginLeft = (noteWidth - menuWidth) / 2;
-
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
     if (eventRef.current) {
       setMenuOpen(true);
     }
   };
-
-  // Close menu on click outside
-  useEffect(() => {
-    if (!menuOpen) return;
-    const handleClick = () => setMenuOpen(false);
-    window.addEventListener("mousedown", handleClick);
-    return () => window.removeEventListener("mousedown", handleClick);
-  }, [menuOpen]);
 
   const isOperating = isResizing || isMoving;
 
@@ -116,39 +105,15 @@ export default function Event(
         }}
       />
 
-      {menuOpen && (
-        <div
-          className="sticker-menu-holder"
-          style={{
-            top: -36,
-            marginTop: 0,
-            marginLeft: `${marginLeft}px`,
-            width: menuWidth,
-          }}
-        >
-          <div className="flex sticker-menu" onMouseDown={e => e.stopPropagation()}>
-            <ColorPicker
-              color={color}
-              onSelectColor={(c) => changeColor(i, j, c)}
-              onHoverColor={(c) => setHoverColor(c)}
-            />
-            <span className="sticker-menu-div"></span>
-            <span
-              className="sticker-menu-delete-button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                removeNote(i, j);
-              }}
-            >
-              <i className="fa fa-trash"></i>
-            </span>
-          </div>
-          <div className="sticker-menu-caret-holder">
-            <i className="fa fa-caret-down"></i>
-          </div>
-        </div>
-      )}
+      <StickerMenu
+        menuOpen={menuOpen}
+        parentWidth={noteWidth}
+        color={color}
+        setMenuOpen={setMenuOpen}
+        onSelectColor={(c) => changeColor(i, j, c)}
+        onHoverColor={(c) => setHoverColor(c)}
+        onRemove={() => removeNote(i, j)}
+      />
     </div>
   );
 }
