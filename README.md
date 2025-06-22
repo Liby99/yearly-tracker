@@ -12,39 +12,57 @@ Implementation wise, it is a simplistic web-app built with React and [Next.js](h
 
 ## How to use
 
-Type in the month-header region to create a topic within a month.
-Drag in the Calendar grid to create new events; type inside each event to give them some names.
+### 🗓 Create Topics and Events
+
+Start by typing in the month header to create a topic—think of it like a lane for your calendar.
+Topics could be general themes like work, study, or life—just 4 per month to help you focus on what truly matters.
+
+Then, simply click and drag on the calendar grid to create events.
+Type directly inside an event box to name it!
+
+> ✨ Note: Each topic can only have one event per day—this is by design to help you stay focused and intentional.
 
 ![1-topic-events](docs/1-topic-events.gif)
 
-Right click on an event will reveal a small menu above the event.
-Click on the `trash` button to remove the event.
-Click on the color-pickers to give the event some color!
-As a shortcut, you can also press `backspace` or `delete` key after the text being emptied to remove an event.
+### 🎨 Edit, Delete, and Add Color
+
+Right-click on an event to reveal a quick menu.
+Click the 🗑 trash button to remove it, or just press backspace/delete after clearing the text to quickly remove it.
+Want to add some flair? Use the color pickers to color-code your events—maybe by priority, mood, or category. Your system, your rules!
 
 ![2-delete-change-color](docs/2-delete-change-color.gif)
 
-There are handles on the two sides of each event.
-Drag-and-drop to adjust the start- and end-date of each event.
-You can also rearrange the monthly topics by drag-and-dropping the handles on the right hand side of each topic name!
+### 📆 Adjust and Rearrange
+
+Each event has small handles on the sides.
+Drag them to stretch or shrink the event’s duration.
+You can also reorder your monthly topics by dragging the handles next to the topic name. Easy and satisfying.
 
 ![3-drag-rearrange](docs/3-drag-rearrange.gif)
 
-For each quarter, there is a small space for you to add notes.
-Notes are organized in a grid manner.
-You can add text within each piece of note, you can also change the color, move, or resize each note, just as you can with the calendar events.
-Be creative with the notes and have some fun!
+### 🧠 Add Notes by Quarter
+
+Each quarter has a little notes section below.
+Notes work a lot like events: you can type in them, color them, move them, and resize them.
+Some ideas: use emojis, mark big deadlines, or jot down quick thoughts.
+Tiny 1x1 notes are great for little visual markers too!
 
 ![4-adding-notes](docs/4-adding-notes.gif)
 
-There are buttons on the top-right of our GridCal yearlly tracker.
-Press `save` and a `.json` file containing your entire calendar will be downloaded to your computer.
-Press `erase` to erase everything within the year view.
-As shown in the gif, we `upload` the same json file we just downloaded, and all our calendar entries are now back!
+### 💾 Save, Load, and Start Fresh
+
+In the top-right corner, you’ll find buttons to save and erase your calendar.
+
+- Save downloads a .json file with all your entries
+- Erase wipes the slate clean
+- Upload brings everything back from a saved file—just like magic ✨
 
 ![5-save-erase-upload](docs/5-save-erase-upload.gif)
 
-You can navigate through different years by clicking on the year (e.g., `2025`) in the nav bar and select another year.
+### 📅 Jump Between Years
+
+Click the year (e.g., 2025) in the nav bar to switch to another year.
+Saved calendars work across any year—so you can plan ahead (or backtrack) anytime.
 
 ![6-change-year](docs/6-change-year.gif)
 
