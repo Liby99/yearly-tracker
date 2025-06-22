@@ -78,6 +78,7 @@ export default function Event(
   return (
     <div
       ref={eventRef}
+      draggable={true}
       className={`day-event ${displayColor}${isSelecting ? " selecting" : ""}${isResizing ? " resizing" : ""}`}
       style={{width: `${eventWidth}px`}}
       onClick={() => inputRef.current?.focus()}
@@ -124,6 +125,9 @@ export default function Event(
             >
               <i className="fa fa-trash"></i>
             </span>
+          </div>
+          <div className="event-menu-caret-holder">
+            <i className="fa fa-caret-down"></i>
           </div>
         </div>
       )}

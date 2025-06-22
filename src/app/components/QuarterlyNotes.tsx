@@ -214,6 +214,10 @@ export default function QuarterlyNotes(
     modifyNote(i, j, n => ({...n, content: c}))
   };
 
+  const changeColor = (i: number, j: number, color: string | null) => {
+    modifyNote(i, j, n => ({...n, color}))
+  };
+
   return (
     <div
       className="quarterly-note-content"
@@ -246,7 +250,7 @@ export default function QuarterlyNotes(
                   isResizing={false}
                   removeNote={() => {}}
                   changeContent={changeContent}
-                  changeEventColor={() => {}}
+                  changeColor={changeColor}
                   onResizeStart={handleOnResizeStart}
                   onMoveStart={handleOnMoveNoteStart}
                 />
@@ -266,7 +270,7 @@ export default function QuarterlyNotes(
                     isResizing={false}
                     removeNote={handleRemoveNote}
                     changeContent={changeContent}
-                    changeEventColor={() => {}}
+                    changeColor={changeColor}
                     onResizeStart={handleOnResizeStart}
                     onMoveStart={handleOnMoveNoteStart}
                   />

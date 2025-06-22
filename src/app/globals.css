@@ -458,7 +458,7 @@ input:focus, textarea:focus {
 
 .event-menu-holder {
   position: absolute;
-  margin-top: -63px;
+  top: -36px;
   height: 30px;
   z-index: 1000;
 }
@@ -548,6 +548,13 @@ input:focus, textarea:focus {
 
 .event-menu-delete-button:active {
   background-color: var(--accent-bg-active);
+}
+
+.event-menu-caret-holder {
+  margin-top: -10px;
+  width: 100%;
+  text-align: center;
+  color: white;
 }
 
 .day-event textarea {

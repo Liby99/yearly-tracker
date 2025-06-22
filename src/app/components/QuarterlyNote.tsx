@@ -14,7 +14,7 @@ export default function Event(
     isResizing,
     removeNote,
     changeContent,
-    changeEventColor,
+    changeColor,
     onMoveStart,
     onResizeStart,
   }: {
@@ -28,7 +28,7 @@ export default function Event(
     isResizing: boolean,
     removeNote: (i: number, j: number) => void,
     changeContent: (i: number, j: number, content: string) => void,
-    changeEventColor: (i: number, j: number, color: string) => void,
+    changeColor: (i: number, j: number, color: string | null) => void,
     onMoveStart: (i: number, j: number, e: React.MouseEvent) => void,
     onResizeStart: (i: number, j: number, e: React.MouseEvent) => void,
   }
@@ -43,6 +43,9 @@ export default function Event(
 
   const noteWidth = w * 20 - 5;
   const noteHeight = h * 21 - 5;
+
+  const menuWidth = 180;
+  const marginLeft = (noteWidth - menuWidth) / 2;
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -65,7 +68,7 @@ export default function Event(
       <span
         key={c}
         className={`event-menu-color-picker ${c}${active ? " active" : ""}`}
-        onClick={() => changeEventColor(i, j, c)}
+        onClick={() => changeColor(i, j, c)}
         onMouseEnter={() => setHoverColor(c)}
         onMouseLeave={() => setHoverColor(null)}
       />
@@ -101,6 +104,7 @@ export default function Event(
           style={{width: `${noteWidth - 2}px`, height: `${noteHeight - 2}px`}}
           placeholder="event"
           value={content}
+          onMouseDown={() => setMenuOpen(false)}
           onChange={e => {
             changeContent(i, j, e.target.value);
           }}
@@ -120,6 +124,36 @@ export default function Event(
           onResizeStart(i, j, e);
         }}
       />
+
+      {menuOpen && (
+        <div
+          className="event-menu-holder"
+          style={{
+            top: -36,
+            marginTop: 0,
+            marginLeft: `${marginLeft}px`,
+            width: menuWidth,
+          }}
+        >
+          <div className="flex event-menu" onMouseDown={e => e.stopPropagation()}>
+            {colorPickers}
+            <span className="event-menu-div"></span>
+            <span
+              className="event-menu-delete-button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                removeNote(i, j);
+              }}
+            >
+              <i className="fa fa-trash"></i>
+            </span>
+          </div>
+          <div className="event-menu-caret-holder">
+            <i className="fa fa-caret-down"></i>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
