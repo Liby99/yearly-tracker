@@ -127,7 +127,10 @@ export default function Event(
         value={name}
         style={inputStyle}
         onChange={e => changeEventName(start, e.target.value)}
-        onMouseDown={e => e.stopPropagation()}
+        onMouseDown={e => {
+          e.stopPropagation();
+          setMenuOpen(false);
+        }}
         onKeyDown={e => {
           if ((e.key === "Backspace" || e.key === "Delete") && name === "") {
             e.preventDefault();

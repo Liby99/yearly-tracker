@@ -459,7 +459,7 @@ input:focus, textarea:focus {
   width: 7px;
   height: 24px;
   cursor: ew-resize;
-  z-index: 2;
+  z-index: 12;
 }
 
 .event-handle.left {
