@@ -34,30 +34,8 @@ export default function YearlyTracker() {
     setConfigurationState(getConfiguration());
   }, []);
 
-  // Handle file upload
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      let json = { years: {} };
-
-      // Load
-      try {
-        json = JSON.parse(event.target?.result as string);
-      } catch (err) {
-        alert(`Error parsing input file "${file}". Please check console for error information.`);
-        console.error(err);
-        return;
-      }
-
-      localStorageSetCalendarData(json);
-      window.location.reload(); // Reload to reflect changes
-    };
-
-    reader.readAsText(file);
-    e.target.value = "";
+  const setShowToday = (showToday: boolean) => {
+    setConfigurationState({ ...configuration, showToday });
   };
 
   return (
@@ -86,26 +64,17 @@ export default function YearlyTracker() {
         </span>
         <span style={{ display: "inline-block", flex: 1 }}></span>
         <span style={{ fontSize: "12px" }} className="screen-only"> 
-          <button
-            className="save-upload-button"
-            onClick={() => setConfigurationState({ ...configuration, showToday: !configuration.showToday })}
-          >
+          <button className="save-upload-button" onClick={() => setShowToday(!configuration.showToday)}>
             <i className="fa fa-calendar" style={{marginRight: 5}}></i>
             {configuration.showToday ? "Hide Today" : "Show Today"}
           </button>
           <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
-          <button
-            className="save-upload-button"
-            onClick={() => window.print()}
-          >
+          <button className="save-upload-button" onClick={() => window.print()}>
             <i className="fa fa-print" style={{marginRight: 5}}></i>
             Print
           </button>
           <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
-          <button
-            className="save-upload-button"
-            onClick={() => setShowSettings(true)}
-          >
+          <button className="save-upload-button" onClick={() => setShowSettings(true)}>
             <i className="fa fa-cog" style={{marginRight: 5}}></i>
             Settings
           </button>
