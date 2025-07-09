@@ -96,7 +96,7 @@ export default function YearlyTracker() {
           </select>
         </span>
         <span style={{ display: "inline-block", flex: 1 }}></span>
-        <span style={{ fontSize: "12px" }}>
+        <span style={{ fontSize: "12px" }} className="screen-only">
           <button
             className="save-upload-button"
             onClick={() => setShowToday(!configuration.showToday)}
@@ -140,7 +140,7 @@ export default function YearlyTracker() {
         </span>
       </nav>
       <Year year={year} showToday={configuration.showToday} />
-      <footer>
+      <footer className="screen-only">
         &copy; 2025 Liby99, all rights reserved.
       </footer>
     </main>

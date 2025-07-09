@@ -73,6 +73,28 @@ footer {
   line-height: 25px;
 }
 
+.print-only {
+  display: none;
+}
+
+@media print {
+  .print-only {
+    display: block;
+  }
+
+  .screen-only {
+    display: none;
+  }
+
+  .new-page {
+    page-break-before: always;
+  }
+
+  @page {
+    size: landscape;
+  }
+}
+
 .page-title {
   font-size: bold;
   letter-spacing: 3px;
@@ -99,7 +121,13 @@ footer {
   font-size: 13px;
 }
 
-.quarter-holder + .quarter-holder {
+@media print {
+  .spring-summer {
+    margin-top: 70px !important;
+  }
+}
+
+.quarter-holder {
   margin-top: 15px;
 }
 

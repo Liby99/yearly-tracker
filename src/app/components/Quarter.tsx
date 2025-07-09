@@ -14,8 +14,10 @@ export default function Quarter(
     showToday: boolean,
   }
 ) {
+  const isSpringSummer = quarter === 1 || quarter === 3;
+
   return (
-    <section className="flex quarter-holder">
+    <section className={`flex quarter-holder${isSpringSummer ? " spring-summer" : " autumn-winter"}`}>
 
       <div className="quarterly-note-holder">
         <div className="period-header border-bottom">quarter {quarterHeader(quarter)}</div>

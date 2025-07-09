@@ -87,7 +87,7 @@ export default function Day(
     month === new Date().getMonth() + 1 &&
     day === new Date().getDate();
   const todayFrame = (isToday && showToday) ? (
-    <div className="today">
+    <div className="today screen-only">
       <div className="today-mark">TODAY</div>
     </div>
   ) : null;
