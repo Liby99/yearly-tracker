@@ -213,6 +213,7 @@ export default function MonthlyTopic(
             year={year}
             month={month}
             day={i}
+            topicName={topicName}
             selectedRange={selectedRange}
             events={events}
             resize={resizing}

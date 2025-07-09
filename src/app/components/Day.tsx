@@ -8,6 +8,7 @@ export default function Day(
     year,
     month,
     day,
+    topicName,
     selectedRange,
     events,
     resize,
@@ -20,6 +21,7 @@ export default function Day(
     year: number,
     month: number,
     day: number,
+    topicName: string,
     selectedRange: { start: number | null, end: number | null },
     events: Array<EventData>,
     resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
@@ -43,6 +45,7 @@ export default function Day(
           start={start}
           end={end}
           name={""}
+          topicName={topicName}
           color={null}
           duration={length}
           isSelecting={true}
@@ -52,6 +55,8 @@ export default function Day(
           changeEventName={changeEventName}
           changeEventColor={changeEventColor}
           onResizeStart={onResizeStart}
+          year={year}
+          month={month}
         />
       );
     }
@@ -66,6 +71,7 @@ export default function Day(
             start={event.start}
             end={event.end}
             name={event.name}
+            topicName={topicName}
             color={event.color}
             duration={eventDataDuration(event)}
             isSelecting={false}
@@ -75,6 +81,8 @@ export default function Day(
             changeEventName={changeEventName}
             changeEventColor={changeEventColor}
             onResizeStart={onResizeStart}
+            year={year}
+            month={month}
           />
         );
         break;

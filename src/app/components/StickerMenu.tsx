@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 import ColorPicker from "./ColorPicker";
 
@@ -7,22 +7,31 @@ export default function StickerMenu(
     menuOpen,
     parentWidth,
     color,
+    otherButtons,
     setMenuOpen,
-    onSelectColor,
+    onSelectColor,  
     onHoverColor,
     onRemove,
   }: {
     menuOpen: boolean,
     parentWidth: number,
     color: string | null,
+    otherButtons: React.ReactNode | null,
     setMenuOpen: (open: boolean) => void,
     onSelectColor: (color: string) => void,
     onHoverColor: (color: string | null) => void,
     onRemove: () => void,
   }
 ) {
-  const menuWidth = 180;
-  const marginLeft = (parentWidth - menuWidth) / 2;
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [marginLeft, setMarginLeft] = useState<number>(0);
+
+  useEffect(() => {
+    if (menuOpen && menuRef.current) {
+      const menuWidth = menuRef.current.offsetWidth;
+      setMarginLeft((parentWidth - menuWidth) / 2);
+    }
+  }, [menuOpen, parentWidth, otherButtons]); // re-run if menu content changes
 
   // Close menu on click outside
   useEffect(() => {
@@ -35,7 +44,7 @@ export default function StickerMenu(
 
   const menuHolderStyle = {
     marginLeft: `${marginLeft}px`,
-    width: menuWidth,
+    width: "fit-content",
   };
 
   const onRemoveClick = (e: React.MouseEvent) => {
@@ -48,10 +57,16 @@ export default function StickerMenu(
     <>
       {menuOpen && (
         <div className="sticker-menu-holder" style={menuHolderStyle}>
-          <div className="flex sticker-menu" onMouseDown={e => e.stopPropagation()}>
+          <div className="flex sticker-menu" ref={menuRef} onMouseDown={e => e.stopPropagation()}>
             <ColorPicker color={color} onSelectColor={onSelectColor} onHoverColor={onHoverColor} />
             <span className="sticker-menu-div"></span>
-            <span className="sticker-menu-delete-button" onClick={onRemoveClick}>
+            {otherButtons && (
+              <>
+                {otherButtons}
+                <span className="sticker-menu-div"></span>
+              </>
+            )}
+            <span className="sticker-menu-button" onClick={onRemoveClick}>
               <i className="fa fa-trash"></i>
             </span>
           </div>

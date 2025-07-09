@@ -5,9 +5,12 @@ import StickerMenu from "./StickerMenu";
 
 export default function Event(
   {
+    year,
+    month,
     start,
     end,
     name,
+    topicName,
     color,
     duration,
     isSelecting,
@@ -18,9 +21,12 @@ export default function Event(
     changeEventColor,
     onResizeStart,
   }: {
+    year: number,
+    month: number,
     start: number,
     end: number,
     name: string,
+    topicName: string,
     color: string | null,
     duration: number,
     isSelecting: boolean,
@@ -73,6 +79,21 @@ export default function Event(
   if (isHoveringInput && mirrorRef.current) {
     inputWidth = Math.max(mirrorRef.current.offsetWidth, eventWidth);
   }
+
+  const onAddToCalendarClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    generateAndDownloadICS(name, topicName, year, month, start, end);
+  };
+
+  const otherButtons = (
+    <>
+      <span className="sticker-menu-button" onClick={onAddToCalendarClick}>
+        <i className="fa fa-calendar" style={{fontSize: "13px"}}></i>
+        <i className="fa fa-plus" style={{fontSize: "10px", marginLeft: "-2px", position: "absolute", top: "4px"}}></i>
+      </span>
+    </>
+  );
 
   return (
     <div
@@ -130,6 +151,7 @@ export default function Event(
         parentWidth={eventWidth}
         color={color}
         setMenuOpen={setMenuOpen}
+        otherButtons={otherButtons}
         onSelectColor={(c) => changeEventColor(start, c)}
         onHoverColor={(c) => setHoverColor(c)}
         onRemove={() => removeEvent(start)}
@@ -137,4 +159,69 @@ export default function Event(
       <span ref={mirrorRef} className="mirror-ref">{name}</span>
     </div>
   )
+}
+
+function formatDate(year: number, month: number, day: number) : string {
+  // Format: YYYYMMDD for all-day events
+  return `${year}${month.toString().padStart(2, "0")}${day.toString().padStart(2, "0")}`;
+}
+
+function generateICS(title: string, topicName: string, start: string, end: string) : string {
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "BEGIN:VEVENT",
+    `SUMMARY:${title}`,
+    `DESCRIPTION:${topicName}`,
+    `DTSTART;VALUE=DATE:${start}`,
+    `DTEND;VALUE=DATE:${end}`,
+    "END:VEVENT",
+    "END:VCALENDAR"
+  ].join("\r\n");
+}
+
+function downloadICS(ics: string, filename: string) {
+  const blob = new Blob([ics], { type: "text/calendar" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function generateAndDownloadICS(title: string, topicName: string, year: number, month: number, start: number, end: number) {
+  const startDate = formatDate(year, month, start);
+  // For all-day events, the end date should be the day after the last day
+  const nextDay = getNextDay(year, month, end);
+  const endDate = formatDate(nextDay.year, nextDay.month, nextDay.day);
+  const ics = generateICS(title, topicName, startDate, endDate);
+  const sanitizedTitle = sanitizeFilename(title);
+  downloadICS(ics, `${sanitizedTitle}.ics`);
+}
+
+function sanitizeFilename(title: string): string {
+  return title
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
+    .replace(/\s+/g, '-') // Replace one or more spaces with a single hyphen
+    .replace(/-+/g, '-') // Replace multiple consecutive hyphens with a single hyphen
+    .replace(/^-|-$/g, '') // Remove leading and trailing hyphens
+    || 'event'; // Fallback if title becomes empty
+}
+
+function getNextDay(year: number, month: number, day: number): { year: number, month: number, day: number } {
+  // Create a Date object for the current day
+  const currentDate = new Date(year, month - 1, day); // month is 0-indexed in Date constructor
+  
+  // Add one day
+  const nextDate = new Date(currentDate);
+  nextDate.setDate(currentDate.getDate() + 1);
+  
+  return {
+    year: nextDate.getFullYear(),
+    month: nextDate.getMonth() + 1, // Convert back to 1-indexed month
+    day: nextDate.getDate()
+  };
 }
