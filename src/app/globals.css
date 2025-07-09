@@ -78,6 +78,10 @@ footer {
 }
 
 @media print {
+  :root {
+    --background: white !important;
+  }
+
   .print-only {
     display: block !important;
   }

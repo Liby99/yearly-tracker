@@ -165,7 +165,7 @@ export default function Configuration({
               </button>
               <p className="setting-description">
                 Generate a PDF version of your calendar in landscape orientation. 
-                This will create a high-quality PDF with all your events and notes.
+                Although the quality is not as good as the print method, it is more convenient.
               </p>
             </div>
           </div>
