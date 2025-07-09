@@ -7,6 +7,7 @@ import Year from "./Year";
 import Configuration from "./Configuration";
 import Help from "./Help";
 import SyncButton from "./SyncButton";
+import SignInModal from "./SignInModal";
 import type ConfigurationType from "../utils/Configuration"
 import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
 
@@ -19,6 +20,7 @@ export default function YearlyTracker() {
   const [year, setYear] = useState<number>(currentYear);
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [showHelp, setShowHelp] = useState<boolean>(false);
+  const [showSignIn, setShowSignIn] = useState<boolean>(false);
 
   // Set year from URL or current year on client only
   useEffect(() => {
@@ -43,6 +45,12 @@ export default function YearlyTracker() {
   useEffect(() => {
     setConfiguration(configuration);
   }, [configuration]);
+
+  const handleSignOut = () => {
+    if (confirm("Are you sure you want to sign out?")) {
+      signOut();
+    }
+  }
 
   return (
     <main>
@@ -86,27 +94,15 @@ export default function YearlyTracker() {
           </button>
           <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
           {session ? (
-            <>
-              <span style={{ margin: "0 10px" }}>
-                {session.user?.name || session.user?.email}
-              </span>
-              <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
-              <button className="save-upload-button" onClick={() => {
-                if (confirm("Are you sure you want to sign out?")) {
-                  signOut();
-                }
-              }}>
-                <i className="fa fa-sign-out" style={{marginRight: 5}}></i>
-                Sign Out
-              </button>
-            </>
+            <span className="save-upload-button" onClick={handleSignOut} title="Sign Out?">
+              <i className="fa fa-user" style={{marginRight: 5}}></i>
+              {session.user?.name || session.user?.email}
+            </span>
           ) : (
-            <>
-              <button className="save-upload-button" onClick={() => signIn()}>
-                <i className="fa fa-sign-in" style={{marginRight: 5}}></i>
-                Sign In
-              </button>
-            </>
+            <button className="save-upload-button" onClick={() => setShowSignIn(true)}>
+              <i className="fa fa-sign-in" style={{marginRight: 5}}></i>
+              Sign In
+            </button>
           )}
         </span>
       </nav>
@@ -134,6 +130,11 @@ export default function YearlyTracker() {
       <Help
         showHelp={showHelp}
         setShowHelp={setShowHelp}
+      />
+
+      <SignInModal
+        isOpen={showSignIn}
+        onClose={() => setShowSignIn(false)}
       />
     </main>
   );

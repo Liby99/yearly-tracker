@@ -852,6 +852,21 @@ input:focus, textarea:focus {
   border-color: var(--accent-dark);
 }
 
+.setting-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--accent-grey);
+  border-radius: 4px;
+  background-color: var(--background);
+  color: var(--accent-dark);
+  font-size: 14px;
+}
+
+.setting-input:focus {
+  outline: none;
+  border-color: var(--accent-dark);
+}
+
 .setting-item img {
   display: block;
   margin: 5px auto;
@@ -874,8 +889,11 @@ input:focus, textarea:focus {
 }
 
 .setting-section {
-  margin-top: 30px;
   padding-top: 20px;
+}
+
+.setting-section + .setting-section {
+  margin-top: 30px;
   border-top: 1px solid var(--accent-grey);
 }
 
@@ -969,4 +987,11 @@ footer a {
 
 footer a:hover {
   text-decoration: underline;
+}
+
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
