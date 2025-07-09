@@ -15,6 +15,7 @@ export default function Day(
     changeEventName,
     changeEventColor,
     onResizeStart,
+    showToday,
   }: {
     year: number,
     month: number,
@@ -26,6 +27,7 @@ export default function Day(
     changeEventName: (day: number, name: string) => void,
     changeEventColor: (day: number, color: string) => void,
     onResizeStart: (side: "left" | "right", resizingDay: number, otherDay: number) => void,
+    showToday: boolean,
   }
 ) {
   let activeEvent: React.ReactElement | null = null;
@@ -84,7 +86,7 @@ export default function Day(
     year === new Date().getFullYear() &&
     month === new Date().getMonth() + 1 &&
     day === new Date().getDate();
-  const todayFrame = isToday ? (
+  const todayFrame = (isToday && showToday) ? (
     <div className="today">
       <div className="today-mark">TODAY</div>
     </div>

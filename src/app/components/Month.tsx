@@ -3,7 +3,15 @@ import React, { useState, useEffect, useRef } from "react"
 import MonthlyTopic from "./MonthlyTopic"
 import { DEFAULT_TOPICS_IDS, localStorageMonthlyTopicOrder, localStorageSetMonthlyTopicOrder } from "../utils/MonthData"
 
-export default function Month({ year, month }: { year: number, month: number }) {
+export default function Month({ 
+  year, 
+  month, 
+  showToday,
+}: { 
+  year: number, 
+  month: number, 
+  showToday: boolean,
+}) {
   // The current ordering of the monthly topics
   const [topicOrder, setTopicOrder] = useState<Array<number>>(() => {
     if (typeof window !== "undefined" && window.localStorage) {
@@ -63,6 +71,7 @@ export default function Month({ year, month }: { year: number, month: number }) 
             onTopicDragStart={() => handleDragStart(idx)}
             onTopicDragOver={(e) => handleDragOver(idx, e)}
             onTopicDragEnd={handleDragEnd}
+            showToday={showToday}
           />
         ))}
       </div>

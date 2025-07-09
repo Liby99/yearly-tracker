@@ -6,10 +6,12 @@ import QuarterlyNotes from "./QuarterlyNotes";
 export default function Quarter(
   {
     year,
-    quarter
+    quarter,
+    showToday,
   }: {
     year: number,
-    quarter: number
+    quarter: number,
+    showToday: boolean,
   }
 ) {
   return (
@@ -29,9 +31,9 @@ export default function Quarter(
             ))}
           </div>
         </div>
-        <Month year={year} month={(quarter - 1) * 3 + 1} />
-        <Month year={year} month={(quarter - 1) * 3 + 2} />
-        <Month year={year} month={(quarter - 1) * 3 + 3} />
+        <Month year={year} month={(quarter - 1) * 3 + 1} showToday={showToday} />
+        <Month year={year} month={(quarter - 1) * 3 + 2} showToday={showToday} />
+        <Month year={year} month={(quarter - 1) * 3 + 3} showToday={showToday} />
       </div>
 
     </section>

@@ -19,6 +19,7 @@ export default function MonthlyTopic(
     onTopicDragStart,
     onTopicDragOver,
     onTopicDragEnd,
+    showToday,
   }: {
     year: number,
     month: number,
@@ -26,6 +27,7 @@ export default function MonthlyTopic(
     onTopicDragStart: () => void,
     onTopicDragOver: (e: React.DragEvent) => void,
     onTopicDragEnd: () => void,
+    showToday: boolean,
   }
 ) {
   const [isDraggingTopic, setIsDraggingTopic] = useState(false);
@@ -218,6 +220,7 @@ export default function MonthlyTopic(
             changeEventName={changeEventName}
             changeEventColor={changeEventColor}
             onResizeStart={handleResizeStart}
+            showToday={showToday}
           />
         ))}
       </div>

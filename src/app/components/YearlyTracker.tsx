@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react"
 
 import Year from "./Year";
 import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../utils/CalendarData"
+import Configuration, { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
 
 export default function YearlyTracker() {
   const currentYear = new Date().getFullYear();
@@ -20,6 +21,17 @@ export default function YearlyTracker() {
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState({}, "", newUrl);
   }, [year]);
+
+  const [configuration, setConfiguration] = useState<Configuration>(defaultConfiguration());
+
+  useEffect(() => {
+    setConfiguration(getConfiguration());
+  }, []);
+
+  const setShowToday = (showToday: boolean) => {
+    const newConfiguration = { ...configuration, showToday };
+    setConfiguration(newConfiguration);
+  };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -87,6 +99,14 @@ export default function YearlyTracker() {
         <span style={{ fontSize: "12px" }}>
           <button
             className="save-upload-button"
+            onClick={() => setShowToday(!configuration.showToday)}
+          >
+            <i className="fa fa-calendar" style={{marginRight: 5}}></i>
+            {configuration.showToday ? "Hide Today" : "Show Today"}
+          </button>
+          <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
+          <button
+            className="save-upload-button"
             onClick={() => {
               downloadCalendarData("yearly-tracker-calendar.json");
             }}
@@ -119,7 +139,7 @@ export default function YearlyTracker() {
           </button>
         </span>
       </nav>
-      <Year year={year} />
+      <Year year={year} showToday={configuration.showToday} />
       <footer>
         &copy; 2025 Liby99, all rights reserved.
       </footer>
