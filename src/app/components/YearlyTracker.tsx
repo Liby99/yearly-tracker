@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react"
 
 import Year from "./Year";
 import Configuration from "./Configuration";
-import { localStorageSetCalendarData } from "../utils/CalendarData"
 import type ConfigurationType from "../utils/Configuration"
-import { getConfiguration, defaultConfiguration } from "../utils/Configuration"
+import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
 
 /**
  * The main yearly tracker
@@ -33,6 +32,10 @@ export default function YearlyTracker() {
   useEffect(() => {
     setConfigurationState(getConfiguration());
   }, []);
+
+  useEffect(() => {
+    setConfiguration(configuration);
+  }, [configuration]);
 
   const setShowToday = (showToday: boolean) => {
     setConfigurationState({ ...configuration, showToday });

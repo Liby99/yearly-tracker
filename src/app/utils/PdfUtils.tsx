@@ -2,7 +2,15 @@
 export const loadHtml2Pdf = async () => {
   if (typeof window !== 'undefined') {
     const html2pdf = await import('html2pdf.js');
-    return html2pdf.default as any;
+    return html2pdf.default as unknown as {
+      (): {
+        set: (options: Record<string, unknown>) => {
+          from: (element: HTMLElement) => {
+            save: () => Promise<void>;
+          };
+        };
+      };
+    };
   }
   return null;
 };

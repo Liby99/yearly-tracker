@@ -99,7 +99,7 @@ export default function Configuration({
               </button>
             </div>
             <p className="setting-description">
-              Display a visual indicator for today's date on the calendar.
+              Display a visual indicator for today&apos;s date on the calendar.
             </p>
           </div>
           
@@ -150,10 +150,10 @@ export default function Configuration({
             <div className="setting-item">
               <button className="setting-button" onClick={() => window.print()}>
                 <i className="fa fa-print" style={{marginRight: 5}}></i>
-                Print & Save as PDF
+                Print &amp; Save as PDF
               </button>
               <p className="setting-description">
-                Open the browser's print dialog. Choose "Save as PDF" for the best quality and formatting.
+                Open the browser&apos;s print dialog. Choose &quot;Save as PDF&quot; for the best quality and formatting.
                 This method preserves all styling and layout perfectly.
               </p>
             </div>
