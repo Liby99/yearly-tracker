@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 
 import MonthlyTopic from "./MonthlyTopic"
 import { DEFAULT_TOPICS_IDS, localStorageMonthlyTopicOrder, localStorageSetMonthlyTopicOrder } from "../utils/MonthData"
+import { ExternalCalendar } from "../utils/Configuration";
 
 /**
  * A month, which contains topics of each month.
@@ -17,10 +18,12 @@ export default function Month({
   year, 
   month, 
   showToday,
+  externalCalendar,
 }: { 
   year: number, 
   month: number, 
   showToday: boolean,
+  externalCalendar: ExternalCalendar,
 }) {
   // The current ordering of the monthly topics
   const [topicOrder, setTopicOrder] = useState<Array<number>>(() => {
@@ -82,6 +85,7 @@ export default function Month({
             onTopicDragOver={(e) => handleDragOver(idx, e)}
             onTopicDragEnd={handleDragEnd}
             showToday={showToday}
+            externalCalendar={externalCalendar}
           />
         ))}
       </div>

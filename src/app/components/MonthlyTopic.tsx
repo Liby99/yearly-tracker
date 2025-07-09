@@ -8,6 +8,7 @@ import {
   localStorageMonthlyTopicEvents,
   localStorageSetMonthlyTopicEvents
 } from "../utils/MonthlyTopicData"
+import { ExternalCalendar } from "../utils/Configuration";
 
 const MAX_DAYS_IN_MONTH = 31;
 
@@ -36,6 +37,7 @@ export default function MonthlyTopic(
     month,
     topicId,
     showToday,
+    externalCalendar,
     onTopicDragStart,
     onTopicDragOver,
     onTopicDragEnd,
@@ -44,6 +46,7 @@ export default function MonthlyTopic(
     month: number,
     topicId: number,
     showToday: boolean,
+    externalCalendar: ExternalCalendar,
     onTopicDragStart: () => void,
     onTopicDragOver: (e: React.DragEvent) => void,
     onTopicDragEnd: () => void,
@@ -241,6 +244,7 @@ export default function MonthlyTopic(
             changeEventColor={changeEventColor}
             onResizeStart={handleResizeStart}
             showToday={showToday}
+            externalCalendar={externalCalendar}
           />
         ))}
       </div>

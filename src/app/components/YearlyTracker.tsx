@@ -148,7 +148,11 @@ export default function YearlyTracker() {
           </button>
         </span>
       </nav>
-      <Year year={year} showToday={configuration.showToday} />
+      <Year 
+        year={year}
+        showToday={configuration.showToday}
+        externalCalendar={configuration.externalCalendar}
+      />
       <footer className="screen-only">
         &copy; 2025 Liby99, all rights reserved.
       </footer>

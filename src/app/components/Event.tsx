@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react"
 
 import EventData from "../utils/EventData";
 import StickerMenu from "./StickerMenu";
+import { ExternalCalendar } from "../utils/Configuration";
 
 /**
  * A single event on a day.
@@ -43,6 +44,7 @@ export default function Event(
     isSelecting,
     resize,
     events,
+    externalCalendar,
     removeEvent,
     changeEventName,
     changeEventColor,
@@ -59,6 +61,7 @@ export default function Event(
     isSelecting: boolean,
     resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
     events: Array<EventData>,
+    externalCalendar: ExternalCalendar,
     removeEvent: (start: number) => void,
     changeEventName: (day: number, name: string) => void,
     changeEventColor: (day: number, color: string) => void,
@@ -110,7 +113,17 @@ export default function Event(
   const onAddToCalendarClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    generateAndDownloadICS(name, topicName, year, month, start, end);
+    if (externalCalendar === "ics") {
+      generateAndDownloadICS(name, topicName, year, month, start, end);
+    } else if (externalCalendar === "ics-url") { 
+      generateAndDownloadICSURL(name, topicName, year, month, start, end);
+    } else if (externalCalendar === "google") {
+      generateAndDownloadGoogleCalendar(name, topicName, year, month, start, end);
+    } else if (externalCalendar === "outlook") {
+      generateAndDownloadOutlookCalendar(name, topicName, year, month, start, end);
+    } else if (externalCalendar === "apple") {
+      generateAndDownloadAppleCalendar(name, topicName, year, month, start, end);
+    }
   };
 
   const otherButtons = (
@@ -188,11 +201,6 @@ export default function Event(
   )
 }
 
-function formatDate(year: number, month: number, day: number) : string {
-  // Format: YYYYMMDD for all-day events
-  return `${year}${month.toString().padStart(2, "0")}${day.toString().padStart(2, "0")}`;
-}
-
 function generateICS(title: string, topicName: string, start: string, end: string) : string {
   return [
     "BEGIN:VCALENDAR",
@@ -217,14 +225,50 @@ function downloadICS(ics: string, filename: string) {
   URL.revokeObjectURL(url);
 }
 
-function generateAndDownloadICS(title: string, topicName: string, year: number, month: number, start: number, end: number) {
-  const startDate = formatDate(year, month, start);
-  // For all-day events, the end date should be the day after the last day
-  const nextDay = getNextDay(year, month, end);
-  const endDate = formatDate(nextDay.year, nextDay.month, nextDay.day);
-  const ics = generateICS(title, topicName, startDate, endDate);
+// 1. Download ICS
+function generateAndDownloadICS(title: string, description: string, year: number, month: number, start: number, end: number) {
+  const { startDate, endDate } = getAllDayRange(year, month, start, end);
+  const ics = generateICS(title, description, startDate, endDate);
   const sanitizedTitle = sanitizeFilename(title);
   downloadICS(ics, `${sanitizedTitle}.ics`);
+}
+
+// 2. ICS as Data URL
+function generateAndDownloadICSURL(title: string, description: string, year: number, month: number, start: number, end: number) {
+  const { startDate, endDate } = getAllDayRange(year, month, start, end);
+  const ics = generateICS(title, description, startDate, endDate);
+  const dataUrl = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+  window.open(dataUrl, "_blank");
+}
+
+// 3. Google Calendar
+function generateAndDownloadGoogleCalendar(title: string, description: string, year: number, month: number, start: number, end: number) {
+  const { startDate, endDate } = getAllDayRange(year, month, start, end);
+  const url = new URL("https://calendar.google.com/calendar/render");
+  url.searchParams.set("action", "TEMPLATE");
+  url.searchParams.set("text", title);
+  url.searchParams.set("details", description || "");
+  url.searchParams.set("dates", `${startDate}/${endDate}`);
+  url.searchParams.set("sf", "true");
+  url.searchParams.set("output", "xml");
+  window.open(url.toString(), "_blank");
+}
+
+// 4. Outlook Calendar
+function generateAndDownloadOutlookCalendar(title: string, description: string, year: number, month: number, start: number, end: number) {
+  const { startDate, endDate } = getAllDayRange(year, month, start, end);
+  const url = new URL("https://outlook.live.com/calendar/0/deeplink/compose");
+  url.searchParams.set("subject", title);
+  url.searchParams.set("body", description || "");
+  url.searchParams.set("startdt", `${startDate}`);
+  url.searchParams.set("enddt", `${endDate}`);
+  url.searchParams.set("allday", "true");
+  window.open(url.toString(), "_blank");
+}
+
+// 5. Apple Calendar (same as ICS)
+function generateAndDownloadAppleCalendar(title: string, description: string, year: number, month: number, start: number, end: number) {
+  generateAndDownloadICSURL(title, description, year, month, start, end);
 }
 
 function sanitizeFilename(title: string): string {
@@ -251,4 +295,16 @@ function getNextDay(year: number, month: number, day: number): { year: number, m
     month: nextDate.getMonth() + 1, // Convert back to 1-indexed month
     day: nextDate.getDate()
   };
+}
+
+function formatDateForURL(year: number, month: number, day: number): string {
+  // Format: YYYYMMDD
+  return `${year}${month.toString().padStart(2, "0")}${day.toString().padStart(2, "0")}`;
+}
+
+function getAllDayRange(year: number, month: number, start: number, end: number) {
+  const startDate = formatDateForURL(year, month, start);
+  const nextDay = getNextDay(year, month, end);
+  const endDate = formatDateForURL(nextDay.year, nextDay.month, nextDay.day);
+  return { startDate, endDate };
 }

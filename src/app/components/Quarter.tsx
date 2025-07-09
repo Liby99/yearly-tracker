@@ -2,6 +2,7 @@ import React from "react"
 
 import Month from "./Month"
 import QuarterlyNotes from "./QuarterlyNotes";
+import { ExternalCalendar } from "../utils/Configuration";
 
 /**
  * A quarter, which contains a quarterly notes and three months.
@@ -19,10 +20,12 @@ export default function Quarter(
     year,
     quarter,
     showToday,
+    externalCalendar,
   }: {
     year: number,
     quarter: number,
     showToday: boolean,
+    externalCalendar: ExternalCalendar,
   }
 ) {
   const isSpringSummer = quarter === 1 || quarter === 3;
@@ -44,9 +47,9 @@ export default function Quarter(
             ))}
           </div>
         </div>
-        <Month year={year} month={(quarter - 1) * 3 + 1} showToday={showToday} />
-        <Month year={year} month={(quarter - 1) * 3 + 2} showToday={showToday} />
-        <Month year={year} month={(quarter - 1) * 3 + 3} showToday={showToday} />
+        <Month year={year} month={(quarter - 1) * 3 + 1} showToday={showToday} externalCalendar={externalCalendar} />
+        <Month year={year} month={(quarter - 1) * 3 + 2} showToday={showToday} externalCalendar={externalCalendar} />
+        <Month year={year} month={(quarter - 1) * 3 + 3} showToday={showToday} externalCalendar={externalCalendar} />
       </div>
 
     </section>

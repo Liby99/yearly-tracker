@@ -2,6 +2,7 @@ import React from "react"
 
 import Event from "./Event"
 import EventData, { eventDataContains, eventDataDuration } from "../utils/EventData"
+import { ExternalCalendar } from "../utils/Configuration";
 
 /**
  * A day, which contains a single event.
@@ -34,11 +35,12 @@ export default function Day(
     selectedRange,
     events,
     resize,
+    showToday,
+    externalCalendar,
     removeEvent,
     changeEventName,
     changeEventColor,
     onResizeStart,
-    showToday,
   }: {
     year: number,
     month: number,
@@ -47,11 +49,12 @@ export default function Day(
     selectedRange: { start: number | null, end: number | null },
     events: Array<EventData>,
     resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
+    showToday: boolean,
+    externalCalendar: ExternalCalendar,
     removeEvent: (day: number) => void,
     changeEventName: (day: number, name: string) => void,
     changeEventColor: (day: number, color: string) => void,
     onResizeStart: (side: "left" | "right", resizingDay: number, otherDay: number) => void,
-    showToday: boolean,
   }
 ) {
   let activeEvent: React.ReactElement | null = null;
@@ -64,6 +67,8 @@ export default function Day(
       const length = end - start + 1;
       activeEvent = (
         <Event
+          year={year}
+          month={month}
           start={start}
           end={end}
           name={""}
@@ -73,12 +78,11 @@ export default function Day(
           isSelecting={true}
           resize={resize}
           events={events}
+          externalCalendar={externalCalendar}
           removeEvent={removeEvent}
           changeEventName={changeEventName}
           changeEventColor={changeEventColor}
           onResizeStart={onResizeStart}
-          year={year}
-          month={month}
         />
       );
     }
@@ -90,6 +94,8 @@ export default function Day(
       if (event.start == day) {
         activeEvent = (
           <Event
+            year={year}
+            month={month}
             start={event.start}
             end={event.end}
             name={event.name}
@@ -99,12 +105,11 @@ export default function Day(
             isSelecting={false}
             resize={resize}
             events={events}
+            externalCalendar={externalCalendar}
             removeEvent={removeEvent}
             changeEventName={changeEventName}
             changeEventColor={changeEventColor}
             onResizeStart={onResizeStart}
-            year={year}
-            month={month}
           />
         );
         break;
