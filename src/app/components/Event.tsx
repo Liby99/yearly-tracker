@@ -257,11 +257,15 @@ function generateAndDownloadGoogleCalendar(title: string, description: string, y
 // 4. Outlook Calendar
 function generateAndDownloadOutlookCalendar(title: string, description: string, year: number, month: number, start: number, end: number) {
   const { startDate, endDate } = getAllDayRange(year, month, start, end);
+  // Outlook expects dates in YYYY-MM-DD format
+  const formattedStartDate = `${startDate.slice(0, 4)}-${startDate.slice(4, 6)}-${startDate.slice(6, 8)}`;
+  const formattedEndDate = `${endDate.slice(0, 4)}-${endDate.slice(4, 6)}-${endDate.slice(6, 8)}`;
+  
   const url = new URL("https://outlook.live.com/calendar/0/deeplink/compose");
   url.searchParams.set("subject", title);
   url.searchParams.set("body", description || "");
-  url.searchParams.set("startdt", `${startDate}`);
-  url.searchParams.set("enddt", `${endDate}`);
+  url.searchParams.set("startdt", formattedStartDate);
+  url.searchParams.set("enddt", formattedEndDate);
   url.searchParams.set("allday", "true");
   window.open(url.toString(), "_blank");
 }
