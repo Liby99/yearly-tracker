@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react"
 
 import Year from "./Year";
+import Configuration from "./Configuration";
 import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../utils/CalendarData"
-import Configuration, { getConfiguration, defaultConfiguration, setConfiguration as setConfigurationInLocalStorage } from "../utils/Configuration"
+import type ConfigurationType from "../utils/Configuration"
+import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
 
 /**
  * The main yearly tracker
@@ -10,6 +12,7 @@ import Configuration, { getConfiguration, defaultConfiguration, setConfiguration
 export default function YearlyTracker() {
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState<number>(currentYear);
+  const [showSettings, setShowSettings] = useState<boolean>(false);
 
   // Set year from URL or current year on client only
   useEffect(() => {
@@ -25,18 +28,15 @@ export default function YearlyTracker() {
     window.history.replaceState({}, "", newUrl);
   }, [year]);
 
-  const [configuration, setConfiguration] = useState<Configuration>(defaultConfiguration());
+  const [configuration, setConfigurationState] = useState<ConfigurationType>(defaultConfiguration());
 
   useEffect(() => {
-    setConfiguration(getConfiguration());
+    setConfigurationState(getConfiguration());
   }, []);
-
-  useEffect(() => {
-    setConfigurationInLocalStorage(configuration);
-  }, [configuration]);
 
   const setShowToday = (showToday: boolean) => {
     const newConfiguration = { ...configuration, showToday };
+    setConfigurationState(newConfiguration);
     setConfiguration(newConfiguration);
   };
 
@@ -116,35 +116,10 @@ export default function YearlyTracker() {
           <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
           <button
             className="save-upload-button"
-            onClick={() => {
-              downloadCalendarData("yearly-tracker-calendar.json");
-            }}
+            onClick={() => setShowSettings(true)}
           >
-            <i className="fa fa-save" style={{marginRight: 5}}></i>
-            Save
-          </button>
-          <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
-          <button
-            className="save-upload-button"
-            onClick={handleUploadClick}
-          >
-            <i className="fa fa-upload" style={{marginRight: 5}}></i>
-            Upload
-          </button>
-          <input
-            type="file"
-            accept=".json,application/json"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={handleFileChange}
-          />
-          <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
-          <button
-            className="save-upload-button"
-            onClick={handleErase}
-          >
-            <i className="fa fa-eraser" style={{marginRight: 5}}></i>
-            Erase
+            <i className="fa fa-cog" style={{marginRight: 5}}></i>
+            Settings
           </button>
         </span>
       </nav>
@@ -156,6 +131,14 @@ export default function YearlyTracker() {
       <footer className="screen-only">
         &copy; 2025 Liby99, all rights reserved.
       </footer>
+      
+      <Configuration
+        showSettings={showSettings}
+        setShowSettings={setShowSettings}
+        configuration={configuration}
+        setShowToday={setShowToday}
+        year={year}
+      />
     </main>
   );
 }
