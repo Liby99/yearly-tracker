@@ -1,22 +1,22 @@
 import React, { useRef } from "react";
 import type ConfigurationType from "../utils/Configuration";
-import { setConfiguration } from "../utils/Configuration";
+import type { ExternalCalendar } from "../utils/Configuration";
 import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../utils/CalendarData";
 
 interface ConfigurationProps {
-  showSettings: boolean;
-  setShowSettings: (show: boolean) => void;
-  configuration: ConfigurationType;
-  setShowToday: (showToday: boolean) => void;
   year: number;
+  showSettings: boolean;
+  configuration: ConfigurationType;
+  setShowSettings: (show: boolean) => void;
+  setConfiguration: (configuration: ConfigurationType) => void;
 }
 
 export default function Configuration({
-  showSettings,
-  setShowSettings,
-  configuration,
-  setShowToday,
   year,
+  showSettings,
+  configuration,
+  setShowSettings,
+  setConfiguration,
 }: ConfigurationProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -58,11 +58,21 @@ export default function Configuration({
     }
   };
 
+  const setShowToday = (showToday: boolean) => {
+    const newConfig = { ...configuration, showToday };
+    setConfiguration(newConfig);
+  };
+
+  const setExternalCalendar = (externalCalendar: ExternalCalendar) => {
+    const newConfig = { ...configuration, externalCalendar };
+    setConfiguration(newConfig);
+  };
+
   return (
     <div className="modal-overlay" onClick={() => setShowSettings(false)}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Settings</h2>
+          <h2 style={{ margin: 0 }}>Settings</h2>
           <button 
             className="modal-close-button"
             onClick={() => setShowSettings(false)}
@@ -72,14 +82,21 @@ export default function Configuration({
         </div>
         <div className="modal-body">
           <div className="setting-item">
-            <label>
-              <input
-                type="checkbox"
-                checked={configuration.showToday}
-                onChange={(e) => setShowToday(e.target.checked)}
-              />
-              Show Today Marker
-            </label>
+            <label>Show Today Marker</label>
+            <div className="button-group">
+              <button
+                className={`button-group-button${configuration.showToday ? ' active' : ''}`}
+                onClick={() => setShowToday(true)}
+              >
+                On
+              </button>
+              <button
+                className={`button-group-button${!configuration.showToday ? ' active' : ''}`}
+                onClick={() => setShowToday(false)}
+              >
+                Off
+              </button>
+            </div>
             <p className="setting-description">
               Display a visual indicator for today's date on the calendar.
             </p>
@@ -87,19 +104,38 @@ export default function Configuration({
           
           <div className="setting-item">
             <label>Default Calendar Export Format</label>
-            <select 
-              value={configuration.externalCalendar}
-              onChange={(e) => {
-                const newConfig = { ...configuration, externalCalendar: e.target.value as any };
-                setConfiguration(newConfig);
-              }}
-            >
-              <option value="ics">Download .ics file</option>
-              <option value="ics-url">Open .ics in new tab</option>
-              <option value="google">Google Calendar</option>
-              <option value="outlook">Outlook Calendar</option>
-              <option value="apple">Apple Calendar</option>
-            </select>
+            <div className="button-group">
+              <button
+                className={`button-group-button${configuration.externalCalendar === "ics" ? ' active' : ''}`}
+                onClick={() => setExternalCalendar("ics")}
+              >
+                <i className="fa fa-download" style={{marginRight: 5}}></i> .ics
+              </button>
+              <button
+                className={`button-group-button${configuration.externalCalendar === "ics-url" ? ' active' : ''}`}
+                onClick={() => setExternalCalendar("ics-url")}
+              >
+                <i className="fa fa-external-link" style={{marginRight: 5}}></i> .ics
+              </button>
+              <button
+                className={`button-group-button${configuration.externalCalendar === "google" ? ' active' : ''}`}
+                onClick={() => setExternalCalendar("google")}
+              >
+                <i className="fa fa-google" style={{marginRight: 5}}></i> Google
+              </button>
+              <button
+                className={`button-group-button${configuration.externalCalendar === "outlook" ? ' active' : ''}`}
+                onClick={() => setExternalCalendar("outlook")}
+              >
+                <i className="fa fa-envelope" style={{marginRight: 5}}></i> Outlook
+              </button>
+              <button
+                className={`button-group-button${configuration.externalCalendar === "apple" ? ' active' : ''}`}
+                onClick={() => setExternalCalendar("apple")}
+              >
+                <i className="fa fa-apple" style={{marginRight: 5}}></i> Apple
+              </button>
+            </div>
             <p className="setting-description">
               Choose the default calendar export method when adding events to external calendars.
             </p>

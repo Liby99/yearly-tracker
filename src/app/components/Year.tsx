@@ -3,15 +3,17 @@ import React from "react"
 import Quarter from "./Quarter"
 import { ExternalCalendar } from "../utils/Configuration"
 
+interface YearProps { 
+  year: number,
+  showToday: boolean,
+  externalCalendar: ExternalCalendar,
+}
+
 export default function Year({ 
   year,
   showToday,
   externalCalendar,
-}: { 
-  year: number,
-  showToday: boolean,
-  externalCalendar: ExternalCalendar,
-}) {
+}: YearProps) {
   return (
     <div>
       <Quarter year={year} quarter={1} showToday={showToday} externalCalendar={externalCalendar} />

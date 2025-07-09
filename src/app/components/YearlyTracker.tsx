@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 
 import Year from "./Year";
 import Configuration from "./Configuration";
-import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../utils/CalendarData"
+import { localStorageSetCalendarData } from "../utils/CalendarData"
 import type ConfigurationType from "../utils/Configuration"
-import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
+import { getConfiguration, defaultConfiguration } from "../utils/Configuration"
 
 /**
  * The main yearly tracker
@@ -34,20 +34,7 @@ export default function YearlyTracker() {
     setConfigurationState(getConfiguration());
   }, []);
 
-  const setShowToday = (showToday: boolean) => {
-    const newConfiguration = { ...configuration, showToday };
-    setConfigurationState(newConfiguration);
-    setConfiguration(newConfiguration);
-  };
-
-  // Related to file upload
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Handle upload button click
-  const handleUploadClick = () => {
-    fileInputRef.current?.click();
-  };
-
+  // Handle file upload
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -71,13 +58,6 @@ export default function YearlyTracker() {
 
     reader.readAsText(file);
     e.target.value = "";
-  };
-
-  const handleErase = () => {
-    if (confirm(`Do you want to erase all notes and events in the year of ${year}?`)) {
-      localStorageClearCalendarData();
-      window.location.reload(); // Reload to reflect changes
-    }
   };
 
   return (
@@ -105,13 +85,21 @@ export default function YearlyTracker() {
           </select>
         </span>
         <span style={{ display: "inline-block", flex: 1 }}></span>
-        <span style={{ fontSize: "12px" }} className="screen-only">
+        <span style={{ fontSize: "12px" }} className="screen-only"> 
           <button
             className="save-upload-button"
-            onClick={() => setShowToday(!configuration.showToday)}
+            onClick={() => setConfigurationState({ ...configuration, showToday: !configuration.showToday })}
           >
             <i className="fa fa-calendar" style={{marginRight: 5}}></i>
             {configuration.showToday ? "Hide Today" : "Show Today"}
+          </button>
+          <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
+          <button
+            className="save-upload-button"
+            onClick={() => window.print()}
+          >
+            <i className="fa fa-print" style={{marginRight: 5}}></i>
+            Print
           </button>
           <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
           <button
@@ -133,11 +121,11 @@ export default function YearlyTracker() {
       </footer>
       
       <Configuration
-        showSettings={showSettings}
-        setShowSettings={setShowSettings}
-        configuration={configuration}
-        setShowToday={setShowToday}
         year={year}
+        showSettings={showSettings}
+        configuration={configuration}
+        setShowSettings={setShowSettings}
+        setConfiguration={setConfigurationState}
       />
     </main>
   );
