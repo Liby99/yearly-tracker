@@ -12,32 +12,32 @@ export const QUARTERS = [1, 2, 3, 4];
 
 export const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-export function localStorageYearData(year: number) : YearData {
+export function localStorageYearData(userId: string | null, year: number) : YearData {
   return {
-    notes: Object.fromEntries(QUARTERS.map(q => [q, localStorageQuarterlyNotes(year, q)])),
-    months: MONTHS.map(month => localStorageMonthData(year, month)),
+    notes: Object.fromEntries(QUARTERS.map(q => [q, localStorageQuarterlyNotes(userId, year, q)])),
+    months: MONTHS.map(month => localStorageMonthData(userId, year, month)),
   }
 }
 
-export function localStorageSetYearData(year: number, data: YearData) {
+export function localStorageSetYearData(userId: string | null, year: number, data: YearData) {
   // Quarterly notes
   for (const quarterString in data.notes) {
     const quarter = parseInt(quarterString);
-    localStorageSetQuarterlyNotes(year, quarter, data.notes[quarterString]);
+    localStorageSetQuarterlyNotes(userId, year, quarter, data.notes[quarterString]);
   }
 
   // Months
   for (const month of MONTHS) {
-    localStorageSetMonthData(year, month, data.months[month - 1]);
+    localStorageSetMonthData(userId, year, month, data.months[month - 1]);
   }
 }
 
-export function localStorageClearYearData(year: number) {
+export function localStorageClearYearData(userId: string | null, year: number) {
   for (const quarter of QUARTERS) {
-    localStorageClearQuarterlyNotes(year, quarter);
+    localStorageClearQuarterlyNotes(userId, year, quarter);
   }
 
   for (const month of MONTHS) {
-    localStorageClearMonthData(year, month);
+    localStorageClearMonthData(userId, year, month);
   }
 }
