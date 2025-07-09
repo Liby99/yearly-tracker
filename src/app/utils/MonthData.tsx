@@ -1,4 +1,11 @@
-import MonthlyTopicData, { localStorageMonthlyTopicData, localStorageSetMonthlyTopicData, localStorageClearMonthlyTopic } from "./MonthlyTopicData";
+import MonthlyTopicData, { 
+  localStorageMonthlyTopicData, 
+  localStorageSetMonthlyTopicData, 
+  localStorageClearMonthlyTopic,
+  databaseMonthlyTopicData,
+  databaseSetMonthlyTopicData,
+  databaseClearMonthlyTopic
+} from "./MonthlyTopicData";
 
 type MonthData = {
   order: Array<number>,
@@ -42,5 +49,102 @@ export function localStorageClearMonthData(year: number, month: number) {
   localStorageSetMonthlyTopicOrder(year, month, DEFAULT_TOPICS_IDS);
   for (const topicId of DEFAULT_TOPICS_IDS) {
     localStorageClearMonthlyTopic(year, month, topicId);
+  }
+}
+
+// Database functions (async versions)
+export async function databaseMonthData(userId: string, year: number, month: number) : Promise<MonthData> {
+  return {
+    order: await databaseMonthlyTopicOrder(userId, year, month),
+    topics: await Promise.all(DEFAULT_TOPICS_IDS.map(topicId => databaseMonthlyTopicData(userId, year, month, topicId))),
+  }
+}
+
+export async function databaseMonthlyTopicOrder(userId: string, year: number, month: number) : Promise<Array<number>> {
+  try {
+    const { prisma } = await import("@/lib/prisma");
+    const calendarData = await prisma.calendarData.findUnique({
+      where: {
+        userId_year: {
+          userId,
+          year,
+        },
+      },
+    });
+    
+    if (!calendarData?.data) return DEFAULT_TOPICS_IDS;
+    
+    const data = calendarData.data as any;
+    const monthKey = `month-${month}`;
+    return data[monthKey]?.topicOrder || DEFAULT_TOPICS_IDS;
+  } catch (error) {
+    console.error("Error fetching monthly topic order from database:", error);
+    return DEFAULT_TOPICS_IDS;
+  }
+}
+
+export async function databaseSetMonthlyTopicOrder(userId: string, year: number, month: number, topicOrder: Array<number>) {
+  try {
+    const { prisma } = await import("@/lib/prisma");
+    
+    // Get existing data for the year
+    const existingData = await prisma.calendarData.findUnique({
+      where: {
+        userId_year: {
+          userId,
+          year,
+        },
+      },
+    });
+    
+    const currentData = existingData?.data as any || {};
+    const monthKey = `month-${month}`;
+    
+    // Update the specific month's topic order
+    const updatedData = {
+      ...currentData,
+      [monthKey]: {
+        ...currentData[monthKey],
+        topicOrder,
+      },
+    };
+    
+    await prisma.calendarData.upsert({
+      where: {
+        userId_year: {
+          userId,
+          year,
+        },
+      },
+      update: {
+        data: updatedData,
+        updatedAt: new Date(),
+      },
+      create: {
+        userId,
+        year,
+        data: updatedData,
+      },
+    });
+  } catch (error) {
+    console.error("Error saving monthly topic order to database:", error);
+  }
+}
+
+export async function databaseSetMonthlyTopics(userId: string, year: number, month: number, topics: Array<MonthlyTopicData>) {
+  for (let topicId = 0; topicId < topics.length; topicId++) {
+    await databaseSetMonthlyTopicData(userId, year, month, topicId, topics[topicId]);
+  }
+}
+
+export async function databaseSetMonthData(userId: string, year: number, month: number, monthData: MonthData) {
+  await databaseSetMonthlyTopicOrder(userId, year, month, monthData.order);
+  await databaseSetMonthlyTopics(userId, year, month, monthData.topics);
+}
+
+export async function databaseClearMonthData(userId: string, year: number, month: number) {
+  await databaseSetMonthlyTopicOrder(userId, year, month, DEFAULT_TOPICS_IDS);
+  for (const topicId of DEFAULT_TOPICS_IDS) {
+    await databaseClearMonthlyTopic(userId, year, month, topicId);
   }
 }

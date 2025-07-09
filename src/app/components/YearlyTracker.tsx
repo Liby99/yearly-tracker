@@ -1,8 +1,12 @@
+"use client"
+
 import React, { useState, useEffect } from "react"
+import { useSession, signIn, signOut } from "next-auth/react"
 
 import Year from "./Year";
 import Configuration from "./Configuration";
 import Help from "./Help";
+import SyncButton from "./SyncButton";
 import type ConfigurationType from "../utils/Configuration"
 import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
 
@@ -10,6 +14,7 @@ import { getConfiguration, defaultConfiguration, setConfiguration } from "../uti
  * The main yearly tracker
  */
 export default function YearlyTracker() {
+  const { data: session } = useSession();
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState<number>(currentYear);
   const [showSettings, setShowSettings] = useState<boolean>(false);
@@ -79,6 +84,35 @@ export default function YearlyTracker() {
             <i className="fa fa-question-circle" style={{marginRight: 5}}></i>
             Help
           </button>
+          <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
+          {session ? (
+            <>
+              <span style={{ margin: "0 10px" }}>
+                {session.user?.name || session.user?.email}
+              </span>
+              <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
+              <button className="save-upload-button" onClick={() => {
+                if (confirm("Are you sure you want to sign out?")) {
+                  signOut();
+                }
+              }}>
+                <i className="fa fa-sign-out" style={{marginRight: 5}}></i>
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="save-upload-button" onClick={() => signIn()}>
+                <i className="fa fa-sign-in" style={{marginRight: 5}}></i>
+                Sign In
+              </button>
+              <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
+              <a href="/auth/signup" className="save-upload-button" style={{textDecoration: 'none'}}>
+                <i className="fa fa-user-plus" style={{marginRight: 5}}></i>
+                Sign Up
+              </a>
+            </>
+          )}
         </span>
       </nav>
       <Year 

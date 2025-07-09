@@ -18,6 +18,7 @@ export function quarterlyNoteContainsCell(note: QuarterlyNoteData, i: number, j:
   );
 }
 
+// LocalStorage functions
 export function localStorageQuarterlyNotesKey(year: number, quarter: number) : string {
   return `year-${year}/quarter-${quarter}/notes`;
 }
@@ -33,4 +34,84 @@ export function localStorageSetQuarterlyNotes(year: number, quarter: number, not
 
 export function localStorageClearQuarterlyNotes(year: number, quarter: number) {
   localStorageSetQuarterlyNotes(year, quarter, [])
+}
+
+// Database functions (async versions)
+export function databaseQuarterlyNotesKey(userId: string, year: number, quarter: number) : string {
+  return `user-${userId}/year-${year}/quarter-${quarter}/notes`;
+}
+
+export async function databaseQuarterlyNotes(userId: string, year: number, quarter: number) : Promise<Array<QuarterlyNoteData>> {
+  try {
+    const { prisma } = await import("@/lib/prisma");
+    const calendarData = await prisma.calendarData.findUnique({
+      where: {
+        userId_year: {
+          userId,
+          year,
+        },
+      },
+    });
+    
+    if (!calendarData?.data) return [];
+    
+    const data = calendarData.data as any;
+    const quarterKey = `quarter-${quarter}`;
+    return data[quarterKey]?.notes || [];
+  } catch (error) {
+    console.error("Error fetching quarterly notes from database:", error);
+    return [];
+  }
+}
+
+export async function databaseSetQuarterlyNotes(userId: string, year: number, quarter: number, notes: Array<QuarterlyNoteData>) {
+  try {
+    const { prisma } = await import("@/lib/prisma");
+    
+    // Get existing data for the year
+    const existingData = await prisma.calendarData.findUnique({
+      where: {
+        userId_year: {
+          userId,
+          year,
+        },
+      },
+    });
+    
+    const currentData = existingData?.data as any || {};
+    const quarterKey = `quarter-${quarter}`;
+    
+    // Update the specific quarter's notes
+    const updatedData = {
+      ...currentData,
+      [quarterKey]: {
+        ...currentData[quarterKey],
+        notes,
+      },
+    };
+    
+    await prisma.calendarData.upsert({
+      where: {
+        userId_year: {
+          userId,
+          year,
+        },
+      },
+      update: {
+        data: updatedData,
+        updatedAt: new Date(),
+      },
+      create: {
+        userId,
+        year,
+        data: updatedData,
+      },
+    });
+  } catch (error) {
+    console.error("Error saving quarterly notes to database:", error);
+  }
+}
+
+export async function databaseClearQuarterlyNotes(userId: string, year: number, quarter: number) {
+  await databaseSetQuarterlyNotes(userId, year, quarter, []);
 }
