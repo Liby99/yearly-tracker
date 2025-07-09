@@ -2,8 +2,11 @@ import React, { useState, useRef, useEffect } from "react"
 
 import Year from "./Year";
 import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../utils/CalendarData"
-import Configuration, { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
+import Configuration, { getConfiguration, defaultConfiguration, setConfiguration as setConfigurationInLocalStorage } from "../utils/Configuration"
 
+/**
+ * The main yearly tracker
+ */
 export default function YearlyTracker() {
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState<number>(currentYear);
@@ -28,13 +31,19 @@ export default function YearlyTracker() {
     setConfiguration(getConfiguration());
   }, []);
 
+  useEffect(() => {
+    setConfigurationInLocalStorage(configuration);
+  }, [configuration]);
+
   const setShowToday = (showToday: boolean) => {
     const newConfiguration = { ...configuration, showToday };
     setConfiguration(newConfiguration);
   };
 
+  // Related to file upload
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Handle upload button click
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
