@@ -12,6 +12,13 @@ type MonthData = {
   topics: Array<MonthlyTopicData>,
 }
 
+type CalendarDataRecord = {
+  [key: string]: {
+    topicOrder?: Array<number>;
+    [key: string]: unknown;
+  };
+}
+
 export default MonthData;
 
 export const DEFAULT_TOPICS_IDS = [0, 1, 2, 3];
@@ -74,7 +81,7 @@ export async function databaseMonthlyTopicOrder(userId: string, year: number, mo
     
     if (!calendarData?.data) return DEFAULT_TOPICS_IDS;
     
-    const data = calendarData.data as any;
+    const data = calendarData.data as CalendarDataRecord;
     const monthKey = `month-${month}`;
     return data[monthKey]?.topicOrder || DEFAULT_TOPICS_IDS;
   } catch (error) {
@@ -97,7 +104,7 @@ export async function databaseSetMonthlyTopicOrder(userId: string, year: number,
       },
     });
     
-    const currentData = existingData?.data as any || {};
+    const currentData = existingData?.data as CalendarDataRecord || {};
     const monthKey = `month-${month}`;
     
     // Update the specific month's topic order

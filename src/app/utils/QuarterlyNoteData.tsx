@@ -7,6 +7,13 @@ type QuarterlyNoteData = {
   color: string | null,
 }
 
+type CalendarDataRecord = {
+  [key: string]: {
+    notes?: Array<QuarterlyNoteData>;
+    [key: string]: unknown;
+  };
+}
+
 export default QuarterlyNoteData;
 
 export function quarterlyNoteContainsCell(note: QuarterlyNoteData, i: number, j: number) : boolean {
@@ -55,7 +62,7 @@ export async function databaseQuarterlyNotes(userId: string, year: number, quart
     
     if (!calendarData?.data) return [];
     
-    const data = calendarData.data as any;
+    const data = calendarData.data as CalendarDataRecord;
     const quarterKey = `quarter-${quarter}`;
     return data[quarterKey]?.notes || [];
   } catch (error) {
@@ -78,7 +85,7 @@ export async function databaseSetQuarterlyNotes(userId: string, year: number, qu
       },
     });
     
-    const currentData = existingData?.data as any || {};
+    const currentData = existingData?.data as CalendarDataRecord || {};
     const quarterKey = `quarter-${quarter}`;
     
     // Update the specific quarter's notes

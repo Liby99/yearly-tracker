@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface HelpProps {
   showHelp: boolean;
@@ -40,7 +41,7 @@ export default function Help({
             </div>
 
             <div className="setting-item">
-              <img src="/images/help/monthly-topic.png" alt="Months and Topics" style={{ maxWidth: "170px" }} />
+              <Image src="/images/help/monthly-topic.png" alt="Months and Topics" width={170} />
               <label>Months and Topics</label>
               <p className="help-description">
                 Each year is divided into 4 quarters, and each quarter is divided into 3 months.
@@ -50,7 +51,7 @@ export default function Help({
             </div>
 
             <div className="setting-item">
-              <img src="/images/help/today.png" alt="Today Marker" style={{ maxWidth: "160px" }} />
+              <Image src="/images/help/today.png" alt="Today Marker" width={160} />
               <label>Today Marker</label>
               <p className="help-description">
                 The today marker shows a visual indicator for the current date. 
@@ -62,7 +63,7 @@ export default function Help({
           <div className="setting-section">
             <h2>📅 Creating Events</h2>
             <div className="setting-item">
-              <img src="/images/help/events.png" alt="Adding Events" style={{ maxWidth: "500px" }} />
+              <Image src="/images/help/events.png" alt="Adding Events" width={500} />
               <label>Adding Events</label>
               <p className="help-description">
                 Click and drag across multiple days in any topic row to create an event. 
@@ -79,7 +80,7 @@ export default function Help({
             </div>
 
             <div className="setting-item">
-              <img src="/images/help/event-resize.png" alt="Resizing Events" style={{ maxWidth: "70px" }} />
+              <Image src="/images/help/event-resize.png" alt="Resizing Events" width={70} />
               <label>Resizing Events</label>
               <p className="help-description">
                 Drag the left or right handles of an event to change its duration. 
@@ -88,7 +89,7 @@ export default function Help({
             </div>
 
             <div className="setting-item">
-              <img src="/images/help/event-recolor.png" alt="Event Colors" />
+              <Image src="/images/help/event-recolor.png" alt="Event Colors" width={70} />
               <label>Event Colors</label>
               <p className="help-description">
                 Right-click on an event to change its color. Available colors: Default (brown), 
@@ -97,7 +98,7 @@ export default function Help({
             </div>
 
             <div className="setting-item">
-              <img src="/images/help/external-calendar.png" alt="Adding Events to External Calendars" style={{ maxWidth: "100%" }} />
+              <Image src="/images/help/external-calendar.png" alt="Adding Events to External Calendars" width={100} />
               <label>Adding Events to External Calendars</label>
               <p className="help-description">
                 Right-click on an event and select the calendar icon to add it to your external calendar. 
@@ -132,7 +133,7 @@ export default function Help({
               You can add notes to each quarter and they will be displayed in the quarterly notes area.
             </p>
             <div className="setting-item">
-              <img src="/images/help/notes.png" alt="Quarterly Notes" />
+              <Image src="/images/help/notes.png" alt="Quarterly Notes" width={200} />
               <label>Adding Notes</label>
               <p className="help-description">
                 Click and drag in the quarterly notes area (left side) to create notes. 
@@ -142,7 +143,7 @@ export default function Help({
             </div>
 
             <div className="setting-item">
-              <img src="/images/help/note-resize.png" alt="Resizing Notes" />
+              <Image src="/images/help/note-resize.png" alt="Resizing Notes" width={200} />
               <label>Resizing Notes</label>
               <p className="help-description">
                 When you hover over a note, you will see a drag handle on the top left corner, and a resize handle on the bottom right corner.
@@ -152,7 +153,7 @@ export default function Help({
             </div>
 
             <div className="setting-item">
-              <img src="/images/help/note-recolor.png" alt="Note Colors" />
+              <Image src="/images/help/note-recolor.png" alt="Note Colors" width={200} />
               <label>Note Colors</label>
               <p className="help-description">
                 You can change the color of a note by right-clicking on it and selecting a color from the color picker.

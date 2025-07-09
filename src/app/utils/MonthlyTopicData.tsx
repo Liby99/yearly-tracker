@@ -5,6 +5,16 @@ type MonthlyTopicData = {
   events: Array<EventData>,
 }
 
+type CalendarDataRecord = {
+  [key: string]: {
+    [key: string]: {
+      name?: string;
+      events?: Array<EventData>;
+      [key: string]: unknown;
+    };
+  };
+}
+
 export default MonthlyTopicData;
 
 export function localStorageMonthlyTopicNameKey(year: number, month: number, topicId: number) : string {
@@ -81,7 +91,7 @@ export async function databaseMonthlyTopicName(userId: string, year: number, mon
     
     if (!calendarData?.data) return "";
     
-    const data = calendarData.data as any;
+    const data = calendarData.data as CalendarDataRecord;
     const monthKey = `month-${month}`;
     const topicKey = `topic-${topicId}`;
     return data[monthKey]?.[topicKey]?.name || "";
@@ -105,7 +115,7 @@ export async function databaseMonthlyTopicEvents(userId: string, year: number, m
     
     if (!calendarData?.data) return [];
     
-    const data = calendarData.data as any;
+    const data = calendarData.data as CalendarDataRecord;
     const monthKey = `month-${month}`;
     const topicKey = `topic-${topicId}`;
     return data[monthKey]?.[topicKey]?.events || [];
@@ -129,7 +139,7 @@ export async function databaseSetMonthlyTopicName(userId: string, year: number, 
       },
     });
     
-    const currentData = existingData?.data as any || {};
+    const currentData = existingData?.data as CalendarDataRecord || {};
     const monthKey = `month-${month}`;
     const topicKey = `topic-${topicId}`;
     
@@ -181,7 +191,7 @@ export async function databaseSetMonthlyTopicEvents(userId: string, year: number
       },
     });
     
-    const currentData = existingData?.data as any || {};
+    const currentData = existingData?.data as CalendarDataRecord || {};
     const monthKey = `month-${month}`;
     const topicKey = `topic-${topicId}`;
     

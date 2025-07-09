@@ -1,12 +1,11 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 
 import Year from "./Year";
 import Configuration from "./Configuration";
 import Help from "./Help";
-import SyncButton from "./SyncButton";
 import SignInModal from "./SignInModal";
 import type ConfigurationType from "../utils/Configuration"
 import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"

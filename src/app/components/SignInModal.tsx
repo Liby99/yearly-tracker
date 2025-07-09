@@ -1,7 +1,6 @@
 "use client"
 
 import { signIn, getSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 
 interface SignInModalProps {
@@ -10,7 +9,6 @@ interface SignInModalProps {
 }
 
 export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
-  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [step, setStep] = useState<"email" | "password">("email")
@@ -55,7 +53,7 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
       const data = await res.json()
       setUserExists(data.exists)
       setStep("password")
-    } catch (error) {
+    } catch {
       setError("Failed to check email. Please try again.")
     }
     
@@ -106,16 +104,12 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
           const data = await res.json()
           setError(data.error || "Registration failed")
         }
-      } catch (error) {
+      } catch {
         setError("Registration failed. Please try again.")
       }
     }
     
     setIsLoading(false)
-  }
-
-  const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/" })
   }
 
   const goBackToEmail = () => {
