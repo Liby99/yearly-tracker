@@ -106,11 +106,6 @@ export default function YearlyTracker() {
                 <i className="fa fa-sign-in" style={{marginRight: 5}}></i>
                 Sign In
               </button>
-              <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
-              <a href="/auth/signup" className="save-upload-button" style={{textDecoration: 'none'}}>
-                <i className="fa fa-user-plus" style={{marginRight: 5}}></i>
-                Sign Up
-              </a>
             </>
           )}
         </span>
