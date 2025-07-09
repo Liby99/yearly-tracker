@@ -817,7 +817,12 @@ input:focus, textarea:focus {
 }
 
 .setting-section h2 {
+  font-weight: bold;
   margin-bottom: 10px;
+}
+
+.setting-section ul {
+  list-style-type: disc;
 }
 
 .setting-item label {
@@ -845,6 +850,13 @@ input:focus, textarea:focus {
 .setting-item select:focus {
   outline: none;
   border-color: var(--accent-dark);
+}
+
+.setting-item img {
+  display: block;
+  margin: 5px auto;
+  text-align: center;
+  max-width: 240px;
 }
 
 .setting-description {

@@ -30,7 +30,7 @@ export default function Help({
           </p>
         
           <div className="setting-section">
-            <h2>1. Getting Started</h2>
+            <h2>🚀 Getting Started</h2>
             <div className="setting-item">
               <label>Year Selection</label>
               <p className="help-description">
@@ -40,6 +40,17 @@ export default function Help({
             </div>
 
             <div className="setting-item">
+              <img src="/images/help/monthly-topic.png" alt="Months and Topics" style={{ maxWidth: "170px" }} />
+              <label>Months and Topics</label>
+              <p className="help-description">
+                Each year is divided into 4 quarters, and each quarter is divided into 3 months.
+                You can create topics for each month, and then create events for each topic.
+                Topics help you organize different types of events or activities that you should focus on each month.
+              </p>
+            </div>
+
+            <div className="setting-item">
+              <img src="/images/help/today.png" alt="Today Marker" style={{ maxWidth: "160px" }} />
               <label>Today Marker</label>
               <p className="help-description">
                 The today marker shows a visual indicator for the current date. 
@@ -49,8 +60,9 @@ export default function Help({
           </div>
 
           <div className="setting-section">
-            <h2>2. Creating Events</h2>
+            <h2>📅 Creating Events</h2>
             <div className="setting-item">
+              <img src="/images/help/events.png" alt="Adding Events" style={{ maxWidth: "500px" }} />
               <label>Adding Events</label>
               <p className="help-description">
                 Click and drag across multiple days in any topic row to create an event. 
@@ -67,6 +79,7 @@ export default function Help({
             </div>
 
             <div className="setting-item">
+              <img src="/images/help/event-resize.png" alt="Resizing Events" style={{ maxWidth: "70px" }} />
               <label>Resizing Events</label>
               <p className="help-description">
                 Drag the left or right handles of an event to change its duration. 
@@ -75,16 +88,26 @@ export default function Help({
             </div>
 
             <div className="setting-item">
+              <img src="/images/help/event-recolor.png" alt="Event Colors" />
               <label>Event Colors</label>
               <p className="help-description">
                 Right-click on an event to change its color. Available colors: Default (brown), 
                 Blue, Purple, Green, Yellow, and Red.
               </p>
             </div>
+
+            <div className="setting-item">
+              <img src="/images/help/external-calendar.png" alt="Adding Events to External Calendars" style={{ maxWidth: "100%" }} />
+              <label>Adding Events to External Calendars</label>
+              <p className="help-description">
+                Right-click on an event and select the calendar icon to add it to your external calendar. 
+                You can choose your preferred method in Settings.
+              </p>
+            </div>
           </div>
 
           <div className="setting-section">
-            <h2>3. Managing Topics</h2>
+            <h2>🏷️ Managing Topics</h2>
             <div className="setting-item">
               <label>Topic Names</label>
               <p className="help-description">
@@ -103,26 +126,50 @@ export default function Help({
           </div>
 
           <div className="setting-section">
-            <h2>4. Quarterly Notes</h2>
+            <h2>📝 Quarterly Notes</h2>
+            <p className="help-description">
+              Quarterly notes are a great way to plan and reflect on high-level goals and objectives.
+              You can add notes to each quarter and they will be displayed in the quarterly notes area.
+            </p>
             <div className="setting-item">
+              <img src="/images/help/notes.png" alt="Quarterly Notes" />
               <label>Adding Notes</label>
               <p className="help-description">
                 Click and drag in the quarterly notes area (left side) to create notes. 
-                Notes can be resized and moved around the grid.
+                All the notes are saved automatically.
+                Click on the note to add text to it.
               </p>
             </div>
 
             <div className="setting-item">
-              <label>Note Features</label>
+              <img src="/images/help/note-resize.png" alt="Resizing Notes" />
+              <label>Resizing Notes</label>
               <p className="help-description">
-                Notes support text input and can be colored. Drag the corner to resize 
-                or the center to move. Right-click for color options.
+                When you hover over a note, you will see a drag handle on the top left corner, and a resize handle on the bottom right corner.
+                Drag the drag handle to move the note, and the resize handle to change the size of the note.
+                The note will be saved automatically.
+              </p>
+            </div>
+
+            <div className="setting-item">
+              <img src="/images/help/note-recolor.png" alt="Note Colors" />
+              <label>Note Colors</label>
+              <p className="help-description">
+                You can change the color of a note by right-clicking on it and selecting a color from the color picker.
+              </p>
+            </div>
+
+            <div className="setting-item">
+              <label>Deleting Notes</label>
+              <p className="help-description">
+                After right clicking on a note, you will see a delete option.
+                Or you can just remove all the text in the note before hitting delete/backspace another time.
               </p>
             </div>
           </div>
 
           <div className="setting-section">
-            <h2>5. Calendar Export</h2>
+            <h2>📤 Calendar Export</h2>
             <div className="setting-item">
               <label>Adding to External Calendars</label>
               <p className="help-description">
@@ -144,7 +191,7 @@ export default function Help({
           </div>
 
           <div className="setting-section">
-            <h2>6. Data Management</h2>
+            <h2>💾 Data Management</h2>
             <div className="setting-item">
               <label>Saving Your Data</label>
               <p className="help-description">
@@ -171,7 +218,7 @@ export default function Help({
           </div>
 
           <div className="setting-section">
-            <h2>7. Keyboard Shortcuts</h2>
+            <h2>⌨️ Keyboard Shortcuts</h2>
             <div className="setting-item">
               <p className="help-description">
                 <strong>Delete/Backspace:</strong> When an event name is empty, pressing Delete or Backspace will remove the event.<br/>
@@ -182,7 +229,7 @@ export default function Help({
           </div>
 
           <div className="setting-section">
-            <h2>8. Tips &amp; Tricks</h2>
+            <h2>💡 Tips &amp; Tricks</h2>
             <div className="setting-item">
               <ul className="help-description" style={{ marginLeft: '20px' }}>
                 <li>Use different colors to categorize your events</li>

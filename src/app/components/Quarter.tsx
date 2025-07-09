@@ -47,9 +47,24 @@ export default function Quarter(
             ))}
           </div>
         </div>
-        <Month year={year} month={(quarter - 1) * 3 + 1} showToday={showToday} externalCalendar={externalCalendar} />
-        <Month year={year} month={(quarter - 1) * 3 + 2} showToday={showToday} externalCalendar={externalCalendar} />
-        <Month year={year} month={(quarter - 1) * 3 + 3} showToday={showToday} externalCalendar={externalCalendar} />
+        <Month 
+          year={year} 
+          month={(quarter - 1) * 3 + 1} 
+          showToday={showToday} 
+          externalCalendar={externalCalendar} 
+        />
+        <Month 
+          year={year} 
+          month={(quarter - 1) * 3 + 2} 
+          showToday={showToday} 
+          externalCalendar={externalCalendar} 
+        />
+        <Month 
+          year={year} 
+          month={(quarter - 1) * 3 + 3} 
+          showToday={showToday} 
+          externalCalendar={externalCalendar} 
+        />
       </div>
 
     </section>
