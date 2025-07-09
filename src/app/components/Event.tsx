@@ -3,6 +3,33 @@ import React, { useRef, useState } from "react"
 import EventData from "../utils/EventData";
 import StickerMenu from "./StickerMenu";
 
+/**
+ * A single event on a day.
+ * 
+ * Offers the following features:
+ * - Resizing
+ * - Selecting
+ * - Adding to calendar
+ * - Changing name
+ * - Changing color
+ * - Removing
+ * 
+ * @param year - The year of the event
+ * @param month - The month of the event
+ * @param start - The start day of the event
+ * @param end - The end day of the event
+ * @param name - The name of the event
+ * @param topicName - The name of the topic of the event
+ * @param color - The color of the event
+ * @param duration - The duration of the event in days
+ * @param isSelecting - Whether the event is being selected
+ * @param resize - The resize state of the event
+ * @param events - The events on the day
+ * @param removeEvent - The function to remove the event
+ * @param changeEventName - The function to change the name of the event
+ * @param changeEventColor - The function to change the color of the event
+ * @param onResizeStart - The function to start resizing the event
+ */
 export default function Event(
   {
     year,

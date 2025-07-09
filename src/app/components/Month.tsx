@@ -3,6 +3,16 @@ import React, { useState, useEffect, useRef } from "react"
 import MonthlyTopic from "./MonthlyTopic"
 import { DEFAULT_TOPICS_IDS, localStorageMonthlyTopicOrder, localStorageSetMonthlyTopicOrder } from "../utils/MonthData"
 
+/**
+ * A month, which contains topics of each month.
+ * 
+ * Offers the following features:
+ * - Dragging and dropping topics
+ * 
+ * @param year - The year of the month
+ * @param month - The month of the year
+ * @param showToday - Whether to show the today marker on the month
+ */
 export default function Month({ 
   year, 
   month, 

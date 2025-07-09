@@ -11,23 +11,42 @@ import {
 
 const MAX_DAYS_IN_MONTH = 31;
 
+/**
+ * A monthly topic, which contains days of the month, as well as events under this topic.
+ * 
+ * Offers the following features:
+ * - Changing topic name
+ * - Adding events
+ * - Removing events
+ * - Resizing events
+ * - Changing event names
+ * - Changing event colors
+ * 
+ * @param year - The year of the topic
+ * @param month - The month of the topic
+ * @param topicId - The id of the topic
+ * @param showToday - Whether to show the today marker on the topic
+ * @param onTopicDragStart - The function to start dragging the topic
+ * @param onTopicDragOver - The function to handle dragging over the topic
+ * @param onTopicDragEnd - The function to end dragging the topic
+ */
 export default function MonthlyTopic(
   {
     year,
     month,
     topicId,
+    showToday,
     onTopicDragStart,
     onTopicDragOver,
     onTopicDragEnd,
-    showToday,
   }: {
     year: number,
     month: number,
     topicId: number,
+    showToday: boolean,
     onTopicDragStart: () => void,
     onTopicDragOver: (e: React.DragEvent) => void,
     onTopicDragEnd: () => void,
-    showToday: boolean,
   }
 ) {
   const [isDraggingTopic, setIsDraggingTopic] = useState(false);

@@ -3,6 +3,17 @@ import React from "react"
 import Month from "./Month"
 import QuarterlyNotes from "./QuarterlyNotes";
 
+/**
+ * A quarter, which contains a quarterly notes and three months.
+ * 
+ * Offers the following features:
+ * - Showing quarterly notes
+ * - Showing months
+ * 
+ * @param year - The year of the quarter
+ * @param quarter - The quarter of the year
+ * @param showToday - Whether to show the today marker on the quarter
+ */
 export default function Quarter(
   {
     year,

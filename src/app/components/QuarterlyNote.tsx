@@ -109,6 +109,7 @@ export default function Event(
         menuOpen={menuOpen}
         parentWidth={noteWidth}
         color={color}
+        otherButtons={null}
         setMenuOpen={setMenuOpen}
         onSelectColor={(c) => changeColor(i, j, c)}
         onHoverColor={(c) => setHoverColor(c)}

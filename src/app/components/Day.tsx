@@ -3,6 +3,28 @@ import React from "react"
 import Event from "./Event"
 import EventData, { eventDataContains, eventDataDuration } from "../utils/EventData"
 
+/**
+ * A day, which contains a single event.
+ * 
+ * Offers the following features:
+ * - Showing today marker
+ * - Showing event
+ * - Showing selected event
+ * - Showing invalid date
+ * 
+ * @param year - The year of the day
+ * @param month - The month of the day
+ * @param day - The day of the month
+ * @param topicName - The name of the topic of the day
+ * @param selectedRange - The range of the selected event
+ * @param events - The events on the day
+ * @param resize - The resize state of the event
+ * @param removeEvent - The function to remove the event
+ * @param changeEventName - The function to change the name of the event
+ * @param changeEventColor - The function to change the color of the event
+ * @param onResizeStart - The function to start resizing the event
+ * @param showToday - Whether to show the today marker on the day
+ */
 export default function Day(
   {
     year,
