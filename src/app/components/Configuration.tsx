@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import type ConfigurationType from "../utils/Configuration";
 import type { ExternalCalendar } from "../utils/Configuration";
 import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../utils/CalendarData";
+import { generatePdfFromMain } from "../utils/PdfUtils";
 
 interface ConfigurationProps {
   year: number;
@@ -69,8 +70,8 @@ export default function Configuration({
   };
 
   return (
-    <div className="modal-overlay" onClick={() => setShowSettings(false)}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay screen-only" onClick={() => setShowSettings(false)}>
+      <div className="modal-content screen-only" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 style={{ margin: 0 }}>Settings</h2>
           <button 
@@ -137,12 +138,43 @@ export default function Configuration({
               </button>
             </div>
             <p className="setting-description">
-              Choose the default calendar export method when adding events to external calendars.
+              Select the default calendar export format.
             </p>
           </div>
 
           <div className="setting-section">
-            <h3>Data Management</h3>
+            <div className="setting-item">
+              <label>PDF Generation</label>
+            </div>
+
+            <div className="setting-item">
+              <button className="setting-button" onClick={() => window.print()}>
+                <i className="fa fa-print" style={{marginRight: 5}}></i>
+                Print & Save as PDF
+              </button>
+              <p className="setting-description">
+                Open the browser's print dialog. Choose "Save as PDF" for the best quality and formatting.
+                This method preserves all styling and layout perfectly.
+              </p>
+            </div>
+
+            <div className="setting-item">
+              <button className="setting-button" onClick={() => generatePdfFromMain(year)}>
+                <i className="fa fa-file-pdf-o" style={{marginRight: 5}}></i>
+                Save as PDF
+              </button>
+              <p className="setting-description">
+                Generate a PDF version of your calendar in landscape orientation. 
+                This will create a high-quality PDF with all your events and notes.
+              </p>
+            </div>
+          </div>
+          
+          <div className="setting-section">
+            <div className="setting-item">
+              <label>Data Management</label>
+            </div>
+
             <div className="setting-item">
               <button
                 className="setting-button"
@@ -195,4 +227,4 @@ export default function Configuration({
       </div>
     </div>
   );
-} 
+}

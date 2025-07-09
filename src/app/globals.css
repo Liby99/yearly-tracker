@@ -79,11 +79,11 @@ footer {
 
 @media print {
   .print-only {
-    display: block;
+    display: block !important;
   }
 
   .screen-only {
-    display: none;
+    display: none !important;
   }
 
   .new-page {
@@ -767,7 +767,7 @@ input:focus, textarea:focus {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   max-width: 540px;
   width: 90%;
-  max-height: 80vh;
+  max-height: 70vh;
   overflow-y: auto;
 }
 

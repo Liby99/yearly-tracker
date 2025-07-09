@@ -19,7 +19,7 @@ export default function Year({
       <Quarter year={year} quarter={1} showToday={showToday} externalCalendar={externalCalendar} />
       <Quarter year={year} quarter={2} showToday={showToday} externalCalendar={externalCalendar} />
       <nav className="flex print-only new-page">
-        <span className="page-title">GRIDCAL YEARLY TRACKER</span>
+        <span className="page-title">YEARLY TRACKER</span>
         <span style={{ position: "relative", display: "inline-block" }}>{year}</span>
       </nav>
       <Quarter year={year} quarter={3} showToday={showToday} externalCalendar={externalCalendar} />

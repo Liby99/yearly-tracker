@@ -26,6 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link media="print" rel="Alternate" href="print.pdf" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
