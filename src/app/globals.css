@@ -158,6 +158,7 @@ footer {
 
 .quarterly-note-holder {
   width: 200px;
+  min-width: 200px;
   margin-right: 25px;
   /* Prevent horizontal overflow */
   overflow-x: hidden;
@@ -1058,7 +1059,9 @@ footer a:hover {
 }
 
 @media (max-width: 480px) {
-  
+  .no-show-mobile {
+    display: none !important;
+  }
 }
 
 /* Touch-friendly improvements for mobile */

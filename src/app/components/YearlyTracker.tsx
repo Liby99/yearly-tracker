@@ -80,7 +80,7 @@ export default function YearlyTracker() {
           </select>
         </span>
         <span style={{ display: "inline-block", flex: 1 }}></span>
-        <span style={{ fontSize: "12px" }} className="screen-only">
+        <span style={{ fontSize: "12px" }} className="screen-only no-show-mobile">
           <button className="save-upload-button" onClick={() => window.print()}>
             <i className="fa fa-print" style={{marginRight: 5}}></i>
             Print
