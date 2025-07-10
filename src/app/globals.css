@@ -195,7 +195,8 @@ footer {
 .month-header {
   writing-mode: vertical-lr;
   text-align: center;
-  min-height: 100px;
+  min-height: 140px;
+  height: 140px;
   border-bottom: 1.5px solid var(--accent-dark);
   border-right: 1px dotted var(--accent-grey);
   line-height: 25px;
@@ -339,7 +340,7 @@ input:focus, textarea:focus {
   margin: 2px;
   border-radius: 3px;
   border: 1px solid var(--accent-dark);
-  position: absolute;
+  position: relative;
   z-index: 1;
 }
 
