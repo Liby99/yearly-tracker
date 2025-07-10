@@ -9,6 +9,7 @@ import Help from "./modals/Help";
 import SignInModal from "./modals/SignInModal";
 import type ConfigurationType from "../utils/Configuration"
 import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
+import { useSync } from "../hooks/useSync"
 
 /**
  * The main yearly tracker
@@ -20,6 +21,9 @@ export default function YearlyTracker() {
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
+
+  // Initialize sync for the current year - this will trigger database pull on page load
+  useSync(year);
 
   // Set year from URL or current year on client only
   useEffect(() => {

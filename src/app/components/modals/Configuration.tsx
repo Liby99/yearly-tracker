@@ -4,6 +4,7 @@ import type { ExternalCalendar } from "../../utils/Configuration";
 import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../../utils/CalendarData";
 import { generatePdfFromMain } from "../../utils/PdfUtils";
 import { useSessionUser } from "../../hooks/useSessionUser";
+import SyncButton from "../SyncButton";
 
 interface ConfigurationProps {
   year: number;
@@ -230,6 +231,18 @@ export default function Configuration({
               </p>
             </div>
           </div>
+
+          {user && (
+            <div className="setting-section">
+              <div className="setting-item">
+                <label>Sync</label>
+              </div>
+
+              <div className="setting-item">
+                <SyncButton className="setting-button" year={year} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

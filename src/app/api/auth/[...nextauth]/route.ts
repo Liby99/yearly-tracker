@@ -5,7 +5,7 @@ import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 
-const handler = NextAuth({
+const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -32,7 +32,7 @@ const handler = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (token.sub && session.user) {
         session.user.id = token.sub
       }
@@ -42,6 +42,11 @@ const handler = NextAuth({
   pages: {
     signIn: "/auth/signin",
   },
-})
+}
+
+export { authOptions }
+
+// @ts-ignore - NextAuth v4 typing issue
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST } 
