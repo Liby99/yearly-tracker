@@ -25,9 +25,28 @@ export default function YearlyTracker() {
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
   const [showRemoveAccount, setShowRemoveAccount] = useState<boolean>(false);
+  const [showUserDropdown, setShowUserDropdown] = useState<boolean>(false);
 
   // Initialize sync for the current year - this will trigger database pull on page load
   useSync(year);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.user-dropdown') && !target.closest('.save-upload-button')) {
+        setShowUserDropdown(false);
+      }
+    };
+
+    if (showUserDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showUserDropdown]);
 
   // Set year from URL or current year on client only
   useEffect(() => {
@@ -101,10 +120,54 @@ export default function YearlyTracker() {
           </button>
           <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
           {session ? (
-            <span className="save-upload-button" onClick={handleSignOut} title="Sign Out?">
-              <i className="fa fa-user" style={{marginRight: 5}}></i>
-              {session.user?.name || session.user?.email}
-            </span>
+            <div className="user-dropdown-container">
+              <span 
+                className="save-upload-button user-dropdown-toggle" 
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                title="Account Menu"
+              >
+                <i className="fa fa-user" style={{marginRight: 5}}></i>
+                {session.user?.name || session.user?.email}
+                <i className="fa fa-chevron-down"></i>
+              </span>
+              
+              {showUserDropdown && (
+                <div className="user-dropdown">
+                  <div 
+                    className="dropdown-item"
+                    onClick={() => {
+                      setShowChangePassword(true);
+                      setShowUserDropdown(false);
+                    }}
+                  >
+                    <i className="fa fa-key dropdown-item-icon"></i>
+                    Change Password
+                  </div>
+                  
+                  <div 
+                    className="dropdown-item"
+                    onClick={() => {
+                      handleSignOut();
+                      setShowUserDropdown(false);
+                    }}
+                  >
+                    <i className="fa fa-sign-out dropdown-item-icon"></i>
+                    Sign Out
+                  </div>
+                  
+                  <div 
+                    className="dropdown-item danger"
+                    onClick={() => {
+                      setShowRemoveAccount(true);
+                      setShowUserDropdown(false);
+                    }}
+                  >
+                    <i className="fa fa-trash dropdown-item-icon"></i>
+                    Remove Account
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <button className="save-upload-button" onClick={() => setShowSignIn(true)}>
               <i className="fa fa-sign-in" style={{marginRight: 5}}></i>
