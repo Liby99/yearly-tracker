@@ -80,7 +80,7 @@
 }
 
 /* Dark mode theme */
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --background: #101a2b;
     --foreground: #dcb8b8;
@@ -187,6 +187,29 @@ main {
   /* Prevent horizontal overflow */
   overflow-x: hidden;
   position: relative;
+}
+
+@media print {
+  main {
+    width: 100% !important;
+    max-width: 1450px !important;
+    margin: 0 auto !important;
+    padding: 0 25px !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  nav, .secondary-yearly-tracker-title {
+    padding-top: 20px;
+  }
+
+  .spring-summer {
+    margin-top: 50px !important;
+  }
+
+  body {
+    overflow: visible !important;
+  }
 }
 
 nav {
@@ -1143,7 +1166,7 @@ footer a:hover {
 }
 
 /* Responsive Design */
-@media (max-width: 1366px) {
+@media screen and (max-width: 1366px) {
   .month-header-holder {
     width: 180px;
   }
@@ -1162,7 +1185,7 @@ footer a:hover {
 }
 
 /* Responsive Design */
-@media (max-width: 1200px) {
+@media screen and (max-width: 1200px) {
   .quarter-holder {
     width: 100%;
     overflow-x: auto;
@@ -1171,13 +1194,13 @@ footer a:hover {
   }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   main {
     padding: 0 10px;
   }
 }
 
-@media (max-width: 480px) {
+@media screen and (max-width: 480px) {
   .no-show-mobile {
     display: none !important;
   }
@@ -1385,7 +1408,7 @@ footer a:hover {
 }
 
 /* Touch-friendly improvements for mobile */
-@media (hover: none) and (pointer: coarse) {
+@media screen and (hover: none) and (pointer: coarse) {
   /* Prevent horizontal scrolling on the entire page */
   html, body {
     overflow-x: hidden;

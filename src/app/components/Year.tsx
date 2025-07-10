@@ -18,7 +18,7 @@ export default function Year({
     <div>
       <Quarter year={year} quarter={1} showToday={showToday} externalCalendar={externalCalendar} />
       <Quarter year={year} quarter={2} showToday={showToday} externalCalendar={externalCalendar} />
-      <nav className="flex print-only new-page">
+      <nav className="flex print-only new-page secondary-yearly-tracker-title">
         <span className="page-title">YEARLY TRACKER</span>
         <span style={{ position: "relative", display: "inline-block" }}>{year}</span>
       </nav>
