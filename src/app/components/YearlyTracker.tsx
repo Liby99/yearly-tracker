@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react"
 import { useSession, signOut } from "next-auth/react"
 
 import Year from "./Year";
-import Configuration from "./Configuration";
-import Help from "./Help";
-import SignInModal from "./SignInModal";
+import Configuration from "./modals/Configuration";
+import Help from "./modals/Help";
+import SignInModal from "./modals/SignInModal";
 import type ConfigurationType from "../utils/Configuration"
 import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
 

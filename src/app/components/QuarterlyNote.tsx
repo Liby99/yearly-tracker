@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react"
 
-import StickerMenu from "./StickerMenu";
+import StickerMenu from "./popup/StickerMenu";
 
 export default function Event(
   {

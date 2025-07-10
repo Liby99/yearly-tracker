@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react"
 
 import EventData from "../utils/EventData";
-import StickerMenu from "./StickerMenu";
+import StickerMenu from "./popup/StickerMenu";
 import { ExternalCalendar } from "../utils/Configuration";
 
 /**
