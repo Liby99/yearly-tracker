@@ -281,6 +281,18 @@ footer {
   cursor: pointer;
 }
 
+.mobile-nav-menu-toggle {
+  font-size: 20px;
+  padding: 6px;
+}
+
+.mobile-nav-menu-dropdown {
+  right: 0;
+  left: auto;
+  min-width: 220px;
+  z-index: 1000;
+}
+
 .period-header {
   line-height: 25px;
   font-size: 13px;
