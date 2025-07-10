@@ -1436,3 +1436,32 @@ footer a:hover {
     padding: 12px 15px !important;
   }
 }
+
+.nav-menu {
+  font-size: 12px;
+}
+
+.nav-menu .nav-separator {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.mobile-nav-menu {
+  position: relative;
+}
+
+.mobile-nav-menu .menu-button {
+  font-size: 20px;
+  padding: 6px;
+}
+
+.mobile-nav-menu .user-dropdown {
+  right: 0;
+  left: auto;
+  min-width: 220px;
+  z-index: 1000;
+}
+
+.fa-margin-right {
+  margin-right: 5px;
+}
