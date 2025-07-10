@@ -10,7 +10,7 @@ type CalendarData = {
 
 export default CalendarData;
 
-export function localStorageCalendarData(userId: string | null) : CalendarData {
+export function localStorageCalendarData(userId: string | undefined) : CalendarData {
   const years: { [year: number]: YearData } = {};
   for (const year of YEARS) {
     years[year] = localStorageYearData(userId, year);
@@ -18,7 +18,7 @@ export function localStorageCalendarData(userId: string | null) : CalendarData {
   return { years };
 }
 
-export function downloadCalendarData(userId: string | null, filename: string) {
+export function downloadCalendarData(userId: string | undefined, filename: string) {
   const data = localStorageCalendarData(userId);
   const json = JSON.stringify(data, null, 2);
   const blob = new Blob([json], { type: "application/json" });
@@ -33,14 +33,14 @@ export function downloadCalendarData(userId: string | null, filename: string) {
   URL.revokeObjectURL(url);
 }
 
-export function localStorageSetCalendarData(userId: string | null, calendar: CalendarData) {
+export function localStorageSetCalendarData(userId: string | undefined, calendar: CalendarData) {
   for (const yearString in calendar.years) {
     const year = parseInt(yearString);
     localStorageSetYearData(userId, year, calendar.years[yearString]);
   }
 }
 
-export function localStorageClearCalendarData(userId: string | null) {
+export function localStorageClearCalendarData(userId: string | undefined) {
   for (const year of YEARS) {
     localStorageClearYearData(userId, year);
   }

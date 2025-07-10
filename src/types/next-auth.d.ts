@@ -7,4 +7,8 @@ declare module "next-auth" {
       image?: string | null
     }
   }
+
+  interface JWT {
+    sub?: string
+  }
 } 

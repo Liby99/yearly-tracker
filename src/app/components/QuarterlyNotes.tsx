@@ -9,6 +9,7 @@ import
     localStorageSetQuarterlyNotes,
   }
 from "../utils/QuarterlyNoteData";
+import { useSessionUser } from "../hooks/useSessionUser";
 
 export default function QuarterlyNotes(
   {
@@ -19,6 +20,8 @@ export default function QuarterlyNotes(
     quarter: number,
   }
 ) {
+  const user = useSessionUser();
+
   const gridX = 10;
   const gridY = 20;
 
@@ -30,12 +33,14 @@ export default function QuarterlyNotes(
 
   // Load from localStorage when year changes
   useEffect(() => {
-    setNotes(localStorageQuarterlyNotes(year, quarter));
+    setNotes(localStorageQuarterlyNotes(user?.id, year, quarter));
+    // eslint-disable-next-line
   }, [year, quarter]);
 
   // Save to localStorage whenever ranges change
   useEffect(() => {
-    localStorageSetQuarterlyNotes(year, quarter, notes);
+    localStorageSetQuarterlyNotes(user?.id, year, quarter, notes);
+    // eslint-disable-next-line
   }, [notes, year, quarter]);
 
   const cellCanHover: Array<Array<boolean>> =

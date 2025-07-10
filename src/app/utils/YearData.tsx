@@ -12,14 +12,14 @@ export const QUARTERS = [1, 2, 3, 4];
 
 export const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-export function localStorageYearData(userId: string | null, year: number) : YearData {
+export function localStorageYearData(userId: string | undefined, year: number) : YearData {
   return {
     notes: Object.fromEntries(QUARTERS.map(q => [q, localStorageQuarterlyNotes(userId, year, q)])),
     months: MONTHS.map(month => localStorageMonthData(userId, year, month)),
   }
 }
 
-export function localStorageSetYearData(userId: string | null, year: number, data: YearData) {
+export function localStorageSetYearData(userId: string | undefined, year: number, data: YearData) {
   // Quarterly notes
   for (const quarterString in data.notes) {
     const quarter = parseInt(quarterString);
@@ -32,7 +32,7 @@ export function localStorageSetYearData(userId: string | null, year: number, dat
   }
 }
 
-export function localStorageClearYearData(userId: string | null, year: number) {
+export function localStorageClearYearData(userId: string | undefined, year: number) {
   for (const quarter of QUARTERS) {
     localStorageClearQuarterlyNotes(userId, year, quarter);
   }

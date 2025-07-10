@@ -5,19 +5,9 @@ type MonthlyTopicData = {
   events: Array<EventData>,
 }
 
-type CalendarDataRecord = {
-  [key: string]: {
-    [key: string]: {
-      name?: string;
-      events?: Array<EventData>;
-      [key: string]: unknown;
-    };
-  };
-}
-
 export default MonthlyTopicData;
 
-export function localStorageMonthlyTopicNameKey(userId: string | null, year: number, month: number, topicId: number) : string {
+export function localStorageMonthlyTopicNameKey(userId: string | undefined, year: number, month: number, topicId: number) : string {
   if (userId) {
     return `user-${userId}/year-${year}/month-${month}/topic-${topicId}/name`;
   } else {
@@ -25,7 +15,7 @@ export function localStorageMonthlyTopicNameKey(userId: string | null, year: num
   }
 }
 
-export function localStorageMonthlyTopicEventsKey(userId: string | null, year: number, month: number, topicId: number) : string {
+export function localStorageMonthlyTopicEventsKey(userId: string | undefined, year: number, month: number, topicId: number) : string {
   if (userId) {
     return `user-${userId}/year-${year}/month-${month}/topic-${topicId}/events`;
   } else {
@@ -33,36 +23,36 @@ export function localStorageMonthlyTopicEventsKey(userId: string | null, year: n
   }
 }
 
-export function localStorageMonthlyTopicData(userId: string | null, year: number, month: number, topicId: number) : MonthlyTopicData {
+export function localStorageMonthlyTopicData(userId: string | undefined, year: number, month: number, topicId: number) : MonthlyTopicData {
   return {
     name: localStorageMonthlyTopicName(userId, year, month, topicId),
     events: localStorageMonthlyTopicEvents(userId, year, month, topicId),
   }
 }
 
-export function localStorageMonthlyTopicName(userId: string | null, year: number, month: number, topicId: number) : string {
+export function localStorageMonthlyTopicName(userId: string | undefined, year: number, month: number, topicId: number) : string {
   return localStorage.getItem(localStorageMonthlyTopicNameKey(userId, year, month, topicId)) || "";
 }
 
-export function localStorageMonthlyTopicEvents(userId: string | null, year: number, month: number, topicId: number) : Array<EventData> {
+export function localStorageMonthlyTopicEvents(userId: string | undefined, year: number, month: number, topicId: number) : Array<EventData> {
   const saved = localStorage.getItem(localStorageMonthlyTopicEventsKey(userId, year, month, topicId));
   return saved ? JSON.parse(saved) : [];
 }
 
-export function localStorageSetMonthlyTopicName(userId: string | null, year: number, month: number, topicId: number, topicName: string) {
+export function localStorageSetMonthlyTopicName(userId: string | undefined, year: number, month: number, topicId: number, topicName: string) {
   localStorage.setItem(localStorageMonthlyTopicNameKey(userId, year, month, topicId), topicName);
 }
 
-export function localStorageSetMonthlyTopicEvents(userId: string | null, year: number, month: number, topicId: number, events: Array<EventData>) {
+export function localStorageSetMonthlyTopicEvents(userId: string | undefined, year: number, month: number, topicId: number, events: Array<EventData>) {
   localStorage.setItem(localStorageMonthlyTopicEventsKey(userId, year, month, topicId), JSON.stringify(events));
 }
 
-export function localStorageSetMonthlyTopicData(userId: string | null, year: number, month: number, topicId: number, topic: MonthlyTopicData) {
+export function localStorageSetMonthlyTopicData(userId: string | undefined, year: number, month: number, topicId: number, topic: MonthlyTopicData) {
   localStorageSetMonthlyTopicName(userId, year, month, topicId, topic.name);
   localStorageSetMonthlyTopicEvents(userId, year, month, topicId, topic.events);
 }
 
-export function localStorageClearMonthlyTopic(userId: string | null, year: number, month: number, topicId: number) {
+export function localStorageClearMonthlyTopic(userId: string | undefined, year: number, month: number, topicId: number) {
   localStorageSetMonthlyTopicData(userId, year, month, topicId, {
     name: "",
     events: [],

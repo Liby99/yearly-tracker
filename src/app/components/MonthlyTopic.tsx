@@ -9,6 +9,7 @@ import {
   localStorageSetMonthlyTopicEvents
 } from "../utils/MonthlyTopicData"
 import { ExternalCalendar } from "../utils/Configuration";
+import { useSessionUser } from "../hooks/useSessionUser";
 
 const MAX_DAYS_IN_MONTH = 31;
 
@@ -52,19 +53,21 @@ export default function MonthlyTopic(
     onTopicDragEnd: () => void,
   }
 ) {
+  const user = useSessionUser();
+  
   const [isDraggingTopic, setIsDraggingTopic] = useState(false);
 
   // Related to topic
   const [topicName, setTopicName] = useState<string>("");
 
   useEffect(() => {
-    setTopicName(localStorageMonthlyTopicName(year, month, topicId));
+    setTopicName(localStorageMonthlyTopicName(user?.id, year, month, topicId));
     // eslint-disable-next-line
   }, [year, month]);
 
   // Save to localStorage whenever topics change
   useEffect(() => {
-    localStorageSetMonthlyTopicName(year, month, topicId, topicName);
+    localStorageSetMonthlyTopicName(user?.id, year, month, topicId, topicName);
     // eslint-disable-next-line
   }, [topicName, year, month]);
 
@@ -75,13 +78,13 @@ export default function MonthlyTopic(
 
   // Load from localStorage when year changes
   useEffect(() => {
-    setEvents(localStorageMonthlyTopicEvents(year, month, topicId));
+    setEvents(localStorageMonthlyTopicEvents(user?.id, year, month, topicId));
     // eslint-disable-next-line
   }, [year, month]);
 
   // Save to localStorage whenever ranges change
   useEffect(() => {
-    localStorageSetMonthlyTopicEvents(year, month, topicId, events);
+    localStorageSetMonthlyTopicEvents(user?.id, year, month, topicId, events);
     // eslint-disable-next-line
   }, [events, year, month]);
 

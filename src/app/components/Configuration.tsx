@@ -3,6 +3,7 @@ import type ConfigurationType from "../utils/Configuration";
 import type { ExternalCalendar } from "../utils/Configuration";
 import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../utils/CalendarData";
 import { generatePdfFromMain } from "../utils/PdfUtils";
+import { useSessionUser } from "../hooks/useSessionUser";
 
 interface ConfigurationProps {
   year: number;
@@ -19,6 +20,8 @@ export default function Configuration({
   setShowSettings,
   setConfiguration,
 }: ConfigurationProps) {
+  const user = useSessionUser();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!showSettings) return null;
@@ -44,7 +47,7 @@ export default function Configuration({
         return;
       }
 
-      localStorageSetCalendarData(json);
+      localStorageSetCalendarData(user?.id, json);
       window.location.reload(); // Reload to reflect changes
     };
 
@@ -54,7 +57,7 @@ export default function Configuration({
 
   const handleErase = () => {
     if (confirm(`Do you want to erase all notes and events in the year of ${year}?`)) {
-      localStorageClearCalendarData();
+      localStorageClearCalendarData(user?.id);
       window.location.reload(); // Reload to reflect changes
     }
   };
@@ -179,7 +182,7 @@ export default function Configuration({
               <button
                 className="setting-button"
                 onClick={() => {
-                  downloadCalendarData("yearly-tracker-calendar.json");
+                  downloadCalendarData(user?.id, "yearly-tracker-calendar.json");
                 }}
               >
                 <i className="fa fa-save" style={{marginRight: 5}}></i>

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react"
 import MonthlyTopic from "./MonthlyTopic"
 import { DEFAULT_TOPICS_IDS, localStorageMonthlyTopicOrder, localStorageSetMonthlyTopicOrder } from "../utils/MonthData"
 import { ExternalCalendar } from "../utils/Configuration";
+import { useSessionUser } from "../hooks/useSessionUser";
 
 /**
  * A month, which contains topics of each month.
@@ -25,10 +26,12 @@ export default function Month({
   showToday: boolean,
   externalCalendar: ExternalCalendar,
 }) {
+  const user = useSessionUser();
+
   // The current ordering of the monthly topics
   const [topicOrder, setTopicOrder] = useState<Array<number>>(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      return localStorageMonthlyTopicOrder(year, month);
+      return localStorageMonthlyTopicOrder(user?.id, year, month);
     } else {
       return DEFAULT_TOPICS_IDS;
     }
@@ -36,7 +39,7 @@ export default function Month({
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      setTopicOrder(localStorageMonthlyTopicOrder(year, month));
+      setTopicOrder(localStorageMonthlyTopicOrder(user?.id, year, month));
     } else {
       setTopicOrder(DEFAULT_TOPICS_IDS);
     }
@@ -44,7 +47,7 @@ export default function Month({
 
   // The topic ordering
   useEffect(() => {
-    localStorageSetMonthlyTopicOrder(year, month, topicOrder);
+    localStorageSetMonthlyTopicOrder(user?.id, year, month, topicOrder);
     // eslint-disable-next-line
   }, [topicOrder]);
 
