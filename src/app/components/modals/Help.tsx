@@ -231,7 +231,13 @@ export default function Help({
 
           <div className="setting-section">
             <h2>💡 Tips &amp; Tricks</h2>
+            <p className="help-description">
+              You can use the creative note to write down your ideas and thoughts.
+              You can also use it to write down your goals and objectives.
+              You can also use it to write down your plans and strategies.
+            </p>
             <div className="setting-item">
+              <Image src="/images/help/creative-note.png" alt="Creative Note" width={140} height={100} />
               <ul className="help-description" style={{ marginLeft: '20px' }}>
                 <li>Use different colors to categorize your events</li>
                 <li>Create multiple topics to organize different types of activities</li>
