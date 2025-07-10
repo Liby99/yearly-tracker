@@ -43,7 +43,7 @@ export default function Month({
     } else {
       setTopicOrder(DEFAULT_TOPICS_IDS);
     }
-  }, [year, month]);
+  }, [user?.id, year, month]);
 
   // The topic ordering
   useEffect(() => {
