@@ -4,6 +4,7 @@ import type { ExternalCalendar } from "../../utils/Configuration";
 import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../../utils/CalendarData";
 import { generatePdfFromMain } from "../../utils/PdfUtils";
 import { useSessionUser } from "../../hooks/useSessionUser";
+import { useSync } from "../../hooks/useSync";
 import SyncButton from "../SyncButton";
 
 interface ConfigurationProps {
@@ -22,6 +23,7 @@ export default function Configuration({
   setConfiguration,
 }: ConfigurationProps) {
   const user = useSessionUser();
+  const { manualSync } = useSync(year);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -49,6 +51,8 @@ export default function Configuration({
       }
 
       localStorageSetCalendarData(user?.id, json);
+      manualSync();
+
       setTimeout(() => {
         window.location.reload(); // Reload to reflect changes
       }, 500);
@@ -61,6 +65,8 @@ export default function Configuration({
   const handleErase = () => {
     if (confirm(`Do you want to erase all notes and events in the year of ${year}?`)) {
       localStorageClearCalendarData(user?.id);
+      manualSync();
+      
       setTimeout(() => {
         window.location.reload(); // Reload to reflect changes
       }, 500);
