@@ -15,7 +15,10 @@ import Help from "./modals/Help";
 import SignIn from "./modals/SignIn";
 import ChangePassword from "./modals/ChangePassword";
 import RemoveAccount from "./modals/RemoveAccount";
-import NavMenu from "./buttons/NavMenu";
+
+// Layout components
+import Nav from "./layouts/Nav";
+import Footer from "./layouts/Footer";
 
 // All the hooks
 import { useSync } from "../hooks/useSync"
@@ -26,33 +29,20 @@ import { useSession, signOut } from "next-auth/react"
  * The main yearly tracker
  */
 export default function YearlyTracker() {
+  const { data: session } = useSession();
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState<number>(currentYear);
+  const [configuration, setConfigurationState] = useState<ConfigurationType>(defaultConfiguration());
+
+  // Modals show/hide states
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
   const [showRemoveAccount, setShowRemoveAccount] = useState<boolean>(false);
-  const [configuration, setConfigurationState] = useState<ConfigurationType>(defaultConfiguration());
-  const { data: session } = useSession();
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const mobileMenuRef = React.useRef<HTMLDivElement>(null);
 
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    if (!showMobileMenu) return;
-    const handleClick = (e: MouseEvent) => {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
-        setShowMobileMenu(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [showMobileMenu]);
-
-  // Initialize sync for the current year - this will trigger database pull on page load
+  // Initialize sync and theme
   useSync(year);
-
   useApplyTheme(configuration.theme);
 
   // Set year from URL or current year on client only
@@ -79,50 +69,30 @@ export default function YearlyTracker() {
 
   return (
     <main>
-      <nav className="flex">
-        <span className="page-title">YEARLY TRACKER</span>
-        <span style={{ position: "relative", display: "inline-block" }}>
-          {year}
-          <select
-            value={year}
-            onChange={e => setYear(Number(e.target.value))}
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              width: "100%",
-              height: "100%",
-              opacity: 0,
-              cursor: "pointer",
-            }}
-          >
-            {Array.from({ length: 7 }, (_, i) => 2024 + i).map(y => (
-              <option key={y} value={y}>{y}</option>
-            ))}
-          </select>
-        </span>
-        <span style={{ display: "inline-block", flex: 1 }}></span>
-        <NavMenu
-          setShowSettings={setShowSettings}
-          setShowHelp={setShowHelp}
-          setShowSignIn={setShowSignIn}
-          setShowChangePassword={setShowChangePassword}
-          setShowRemoveAccount={setShowRemoveAccount}
-        />
-      </nav>
+      {/* Navbar */}
+      <Nav
+        year={year}
+        setYear={setYear}
+        setShowSettings={setShowSettings}
+        setShowHelp={setShowHelp}
+        setShowSignIn={setShowSignIn}
+        setShowChangePassword={setShowChangePassword}
+        setShowRemoveAccount={setShowRemoveAccount}
+      />
+
+      {/* Yearly tracker (main content) */}
       <Year 
         year={year}
         showToday={configuration.showToday}
         externalCalendar={configuration.externalCalendar}
       />
-      <footer className="screen-only">
-        &copy; 2025 <a href="https://liby99.github.io">Liby99</a>, all rights reserved.
-        <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
-        <a onClick={() => setShowHelp(true)}>Help</a>
-        <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
-        <a onClick={() => setShowSettings(true)}>Settings</a>
-      </footer>
-      
+
+      {/* Footer */}
+      <Footer 
+        setShowHelp={setShowHelp}
+        setShowSettings={setShowSettings}
+      />
+
       {/* Modals */}
       <Configuration year={year} showSettings={showSettings} configuration={configuration} setShowSettings={setShowSettings} setConfiguration={setConfigurationState} />
       <Help showHelp={showHelp} setShowHelp={setShowHelp} />
