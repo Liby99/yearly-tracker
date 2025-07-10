@@ -3,16 +3,24 @@
 import React, { useState, useEffect } from "react"
 import { useSession, signOut } from "next-auth/react"
 
+// All the util types
+import type ConfigurationType from "../utils/Configuration"
+import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
+
+// All the components
 import Year from "./Year";
+
+// All the modals
 import Configuration from "./modals/Configuration";
 import Help from "./modals/Help";
 import SignInModal from "./modals/SignInModal";
 import ChangePasswordModal from "./modals/ChangePasswordModal";
 import RemoveAccountModal from "./modals/RemoveAccountModal";
-import type ConfigurationType from "../utils/Configuration"
-import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
-import { useSync } from "../hooks/useSync"
 import UserAccountDropdown from "./buttons/UserAccountButton";
+
+// All the hooks
+import { useSync } from "../hooks/useSync"
+import { useApplyTheme } from "../hooks/useApplyTheme";
 
 /**
  * The main yearly tracker
@@ -26,9 +34,12 @@ export default function YearlyTracker() {
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
   const [showRemoveAccount, setShowRemoveAccount] = useState<boolean>(false);
+  const [configuration, setConfigurationState] = useState<ConfigurationType>(defaultConfiguration());
 
   // Initialize sync for the current year - this will trigger database pull on page load
   useSync(year);
+
+  useApplyTheme(configuration.theme);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -61,8 +72,6 @@ export default function YearlyTracker() {
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState({}, "", newUrl);
   }, [year]);
-
-  const [configuration, setConfigurationState] = useState<ConfigurationType>(defaultConfiguration());
 
   useEffect(() => {
     setConfigurationState(getConfiguration());

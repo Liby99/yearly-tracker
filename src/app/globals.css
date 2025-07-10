@@ -11,40 +11,156 @@
   --accent-bg-dark: rgba(76, 45, 20, 0.1);
   --highlight: rgba(76, 45, 20, 0.9);
   --highlight-bg: rgba(236, 216, 199, 0.2);
-
   --popup-bg: rgba(255, 255, 255, 1.0);
 
   --mirror-ref-bg: rgb(248, 246, 244);
-
   --event-default: rgba(76, 45, 20, 0.102);
   --event-default-hover: rgba(76, 45, 20, 0.15);
   --event-default-border: rgba(76, 45, 20, 0.4);
   --event-default-border-dark: rgba(76, 45, 20, 0.7);
-
   --event-red: rgba(253, 169, 124, 0.2);
   --event-red-hover: rgba(253, 169, 124, 0.3);
   --event-red-border: rgba(253, 169, 124, 1);
   --event-red-border-dark: rgb(246, 133, 72);
-
   --event-yellow: rgba(239, 208, 134, 0.2);
   --event-yellow-hover: rgba(239, 208, 134, 0.3);
   --event-yellow-border: rgba(239, 208, 134, 1);
   --event-yellow-border-dark: rgb(223, 182, 86);
-
   --event-green: rgba(187, 206, 130, 0.2);
   --event-green-hover: rgba(187, 206, 130, 0.3);
   --event-green-border: rgba(187, 206, 130, 1);
   --event-green-border-dark: rgb(149, 173, 75);
-
   --event-blue: rgba(136, 195, 181, 0.2);
   --event-blue-hover: rgba(136, 195, 181, 0.3);
   --event-blue-border: rgba(136, 195, 181, 1);
   --event-blue-border-dark: rgb(88, 169, 150);
-
   --event-purple: rgba(219, 165, 171, 0.2);
   --event-purple-hover: rgba(219, 165, 171, 0.3);
   --event-purple-border: rgba(219, 165, 171, 1);
   --event-purple-border-dark: rgb(176, 97, 106);
+}
+
+[data-theme="dark"] {
+  --background: #101a2b;
+  --foreground: #dcb8b8;
+  --accent-dark: #d4b4b4;
+  --accent-grey: rgba(255, 214, 224, 0.3);
+  --accent-bg: rgba(255, 214, 224, 0.08);
+  --accent-bg-hover: rgba(255, 214, 224, 0.13);
+  --accent-bg-active: rgba(255, 214, 224, 0.18);
+  --accent-bg-dark: rgba(255, 214, 224, 0.18);
+  --highlight: #ffd6e0;
+  --highlight-bg: rgba(255, 214, 224, 0.15);
+  --mirror-ref-bg: #18223a;
+  --event-default: rgba(255, 214, 224, 0.10);
+  --event-default-hover: rgba(255, 214, 224, 0.18);
+  --event-default-border: rgba(255, 214, 224, 0.4);
+  --event-default-border-dark: rgba(255, 214, 224, 0.7);
+  --event-red: rgba(255, 128, 128, 0.18);
+  --event-red-hover: rgba(255, 128, 128, 0.28);
+  --event-red-border: #ffb3b3;
+  --event-red-border-dark: #ff8a8a;
+  --event-yellow: rgba(255, 236, 179, 0.18);
+  --event-yellow-hover: rgba(255, 236, 179, 0.28);
+  --event-yellow-border: #ffe082;
+  --event-yellow-border-dark: #ffd54f;
+  --event-green: rgba(200, 255, 200, 0.18);
+  --event-green-hover: rgba(200, 255, 200, 0.28);
+  --event-green-border: #b2ffb2;
+  --event-green-border-dark: #69f069;
+  --event-blue: rgba(128, 170, 255, 0.18);
+  --event-blue-hover: rgba(128, 170, 255, 0.28);
+  --event-blue-border: #b3cfff;
+  --event-blue-border-dark: #8aaaff;
+  --event-purple: rgba(200, 128, 255, 0.18);
+  --event-purple-hover: rgba(200, 128, 255, 0.28);
+  --event-purple-border: #dab3ff;
+  --event-purple-border-dark: #b88aff;
+  --popup-bg: #18223a;
+}
+
+/* Dark mode theme */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #101a2b;
+    --foreground: #dcb8b8;
+    --accent-dark: #d4b4b4;
+    --accent-grey: rgba(255, 214, 224, 0.3);
+    --accent-bg: rgba(255, 214, 224, 0.08);
+    --accent-bg-hover: rgba(255, 214, 224, 0.13);
+    --accent-bg-active: rgba(255, 214, 224, 0.18);
+    --accent-bg-dark: rgba(255, 214, 224, 0.18);
+    --highlight: #ffd6e0;
+    --highlight-bg: rgba(255, 214, 224, 0.15);
+    --mirror-ref-bg: #18223a;
+    --event-default: rgba(255, 214, 224, 0.10);
+    --event-default-hover: rgba(255, 214, 224, 0.18);
+    --event-default-border: rgba(255, 214, 224, 0.4);
+    --event-default-border-dark: rgba(255, 214, 224, 0.7);
+    --event-red: rgba(255, 128, 128, 0.18);
+    --event-red-hover: rgba(255, 128, 128, 0.28);
+    --event-red-border: #ffb3b3;
+    --event-red-border-dark: #ff8a8a;
+    --event-yellow: rgba(255, 236, 179, 0.18);
+    --event-yellow-hover: rgba(255, 236, 179, 0.28);
+    --event-yellow-border: #ffe082;
+    --event-yellow-border-dark: #ffd54f;
+    --event-green: rgba(200, 255, 200, 0.18);
+    --event-green-hover: rgba(200, 255, 200, 0.28);
+    --event-green-border: #b2ffb2;
+    --event-green-border-dark: #69f069;
+    --event-blue: rgba(128, 170, 255, 0.18);
+    --event-blue-hover: rgba(128, 170, 255, 0.28);
+    --event-blue-border: #b3cfff;
+    --event-blue-border-dark: #8aaaff;
+    --event-purple: rgba(200, 128, 255, 0.18);
+    --event-purple-hover: rgba(200, 128, 255, 0.28);
+    --event-purple-border: #dab3ff;
+    --event-purple-border-dark: #b88aff;
+    --popup-bg: #18223a;
+  }
+}
+
+/* Always use light theme for print */
+@media print {
+  :root {
+    --background: white !important;
+    --foreground: #171717 !important;
+    --accent-dark: rgba(76, 45, 20, 0.9) !important;
+    --accent-grey: rgba(76, 45, 20, 0.3) !important;
+    --accent-bg: rgba(76, 45, 20, 0.05) !important;
+    --accent-bg-hover: rgba(76, 45, 20, 0.03) !important;
+    --accent-bg-active: rgba(76, 45, 20, 0.06) !important;
+    --accent-bg-dark: rgba(76, 45, 20, 0.1) !important;
+    --highlight: rgba(76, 45, 20, 0.9) !important;
+    --highlight-bg: rgba(236, 216, 199, 0.2) !important;
+    --mirror-ref-bg: rgb(248, 246, 244) !important;
+    --event-default: rgba(76, 45, 20, 0.102) !important;
+    --event-default-hover: rgba(76, 45, 20, 0.15) !important;
+    --event-default-border: rgba(76, 45, 20, 0.4) !important;
+    --event-default-border-dark: rgba(76, 45, 20, 0.7) !important;
+    --event-red: rgba(253, 169, 124, 0.2) !important;
+    --event-red-hover: rgba(253, 169, 124, 0.3) !important;
+    --event-red-border: rgba(253, 169, 124, 1) !important;
+    --event-red-border-dark: rgb(246, 133, 72) !important;
+    --event-yellow: rgba(239, 208, 134, 0.2) !important;
+    --event-yellow-hover: rgba(239, 208, 134, 0.3) !important;
+    --event-yellow-border: rgba(239, 208, 134, 1) !important;
+    --event-yellow-border-dark: rgb(223, 182, 86) !important;
+    --event-green: rgba(187, 206, 130, 0.2) !important;
+    --event-green-hover: rgba(187, 206, 130, 0.3) !important;
+    --event-green-border: rgba(187, 206, 130, 1) !important;
+    --event-green-border-dark: rgb(149, 173, 75) !important;
+    --event-blue: rgba(136, 195, 181, 0.2) !important;
+    --event-blue-hover: rgba(136, 195, 181, 0.3) !important;
+    --event-blue-border: rgba(136, 195, 181, 1) !important;
+    --event-blue-border-dark: rgb(88, 169, 150) !important;
+    --event-purple: rgba(219, 165, 171, 0.2) !important;
+    --event-purple-hover: rgba(219, 165, 171, 0.3) !important;
+    --event-purple-border: rgba(219, 165, 171, 1) !important;
+    --event-purple-border-dark: rgb(176, 97, 106) !important;
+    --popup-bg: white !important;
+  }
 }
 
 body {

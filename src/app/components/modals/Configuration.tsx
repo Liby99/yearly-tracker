@@ -73,6 +73,11 @@ export default function Configuration({
     }
   };
 
+  const setTheme = (theme: "auto" | "light" | "dark") => {
+    const newConfig = { ...configuration, theme };
+    setConfiguration(newConfig);
+  };
+
   const setShowToday = (showToday: boolean) => {
     const newConfig = { ...configuration, showToday };
     setConfiguration(newConfig);
@@ -96,64 +101,93 @@ export default function Configuration({
           </button>
         </div>
         <div className="modal-body">
-          <div className="setting-item">
-            <label>Show Today Marker</label>
-            <div className="button-group">
-              <button
-                className={`button-group-button${configuration.showToday ? ' active' : ''}`}
-                onClick={() => setShowToday(true)}
-              >
-                On
-              </button>
-              <button
-                className={`button-group-button${!configuration.showToday ? ' active' : ''}`}
-                onClick={() => setShowToday(false)}
-              >
-                Off
-              </button>
+          <div className="setting-section">
+            <div className="setting-item">
+              <label>Theme</label>
+              <div className="button-group">
+                <button
+                  className={`button-group-button${configuration.theme === "auto" ? ' active' : ''}`}
+                  onClick={() => setTheme("auto")}
+                >
+                  Auto (System)
+                </button>
+                <button
+                  className={`button-group-button${configuration.theme === "light" ? ' active' : ''}`}
+                  onClick={() => setTheme("light")}
+                >
+                  Light
+                </button>
+                <button
+                  className={`button-group-button${configuration.theme === "dark" ? ' active' : ''}`}
+                  onClick={() => setTheme("dark")}
+                >
+                  Dark
+                </button>
+              </div>
+              <p className="setting-description">
+                Select the theme for the calendar.
+              </p>
             </div>
-            <p className="setting-description">
-              Display a visual indicator for today&apos;s date on the calendar.
-            </p>
-          </div>
-          
-          <div className="setting-item">
-            <label>Default Calendar Export Format</label>
-            <div className="button-group">
-              <button
-                className={`button-group-button${configuration.externalCalendar === "ics" ? ' active' : ''}`}
-                onClick={() => setExternalCalendar("ics")}
-              >
-                <i className="fa fa-download" style={{marginRight: 5}}></i> .ics
-              </button>
-              <button
-                className={`button-group-button${configuration.externalCalendar === "ics-url" ? ' active' : ''}`}
-                onClick={() => setExternalCalendar("ics-url")}
-              >
-                <i className="fa fa-external-link" style={{marginRight: 5}}></i> .ics
-              </button>
-              <button
-                className={`button-group-button${configuration.externalCalendar === "google" ? ' active' : ''}`}
-                onClick={() => setExternalCalendar("google")}
-              >
-                <i className="fa fa-google" style={{marginRight: 5}}></i> Google
-              </button>
-              <button
-                className={`button-group-button${configuration.externalCalendar === "outlook" ? ' active' : ''}`}
-                onClick={() => setExternalCalendar("outlook")}
-              >
-                <i className="fa fa-envelope" style={{marginRight: 5}}></i> Outlook
-              </button>
-              <button
-                className={`button-group-button${configuration.externalCalendar === "apple" ? ' active' : ''}`}
-                onClick={() => setExternalCalendar("apple")}
-              >
-                <i className="fa fa-apple" style={{marginRight: 5}}></i> Apple
-              </button>
+
+            <div className="setting-item">
+              <label>Show Today Marker</label>
+              <div className="button-group">
+                <button
+                  className={`button-group-button${configuration.showToday ? ' active' : ''}`}
+                  onClick={() => setShowToday(true)}
+                >
+                  On
+                </button>
+                <button
+                  className={`button-group-button${!configuration.showToday ? ' active' : ''}`}
+                  onClick={() => setShowToday(false)}
+                >
+                  Off
+                </button>
+              </div>
+              <p className="setting-description">
+                Display a visual indicator for today&apos;s date on the calendar.
+              </p>
             </div>
-            <p className="setting-description">
-              Select the default calendar export format.
-            </p>
+            
+            <div className="setting-item">
+              <label>Default Calendar Export Format</label>
+              <div className="button-group">
+                <button
+                  className={`button-group-button${configuration.externalCalendar === "ics" ? ' active' : ''}`}
+                  onClick={() => setExternalCalendar("ics")}
+                >
+                  <i className="fa fa-download" style={{marginRight: 5}}></i> .ics
+                </button>
+                <button
+                  className={`button-group-button${configuration.externalCalendar === "ics-url" ? ' active' : ''}`}
+                  onClick={() => setExternalCalendar("ics-url")}
+                >
+                  <i className="fa fa-external-link" style={{marginRight: 5}}></i> .ics
+                </button>
+                <button
+                  className={`button-group-button${configuration.externalCalendar === "google" ? ' active' : ''}`}
+                  onClick={() => setExternalCalendar("google")}
+                >
+                  <i className="fa fa-google" style={{marginRight: 5}}></i> Google
+                </button>
+                <button
+                  className={`button-group-button${configuration.externalCalendar === "outlook" ? ' active' : ''}`}
+                  onClick={() => setExternalCalendar("outlook")}
+                >
+                  <i className="fa fa-envelope" style={{marginRight: 5}}></i> Outlook
+                </button>
+                <button
+                  className={`button-group-button${configuration.externalCalendar === "apple" ? ' active' : ''}`}
+                  onClick={() => setExternalCalendar("apple")}
+                >
+                  <i className="fa fa-apple" style={{marginRight: 5}}></i> Apple
+                </button>
+              </div>
+              <p className="setting-description">
+                Select the default calendar export format.
+              </p>
+            </div>
           </div>
 
           <div className="setting-section">

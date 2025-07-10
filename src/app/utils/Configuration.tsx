@@ -6,6 +6,9 @@ type Configuration = {
 
   // The external calendar to use for adding events to calendar
   externalCalendar: ExternalCalendar,
+
+  // The theme for the calendar
+  theme: "auto" | "light" | "dark",
 }
 
 export default Configuration;
@@ -16,6 +19,7 @@ export function defaultConfiguration(): Configuration {
   return {
     showToday: true,
     externalCalendar: "ics",
+    theme: "light",
   };
 }
 
