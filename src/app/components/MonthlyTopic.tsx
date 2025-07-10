@@ -48,15 +48,23 @@ export default function MonthlyTopic(
     topicId: number,
     showToday: boolean,
     externalCalendar: ExternalCalendar,
-    onTopicDragStart: () => void,
-    onTopicDragOver: (e: React.DragEvent) => void,
-    onTopicDragEnd: () => void,
+    onTopicDragStart: (() => void) | undefined,
+    onTopicDragOver: ((e: React.DragEvent) => void) | undefined,
+    onTopicDragEnd: (() => void) | undefined,
   }
 ) {
   const user = useSessionUser();
   
   const [isDraggingTopic, setIsDraggingTopic] = useState(false);
   const [dayWidth, setDayWidth] = useState(getDayWidth());
+
+  // Check if we're on mobile and disable interactions
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check screen width once on mount
+    setIsMobile(window.innerWidth <= 480);
+  }, []);
 
   // Update day width when window resizes
   useEffect(() => {
@@ -205,14 +213,14 @@ export default function MonthlyTopic(
     <div
       className="flex month-topic-holder"
       onDragOver={onTopicDragOver}
-      onDragEnd={() => {
+      onDragEnd={onTopicDragEnd ? () => {
         onTopicDragEnd();
         setIsDraggingTopic(false);
-      }}
+      } : undefined}
     >
       <div
         className="month-topic-header flex"
-        draggable={true}
+        draggable={!isMobile}
       >
         <div className="flex month-topic-input-holder">
           <input
@@ -222,14 +230,14 @@ export default function MonthlyTopic(
           />
           <div
             className={`monthly-topic-drag-handle${isDraggingTopic ? " active" : ""}`}
-            onMouseDown={() => {
+            onMouseDown={onTopicDragStart ? () => {
               onTopicDragStart();
               setIsDraggingTopic(true);
-            }}
-            onMouseUp={() => {
+            } : undefined}
+            onMouseUp={onTopicDragEnd ? () => {
               onTopicDragEnd();
               setIsDraggingTopic(false);
-            }}
+            } : undefined}
           >
             <i className="fa fa-bars"></i>
           </div>
@@ -257,6 +265,7 @@ export default function MonthlyTopic(
             onResizeStart={handleResizeStart}
             showToday={showToday}
             externalCalendar={externalCalendar}
+            isMobile={isMobile}
           />
         ))}
       </div>

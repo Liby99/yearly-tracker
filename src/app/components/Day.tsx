@@ -37,6 +37,7 @@ export default function Day(
     resize,
     showToday,
     externalCalendar,
+    isMobile,
     removeEvent,
     changeEventName,
     changeEventColor,
@@ -51,6 +52,7 @@ export default function Day(
     resize: {side: "left" | "right", resizingDay: number, otherDay: number} | null,
     showToday: boolean,
     externalCalendar: ExternalCalendar,
+    isMobile: boolean,
     removeEvent: (day: number) => void,
     changeEventName: (day: number, name: string) => void,
     changeEventColor: (day: number, color: string) => void,
@@ -127,8 +129,10 @@ export default function Day(
     </div>
   ) : null;
 
-  let noHover = selectedRange.start !== null || resize !== null;
-  noHover = noHover || events.some(e => eventDataContains(e, day));
+  const noHover = selectedRange.start !== null 
+                  || resize !== null 
+                  || isMobile 
+                  || events.some(e => eventDataContains(e, day));
 
   const invalid = !isValidDate(year, month, day);
   const dayOfWeek = dayOfWeekString(year, month, day);

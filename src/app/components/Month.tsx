@@ -28,6 +28,14 @@ export default function Month({
 }) {
   const user = useSessionUser();
 
+  // Check if we're on mobile and disable interactions
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check screen width once on mount
+    setIsMobile(window.innerWidth <= 480);
+  }, []);
+
   // The current ordering of the monthly topics
   const [topicOrder, setTopicOrder] = useState<Array<number>>(() => {
     if (typeof window !== "undefined" && window.localStorage) {
@@ -55,10 +63,12 @@ export default function Month({
   const dragItem = useRef<number | null>(null);
 
   const handleDragStart = (idx: number) => {
+    if (isMobile) return;
     dragItem.current = idx;
   };
 
   const handleDragOver = (idx: number, e: React.DragEvent) => {
+    if (isMobile) return;
     e.preventDefault();
     if (dragItem.current === null || dragItem.current === idx) return;
     setTopicOrder((prev) => {
@@ -71,6 +81,7 @@ export default function Month({
   };
 
   const handleDragEnd = () => {
+    if (isMobile) return;
     dragItem.current = null;
   };
 
@@ -84,9 +95,9 @@ export default function Month({
             year={year}
             month={month}
             topicId={i}
-            onTopicDragStart={() => handleDragStart(idx)}
-            onTopicDragOver={(e) => handleDragOver(idx, e)}
-            onTopicDragEnd={handleDragEnd}
+            onTopicDragStart={isMobile ? undefined : () => handleDragStart(idx)}
+            onTopicDragOver={isMobile ? undefined : (e) => handleDragOver(idx, e)}
+            onTopicDragEnd={isMobile ? undefined : handleDragEnd}
             showToday={showToday}
             externalCalendar={externalCalendar}
           />

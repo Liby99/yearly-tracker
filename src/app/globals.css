@@ -304,7 +304,7 @@ footer {
   /* Allow horizontal scrolling within quarters on mobile */
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x; /* Allow horizontal scrolling within quarters */
+  touch-action: pan-x pan-y; /* Allow both horizontal and vertical scrolling */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
@@ -1219,6 +1219,9 @@ footer a:hover {
   .quarter-holder {
     width: 100%;
     overflow-x: scroll;
+    /* Ensure proper touch scrolling on mobile */
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -1464,10 +1467,17 @@ footer a:hover {
     overflow-x: hidden;
   }
   
+  /* Improve touch scrolling for quarter-holder on mobile */
+  .quarter-holder {
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+  
   /* Improve dropdown touch targets on mobile */
   .dropdown-item {
-    min-height: 44px;
-    padding: 12px 15px !important;
+    min-height: 30px;
+    padding: 8px 15px !important;
+    font-size: 15px;
   }
 }
 
@@ -1485,8 +1495,8 @@ footer a:hover {
 }
 
 .mobile-nav-menu .menu-button {
-  font-size: 20px;
-  padding: 6px;
+  font-size: 16px;
+  padding: 0;
 }
 
 .mobile-nav-menu .user-dropdown {

@@ -25,6 +25,14 @@ export default function QuarterlyNotes(
   const gridX = 10;
   const gridY = 20;
 
+  // Check if we're on mobile and disable interactions
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check screen width once on mount
+    setIsMobile(window.innerWidth <= 480);
+  }, []);
+
   // Related to event ranges
   const [dragging, setDragging] = useState(false);
   const [dragStart, setDragStart] = useState<{ i: number, j: number } | null>(null);
@@ -45,7 +53,7 @@ export default function QuarterlyNotes(
   const cellCanHover: Array<Array<boolean>> =
     Array.from({length: gridY}, (_, i) =>
       Array.from({length: gridX}, (_, j) =>
-        notes.find(n => quarterlyNoteContainsCell(n, i, j)) === undefined
+        isMobile ? false : notes.find(n => quarterlyNoteContainsCell(n, i, j)) === undefined
       )
     );
 
@@ -223,13 +231,13 @@ export default function QuarterlyNotes(
   return (
     <div
       className="quarterly-note-content"
-      onMouseDown={handleMouseDown}
-      onMouseUp={() => {
+      onMouseDown={isMobile ? undefined : handleMouseDown}
+      onMouseUp={isMobile ? undefined : () => {
         handleCreatingMouseUp();
         handleResizeMouseUp();
         handleMoveNoteMouseUp();
       }}
-      onMouseMove={(e) => {
+      onMouseMove={isMobile ? undefined : (e) => {
         handleCreatingMouseMove(e);
         handleResizeMouseMove(e);
         handleMoveNoteMouseMove(e);
