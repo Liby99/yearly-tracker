@@ -23,13 +23,11 @@ import Footer from "./layouts/Footer";
 // All the hooks
 import { useSync } from "../hooks/useSync"
 import { useApplyTheme } from "../hooks/useApplyTheme";
-import { useSession, signOut } from "next-auth/react"
 
 /**
  * The main yearly tracker
  */
 export default function YearlyTracker() {
-  const { data: session } = useSession();
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState<number>(currentYear);
   const [configuration, setConfigurationState] = useState<ConfigurationType>(defaultConfiguration());
