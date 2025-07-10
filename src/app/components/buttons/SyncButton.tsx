@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState } from "react"
-import { useSync } from "../hooks/useSync"
-import { useSessionUser } from "../hooks/useSessionUser"
+import { useSync } from "../../hooks/useSync"
+import { useSessionUser } from "../../hooks/useSessionUser"
 
 interface SyncButtonProps {
   year: number,

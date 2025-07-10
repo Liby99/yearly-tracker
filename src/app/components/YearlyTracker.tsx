@@ -12,6 +12,7 @@ import RemoveAccountModal from "./modals/RemoveAccountModal";
 import type ConfigurationType from "../utils/Configuration"
 import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
 import { useSync } from "../hooks/useSync"
+import UserAccountDropdown from "./buttons/UserAccountButton";
 
 /**
  * The main yearly tracker
@@ -25,7 +26,6 @@ export default function YearlyTracker() {
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
   const [showRemoveAccount, setShowRemoveAccount] = useState<boolean>(false);
-  const [showUserDropdown, setShowUserDropdown] = useState<boolean>(false);
 
   // Initialize sync for the current year - this will trigger database pull on page load
   useSync(year);
@@ -35,18 +35,18 @@ export default function YearlyTracker() {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
       if (!target.closest('.user-dropdown') && !target.closest('.save-upload-button')) {
-        setShowUserDropdown(false);
+        // setShowUserDropdown(false); // This state is removed
       }
     };
 
-    if (showUserDropdown) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+    // if (showUserDropdown) { // This state is removed
+    //   document.addEventListener('mousedown', handleClickOutside);
+    // }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      // document.removeEventListener('mousedown', handleClickOutside); // This state is removed
     };
-  }, [showUserDropdown]);
+  }, []); // Removed showUserDropdown from dependency array
 
   // Set year from URL or current year on client only
   useEffect(() => {
@@ -119,61 +119,11 @@ export default function YearlyTracker() {
             Help
           </button>
           <span style={{ display: "inline-block", margin: "0 5px" }}>|</span>
-          {session ? (
-            <div className="user-dropdown-container">
-              <span 
-                className="save-upload-button user-dropdown-toggle" 
-                onClick={() => setShowUserDropdown(!showUserDropdown)}
-                title="Account Menu"
-              >
-                <i className="fa fa-user" style={{marginRight: 5}}></i>
-                {session.user?.name || session.user?.email}
-                <i className="fa fa-chevron-down"></i>
-              </span>
-              
-              {showUserDropdown && (
-                <div className="user-dropdown">
-                  <div 
-                    className="dropdown-item"
-                    onClick={() => {
-                      setShowChangePassword(true);
-                      setShowUserDropdown(false);
-                    }}
-                  >
-                    <i className="fa fa-key dropdown-item-icon"></i>
-                    Change Password
-                  </div>
-                  
-                  <div 
-                    className="dropdown-item"
-                    onClick={() => {
-                      handleSignOut();
-                      setShowUserDropdown(false);
-                    }}
-                  >
-                    <i className="fa fa-sign-out dropdown-item-icon"></i>
-                    Sign Out
-                  </div>
-                  
-                  <div 
-                    className="dropdown-item danger"
-                    onClick={() => {
-                      setShowRemoveAccount(true);
-                      setShowUserDropdown(false);
-                    }}
-                  >
-                    <i className="fa fa-trash dropdown-item-icon"></i>
-                    Remove Account
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <button className="save-upload-button" onClick={() => setShowSignIn(true)}>
-              <i className="fa fa-sign-in" style={{marginRight: 5}}></i>
-              Sign In
-            </button>
-          )}
+          <UserAccountDropdown
+            onChangePassword={() => setShowChangePassword(true)}
+            onRemoveAccount={() => setShowRemoveAccount(true)}
+            onSignIn={() => setShowSignIn(true)}
+          />
         </span>
       </nav>
       <Year 

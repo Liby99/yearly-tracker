@@ -5,7 +5,7 @@ import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCal
 import { generatePdfFromMain } from "../../utils/PdfUtils";
 import { useSessionUser } from "../../hooks/useSessionUser";
 import { useSync } from "../../hooks/useSync";
-import SyncButton from "../SyncButton";
+import SyncButton from "../buttons/SyncButton";
 
 interface ConfigurationProps {
   year: number;
