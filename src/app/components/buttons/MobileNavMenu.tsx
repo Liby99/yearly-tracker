@@ -29,6 +29,7 @@ export default function MobileNavMenu({
 
   return (
     <span className="mobile-nav-menu show-mobile-only" style={{ position: "relative" }}>
+      {/* Menu button */}
       <button
         className="save-upload-button"
         style={{ fontSize: 20, padding: 6 }}
@@ -37,6 +38,8 @@ export default function MobileNavMenu({
       >
         <i className="fa fa-bars"></i>
       </button>
+
+      {/* Mobile dropdown menu */}
       {showMobileMenu && (
         <div
           className="user-dropdown"
@@ -91,7 +94,7 @@ export default function MobileNavMenu({
                 }}
               >
                 <i className="fa fa-key dropdown-item-icon fa-margin-right"></i>
-                Change Pwd
+                Change Password
               </div>
               <div
                 className="dropdown-item dropdown-item-big"
