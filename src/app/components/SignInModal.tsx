@@ -9,39 +9,39 @@ interface SignInModalProps {
 }
 
 export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [step, setStep] = useState<"email" | "password">("email")
-  const [isLoading, setIsLoading] = useState(false)
-  const [userExists, setUserExists] = useState(false)
-  const [error, setError] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [step, setStep] = useState<"email" | "password">("email");
+  const [isLoading, setIsLoading] = useState(false);
+  const [userExists, setUserExists] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     // Check if user is already signed in
     getSession().then((session) => {
       if (session) {
-        onClose()
+        onClose();
       }
-    })
+    });
   }, [onClose])
 
   // Reset form when modal opens/closes
   useEffect(() => {
     if (!isOpen) {
-      setEmail("")
-      setPassword("")
-      setStep("email")
-      setError("")
-      setUserExists(false)
+      setEmail("");
+      setPassword("");
+      setStep("email");
+      setError("");
+      setUserExists(false);
     }
   }, [isOpen])
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email) return
-    
-    setIsLoading(true)
-    setError("")
+    e.preventDefault();
+    if (!email) return;
+
+    setIsLoading(true);
+    setError("");
     
     try {
       const res = await fetch("/api/auth/check-email", {
@@ -61,11 +61,11 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
   }
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!password) return
+    e.preventDefault();
+    if (!password) return;
     
-    setIsLoading(true)
-    setError("")
+    setIsLoading(true);
+    setError("");
     
     if (userExists) {
       // Sign in existing user
@@ -73,12 +73,13 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
         email,
         password,
         redirect: false,
-      })
+      });
 
       if (result?.ok) {
-        onClose()
+        // reload the page
+        window.location.reload();
       } else {
-        setError("Invalid password")
+        setError("Invalid password");
       }
     } else {
       // Create new account
