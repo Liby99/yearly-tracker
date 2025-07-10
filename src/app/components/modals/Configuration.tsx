@@ -66,7 +66,7 @@ export default function Configuration({
     if (confirm(`Do you want to erase all notes and events in the year of ${year}?`)) {
       localStorageClearCalendarData(user?.id);
       manualSync();
-      
+
       setTimeout(() => {
         window.location.reload(); // Reload to reflect changes
       }, 500);
@@ -246,6 +246,9 @@ export default function Configuration({
 
               <div className="setting-item">
                 <SyncButton className="setting-button" year={year} />
+                <p className="setting-description">
+                  Sync your calendar data with the server.
+                </p>
               </div>
             </div>
           )}
