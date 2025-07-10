@@ -41,8 +41,14 @@ export default function MobileNavMenu({
         <div
           className="user-dropdown"
           ref={mobileMenuRef}
-          style={{ right: 0, left: "auto", minWidth: 220, zIndex: 1000 }}
+          style={{ right: 0, left: "auto", minWidth: 260, zIndex: 1000 }}
         >
+          {session && (
+            <div className="dropdown-item dropdown-item-big">
+              <i className="fa fa-user dropdown-item-icon fa-margin-right"></i>
+              {session.user?.name || session.user?.email}
+            </div>
+          )}
           <div
             className="dropdown-item dropdown-item-big"
             onClick={() => {
