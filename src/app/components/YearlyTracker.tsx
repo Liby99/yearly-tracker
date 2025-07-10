@@ -20,6 +20,7 @@ import UserAccountDropdown from "./buttons/UserAccountButton";
 // All the hooks
 import { useSync } from "../hooks/useSync"
 import { useApplyTheme } from "../hooks/useApplyTheme";
+import { useSession, signOut } from "next-auth/react"
 
 /**
  * The main yearly tracker
@@ -33,6 +34,21 @@ export default function YearlyTracker() {
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
   const [showRemoveAccount, setShowRemoveAccount] = useState<boolean>(false);
   const [configuration, setConfigurationState] = useState<ConfigurationType>(defaultConfiguration());
+  const { data: session } = useSession();
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const mobileMenuRef = React.useRef<HTMLDivElement>(null);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    if (!showMobileMenu) return;
+    const handleClick = (e: MouseEvent) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
+        setShowMobileMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [showMobileMenu]);
 
   // Initialize sync for the current year - this will trigger database pull on page load
   useSync(year);
@@ -107,6 +123,93 @@ export default function YearlyTracker() {
             onRemoveAccount={() => setShowRemoveAccount(true)}
             onSignIn={() => setShowSignIn(true)}
           />
+        </span>
+        {/* Mobile menu button and dropdown */}
+        <span className="show-mobile-only" style={{ position: "relative" }}>
+          <button
+            className="save-upload-button"
+            style={{ fontSize: 20, padding: 6 }}
+            onClick={() => setShowMobileMenu(v => !v)}
+            aria-label="Menu"
+          >
+            <i className="fa fa-bars"></i>
+          </button>
+          {showMobileMenu && (
+            <div
+              className="user-dropdown"
+              ref={mobileMenuRef}
+              style={{ right: 0, left: "auto", minWidth: 220, zIndex: 1000 }}
+            >
+              <div
+                className="dropdown-item dropdown-item-big"
+                onClick={() => {
+                  setShowSettings(true);
+                  setShowMobileMenu(false);
+                }}
+              >
+                <i className="fa fa-cog dropdown-item-icon"></i>
+                Settings
+              </div>
+              <div
+                className="dropdown-item dropdown-item-big"
+                onClick={() => {
+                  setShowHelp(true);
+                  setShowMobileMenu(false);
+                }}
+              >
+                <i className="fa fa-question-circle dropdown-item-icon"></i>
+                Help
+              </div>
+              {!session && (
+                <div
+                  className="dropdown-item dropdown-item-big"
+                  onClick={() => {
+                    setShowSignIn(true);
+                    setShowMobileMenu(false);
+                  }}
+                >
+                  <i className="fa fa-sign-in dropdown-item-icon"></i>
+                  Sign In
+                </div>
+              )}
+              {session && (
+                <>
+                  <div
+                    className="dropdown-item dropdown-item-big"
+                    onClick={() => {
+                      setShowChangePassword(true);
+                      setShowMobileMenu(false);
+                    }}
+                  >
+                    <i className="fa fa-key dropdown-item-icon"></i>
+                    Change Pwd
+                  </div>
+                  <div
+                    className="dropdown-item dropdown-item-big"
+                    onClick={() => {
+                      if (confirm("Are you sure you want to sign out?")) {
+                        signOut();
+                        setShowMobileMenu(false);
+                      }
+                    }}
+                  >
+                    <i className="fa fa-sign-out dropdown-item-icon"></i>
+                    Sign Out
+                  </div>
+                  <div
+                    className="dropdown-item dropdown-item-big danger"
+                    onClick={() => {
+                      setShowRemoveAccount(true);
+                      setShowMobileMenu(false);
+                    }}
+                  >
+                    <i className="fa fa-trash dropdown-item-icon"></i>
+                    Remove Account
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </span>
       </nav>
       <Year 
