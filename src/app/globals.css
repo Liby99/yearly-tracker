@@ -171,11 +171,6 @@ body {
   user-select: none;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none;     /* IE10+/Edge */
-  
-  /* Prevent horizontal scrolling on mobile devices */
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y; /* Allow vertical scrolling, prevent horizontal */
 }
 
 main {
@@ -283,7 +278,7 @@ footer {
 
 .mobile-nav-menu-toggle {
   font-size: 20px;
-  padding: 6px;
+  padding: 0 10px;
 }
 
 .mobile-nav-menu-dropdown {
@@ -1208,6 +1203,19 @@ footer a:hover {
 
 /* Responsive Design */
 @media screen and (max-width: 1200px) {
+  main {
+    padding: 0 !important;
+    margin: 0;
+  }
+
+  .quarter-holder {
+    padding: 0 15px;
+  }
+
+  nav {
+    padding: 10px;
+  }
+
   .quarter-holder {
     width: 100%;
     overflow-x: scroll;
@@ -1215,6 +1223,10 @@ footer a:hover {
 }
 
 @media screen and (max-width: 768px) {
+  .nav-menu {
+    padding: 10px;
+  }
+
   main {
     padding: 0 10px;
   }
@@ -1227,6 +1239,10 @@ footer a:hover {
 
   .show-mobile-only {
     display: inline-block !important;
+  }
+
+  .nav-menu-toggle {
+    display: none;
   }
 }
 
@@ -1269,6 +1285,7 @@ footer a:hover {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1445,11 +1462,6 @@ footer a:hover {
   /* Prevent horizontal scrolling on the entire page */
   html, body {
     overflow-x: hidden;
-  }
-  
-  /* Allow horizontal scrolling only within quarters */
-  .quarter-holder {
-    -webkit-overflow-scrolling: touch;
   }
   
   /* Improve dropdown touch targets on mobile */
