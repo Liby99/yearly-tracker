@@ -20,7 +20,7 @@ export const generatePdfFromMain = async (year: number) => {
     // Show loading feedback
     console.log('Loading PDF generation library...');
     const html2pdf = await loadHtml2Pdf();
-    
+
     if (!html2pdf) {
       alert('PDF generation is not available in this browser. Please use the Print & Save as PDF option instead.');
       return;
@@ -34,14 +34,14 @@ export const generatePdfFromMain = async (year: number) => {
     }
 
     console.log('Preparing calendar content for PDF...');
-    
+
     // Clone the main element to avoid modifying the original
     const clonedElement = mainElement.cloneNode(true) as HTMLElement;
-    
+
     // Remove screen-only elements from the clone
     const screenOnlyElements = clonedElement.querySelectorAll('.screen-only');
     screenOnlyElements.forEach(el => el.remove());
-    
+
     // Configure html2pdf options
     const opt = {
       margin: [10, 10, 10, 10],
@@ -52,21 +52,21 @@ export const generatePdfFromMain = async (year: number) => {
         useCORS: true,
         letterRendering: true
       },
-      jsPDF: { 
+      jsPDF: {
         unit: 'mm', 
         format: 'a4', 
         orientation: 'landscape'
       }
     };
-    
+
     console.log('Generating PDF... This may take a moment for large calendars.');
-    
+
     // Generate PDF
     await html2pdf().set(opt).from(clonedElement).save();
-    
+
     console.log('PDF generated successfully!');
   } catch (error) {
     console.error('Error generating PDF:', error);
     alert('Failed to generate PDF. Please try using the Print & Save as PDF option instead.');
   }
-}; 
+};
