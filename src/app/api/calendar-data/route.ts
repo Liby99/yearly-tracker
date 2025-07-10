@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth/next"
 import { prisma } from "@/lib/prisma"
-import { authOptions } from "../auth/[...nextauth]/route"
+import { authOptions } from "../../utils/AuthOptions"
 
 // GET - Retrieve calendar data for a specific year
 export async function GET(req: NextRequest) {
