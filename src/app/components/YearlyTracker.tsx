@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { useSession, signOut } from "next-auth/react"
 
 // All the util types
 import type ConfigurationType from "../utils/Configuration"
@@ -26,7 +25,6 @@ import { useApplyTheme } from "../hooks/useApplyTheme";
  * The main yearly tracker
  */
 export default function YearlyTracker() {
-  const { data: session } = useSession();
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState<number>(currentYear);
   const [showSettings, setShowSettings] = useState<boolean>(false);
@@ -40,24 +38,6 @@ export default function YearlyTracker() {
   useSync(year);
 
   useApplyTheme(configuration.theme);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (!target.closest('.user-dropdown') && !target.closest('.save-upload-button')) {
-        // setShowUserDropdown(false); // This state is removed
-      }
-    };
-
-    // if (showUserDropdown) { // This state is removed
-    //   document.addEventListener('mousedown', handleClickOutside);
-    // }
-
-    return () => {
-      // document.removeEventListener('mousedown', handleClickOutside); // This state is removed
-    };
-  }, []); // Removed showUserDropdown from dependency array
 
   // Set year from URL or current year on client only
   useEffect(() => {
@@ -80,12 +60,6 @@ export default function YearlyTracker() {
   useEffect(() => {
     setConfiguration(configuration);
   }, [configuration]);
-
-  const handleSignOut = () => {
-    if (confirm("Are you sure you want to sign out?")) {
-      signOut();
-    }
-  }
 
   return (
     <main>
