@@ -30,8 +30,6 @@ export function useSync(year: number) {
   // Start auto-sync when user is available
   useEffect(() => {
     if (user?.id) {
-      console.log(`Starting auto-sync for user ${user.id}, year ${year}`)
-      
       // Clear page load tracking when year changes
       syncManager.clearPageLoadTracking()
       
@@ -53,7 +51,6 @@ export function useSync(year: number) {
       
       // Cleanup on unmount
       return () => {
-        console.log(`Stopping auto-sync for user ${user.id}, year ${year}`)
         syncManager.stopAutoSync(user.id, year)
       }
     }

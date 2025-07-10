@@ -31,12 +31,10 @@ export class SyncManager {
     
     // Only pull once per page load per user/year combination
     if (this.pageLoadPulls.has(key)) {
-      console.log(`Already pulled from database for ${key} on this page load`)
       return
     }
     
     try {
-      console.log(`Force pulling from database for ${key} on page load`)
       this.setSyncStatus('syncing')
       await this.pullFromCloud(userId, year)
       this.pageLoadPulls.add(key)
@@ -71,7 +69,6 @@ export class SyncManager {
     }, 10000) // 10 seconds
     
     this.syncIntervals.set(key, interval)
-    console.log(`Started auto-sync for ${key}`)
   }
 
   /**
@@ -84,7 +81,6 @@ export class SyncManager {
     if (interval) {
       clearInterval(interval)
       this.syncIntervals.delete(key)
-      console.log(`Stopped auto-sync for ${key}`)
     }
   }
 
@@ -96,7 +92,6 @@ export class SyncManager {
       clearInterval(interval)
     })
     this.syncIntervals.clear()
-    console.log('Stopped all auto-sync intervals')
   }
 
   /**
@@ -179,7 +174,6 @@ export class SyncManager {
       this.setSyncStatus('syncing')
       
       const hasLocalChanges = this.hasLocalChanges(userId, year)
-      console.log(`Sync for ${userId}-${year}:`, { hasLocalChanges })
       
       if (hasLocalChanges) {
         // Push local changes to cloud
@@ -201,8 +195,6 @@ export class SyncManager {
    * Push local data to cloud database
    */
   private async pushToCloud(userId: string, year: number): Promise<void> {
-    console.log(`Pushing to cloud: ${userId}-${year}`)
-    
     const data = localStorageYearData(userId, year)
     
     const response = await fetch('/api/calendar-data', {
@@ -238,8 +230,6 @@ export class SyncManager {
    * Pull data from cloud database
    */
   private async pullFromCloud(userId: string, year: number): Promise<void> {
-    console.log(`Pulling from cloud: ${userId}-${year}`)
-    
     const response = await fetch(`/api/calendar-data?year=${year}`, {
       method: 'GET',
       credentials: 'include'
@@ -251,14 +241,12 @@ export class SyncManager {
       }
       if (response.status === 404) {
         // No data on server, nothing to pull
-        console.log(`No data on server: ${userId}-${year}`)
         return
       }
       throw new Error(`Pull failed: ${response.status} ${response.statusText}`)
     }
 
     const result = await response.json()
-    console.log(`Pull success: ${userId}-${year}`)
     
     // Update local data
     localStorageSetYearData(userId, year, result.data)
