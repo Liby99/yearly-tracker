@@ -1,4 +1,4 @@
-import NextAuth from "next-auth"
+import NextAuth from "next-auth/next"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
 import GoogleProvider from "next-auth/providers/google"
@@ -29,9 +29,10 @@ const authOptions = {
     }),
   ],
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as const,
   },
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: any) {
       if (token.sub && session.user) {
         session.user.id = token.sub
@@ -46,7 +47,6 @@ const authOptions = {
 
 export { authOptions }
 
-// @ts-ignore - NextAuth v4 typing issue
 const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST } 

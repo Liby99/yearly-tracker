@@ -34,7 +34,6 @@ export default function QuarterlyNotes(
   // Load from localStorage when year changes
   useEffect(() => {
     setNotes(localStorageQuarterlyNotes(user?.id, year, quarter));
-    // eslint-disable-next-line
   }, [user?.id, year, quarter]);
 
   // Save to localStorage whenever ranges change

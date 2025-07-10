@@ -58,7 +58,7 @@ export async function PUT(req: NextRequest) {
       }, { status: 401 })
     }
 
-    const { userId: requestUserId, year, data, force } = await req.json()
+    const { userId: requestUserId, year, data } = await req.json()
     
     if (!requestUserId || !year || !data) {
       return NextResponse.json({ error: "User ID, year, and data required" }, { status: 400 })

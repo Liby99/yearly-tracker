@@ -125,7 +125,6 @@ export class SyncManager {
    * Check if local data has changed since last sync
    */
   private hasLocalChanges(userId: string, year: number): boolean {
-    const metadata = this.getSyncMetadata(userId, year)
     const dataHash = this.getDataHash(userId, year)
     const lastHash = localStorage.getItem(`data-hash-${userId}-${year}`)
     
@@ -225,8 +224,7 @@ export class SyncManager {
       throw new Error(`Push failed: ${response.status} ${response.statusText}`)
     }
 
-    const result = await response.json()
-    console.log(`Push success: ${userId}-${year}`)
+    await response.json()
     
     // Update metadata
     const metadata = this.getSyncMetadata(userId, year)
@@ -279,7 +277,7 @@ export class SyncManager {
     try {
       await this.performSync(userId, year)
       return true
-    } catch (error) {
+    } catch {
       return false
     }
   }

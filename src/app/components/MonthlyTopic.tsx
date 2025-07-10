@@ -62,7 +62,6 @@ export default function MonthlyTopic(
 
   useEffect(() => {
     setTopicName(localStorageMonthlyTopicName(user?.id, year, month, topicId));
-    // eslint-disable-next-line
   }, [user?.id, year, month, topicId]);
 
   // Save to localStorage whenever topics change
@@ -79,7 +78,6 @@ export default function MonthlyTopic(
   // Load from localStorage when year changes
   useEffect(() => {
     setEvents(localStorageMonthlyTopicEvents(user?.id, year, month, topicId));
-    // eslint-disable-next-line
   }, [user?.id, year, month, topicId]);
 
   // Save to localStorage whenever ranges change
