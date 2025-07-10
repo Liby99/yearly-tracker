@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, useEffect } from "react"
 
 import EventData from "../utils/EventData";
 import StickerMenu from "./popup/StickerMenu";
@@ -76,8 +76,19 @@ export default function Event(
 
   const eventRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [dayWidth, setDayWidth] = useState(getDayWidth());
 
-  const eventWidth = duration * 30 - 5;
+  // Update day width when window resizes
+  useEffect(() => {
+    const handleResize = () => {
+      setDayWidth(getDayWidth());
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const eventWidth = duration * dayWidth - 5;
 
   const [hoverColor, setHoverColor] = useState<string | null>(null);
   const displayColor = hoverColor ?? color ?? "default";
@@ -98,7 +109,7 @@ export default function Event(
   const nextEvent = events.filter(e => e.start > end).sort((a, b) => a.start - b.start)[0];
   if (nextEvent) {
     const gapDays = nextEvent.start - end - 1;
-    const maxWidth = eventWidth + gapDays * 30;
+    const maxWidth = eventWidth + gapDays * dayWidth;
     inputWidth = maxWidth;
   } else if (mirrorRef.current) {
     // If no immediate next event, can set the width to be whatever it needs to be (mirror-ref)
@@ -311,4 +322,14 @@ function getAllDayRange(year: number, month: number, start: number, end: number)
   const nextDay = getNextDay(year, month, end);
   const endDate = formatDateForURL(nextDay.year, nextDay.month, nextDay.day);
   return { startDate, endDate };
+}
+
+// Responsive function to get day width based on screen size
+function getDayWidth(): number {
+  if (typeof window === 'undefined') return 30; // Default for SSR
+  
+  if (window.innerWidth <= 1366) {
+    return 28;
+  }
+  return 30;
 }

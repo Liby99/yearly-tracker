@@ -53,12 +53,22 @@ body {
   user-select: none;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none;     /* IE10+/Edge */
+  
+  /* Prevent horizontal scrolling on mobile devices */
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y; /* Allow vertical scrolling, prevent horizontal */
 }
 
 main {
-  width: 1450px;
+  width: 100%;
+  max-width: 1450px;
   margin: 0 auto;
   padding: 0 25px;
+  box-sizing: border-box;
+  /* Prevent horizontal overflow */
+  overflow-x: hidden;
+  position: relative;
 }
 
 nav {
@@ -133,11 +143,25 @@ footer {
 
 .quarter-holder {
   margin-top: 15px;
+  /* Allow horizontal scrolling within quarters on mobile */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x; /* Allow horizontal scrolling within quarters */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for webkit browsers */
+.quarter-holder::-webkit-scrollbar {
+  display: none;
 }
 
 .quarterly-note-holder {
   width: 200px;
   margin-right: 25px;
+  /* Prevent horizontal overflow */
+  overflow-x: hidden;
+  touch-action: pan-y;
 }
 
 .quarterly-note-content {
@@ -183,6 +207,9 @@ footer {
 .month-header-holder {
   width: 220px;
   margin-right: 25px;
+  /* Prevent horizontal overflow */
+  overflow-x: hidden;
+  touch-action: pan-y;
 }
 
 .month-topic-holder:hover .month-topic-header, .month-topic-holder:hover .month-topic-dates {
@@ -271,7 +298,6 @@ input:focus, textarea:focus {
 
 .day-holder {
   width: 30px;
-  min-width: 30px;
   border-left: 1px dotted var(--accent-grey);
   box-sizing: border-box;
 }
@@ -994,4 +1020,58 @@ footer a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1366px) {
+  .month-header-holder {
+    width: 180px;
+  }
+
+  .month-topic-header {
+    width: 154px;
+  }
+
+  .day-header-holder {
+    width: 28px;
+  }
+
+  .day-holder {
+    width: 28px;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .quarter-holder {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  
+}
+
+/* Touch-friendly improvements for mobile */
+@media (hover: none) and (pointer: coarse) {
+  /* Prevent horizontal scrolling on the entire page */
+  html, body {
+    overflow-x: hidden;
+    touch-action: pan-y;
+  }
+
+  /* Allow horizontal scrolling only within quarters */
+  .quarter-holder {
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+  }
 }

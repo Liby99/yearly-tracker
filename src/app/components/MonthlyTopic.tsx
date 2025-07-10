@@ -56,6 +56,17 @@ export default function MonthlyTopic(
   const user = useSessionUser();
   
   const [isDraggingTopic, setIsDraggingTopic] = useState(false);
+  const [dayWidth, setDayWidth] = useState(getDayWidth());
+
+  // Update day width when window resizes
+  useEffect(() => {
+    const handleResize = () => {
+      setDayWidth(getDayWidth());
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Related to topic
   const [topicName, setTopicName] = useState<string>("");
@@ -104,8 +115,8 @@ export default function MonthlyTopic(
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const dayHolder = event.currentTarget.querySelector('.day-holder') as HTMLElement;
-    const dayWidth = dayHolder ? dayHolder.offsetWidth : 30;
-    let day = Math.floor(x / dayWidth) + 1;
+    const actualDayWidth = dayHolder ? dayHolder.offsetWidth : dayWidth;
+    let day = Math.floor(x / actualDayWidth) + 1;
     if (day < 1) day = 1;
     if (day > 31) day = 31;
 
@@ -129,7 +140,7 @@ export default function MonthlyTopic(
 
       // Calculate the day index based on mouse X position
       const x = event.clientX - rect.left;
-      let day = Math.floor(x / 30) + 1; // 30 is the width of .day-holder
+      let day = Math.floor(x / dayWidth) + 1; // Use responsive day width
       if (day < 1) day = 1;
       if (day > 31) day = 31;
 
@@ -143,8 +154,8 @@ export default function MonthlyTopic(
       const rect = event.currentTarget.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const dayHolder = event.currentTarget.querySelector('.day-holder') as HTMLElement;
-      const dayWidth = dayHolder ? dayHolder.offsetWidth : 30;
-      let day = Math.floor(x / dayWidth) + 1;
+      const actualDayWidth = dayHolder ? dayHolder.offsetWidth : dayWidth;
+      let day = Math.floor(x / actualDayWidth) + 1;
       if (day < 1) day = 1;
       if (day > 31) day = 31;
 
@@ -251,4 +262,14 @@ export default function MonthlyTopic(
       </div>
     </div>
   );
+}
+
+// Responsive function to get day width based on screen size
+function getDayWidth(): number {
+  if (typeof window === 'undefined') return 30; // Default for SSR
+  
+  if (window.innerWidth <= 1366) {
+    return 28;
+  }
+  return 30;
 }
