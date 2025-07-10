@@ -7,6 +7,8 @@ import Year from "./Year";
 import Configuration from "./modals/Configuration";
 import Help from "./modals/Help";
 import SignInModal from "./modals/SignInModal";
+import ChangePasswordModal from "./modals/ChangePasswordModal";
+import RemoveAccountModal from "./modals/RemoveAccountModal";
 import type ConfigurationType from "../utils/Configuration"
 import { getConfiguration, defaultConfiguration, setConfiguration } from "../utils/Configuration"
 import { useSync } from "../hooks/useSync"
@@ -21,6 +23,8 @@ export default function YearlyTracker() {
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
+  const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
+  const [showRemoveAccount, setShowRemoveAccount] = useState<boolean>(false);
 
   // Initialize sync for the current year - this will trigger database pull on page load
   useSync(year);
@@ -138,6 +142,16 @@ export default function YearlyTracker() {
       <SignInModal
         isOpen={showSignIn}
         onClose={() => setShowSignIn(false)}
+      />
+
+      <ChangePasswordModal
+        isOpen={showChangePassword}
+        onClose={() => setShowChangePassword(false)}
+      />
+
+      <RemoveAccountModal
+        isOpen={showRemoveAccount}
+        onClose={() => setShowRemoveAccount(false)}
       />
     </main>
   );
