@@ -3,12 +3,12 @@
 import { signIn, getSession } from "next-auth/react"
 import { useState, useEffect } from "react"
 
-interface SignInModalProps {
+interface SignInProps {
   isOpen: boolean
   onClose: () => void
 }
 
-export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
+export default function SignIn({ isOpen, onClose }: SignInProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [step, setStep] = useState<"email" | "password">("email");

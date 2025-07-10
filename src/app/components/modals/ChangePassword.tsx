@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 
-interface ChangePasswordModalProps {
+interface ChangePasswordProps {
   isOpen: boolean
   onClose: () => void
 }
 
-export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProps) {
+export default function ChangePassword({ isOpen, onClose }: ChangePasswordProps) {
   const { data: session } = useSession()
   const [oldPassword, setOldPassword] = useState("")
   const [oldPasswordConfirm, setOldPasswordConfirm] = useState("")

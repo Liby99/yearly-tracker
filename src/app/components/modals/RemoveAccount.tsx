@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react"
 import { useSession, signOut } from "next-auth/react"
 
-interface RemoveAccountModalProps {
+interface RemoveAccountProps {
   isOpen: boolean
   onClose: () => void
 }
 
-export default function RemoveAccountModal({ isOpen, onClose }: RemoveAccountModalProps) {
+export default function RemoveAccount({ isOpen, onClose }: RemoveAccountProps) {
   const { data: session } = useSession()
   const [password, setPassword] = useState("")
   const [passwordConfirm, setPasswordConfirm] = useState("")

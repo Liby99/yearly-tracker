@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"  
 
 // All the util types
 import type ConfigurationType from "../utils/Configuration"
@@ -12,9 +12,9 @@ import Year from "./Year";
 // All the modals
 import Configuration from "./modals/Configuration";
 import Help from "./modals/Help";
-import SignInModal from "./modals/SignInModal";
-import ChangePasswordModal from "./modals/ChangePasswordModal";
-import RemoveAccountModal from "./modals/RemoveAccountModal";
+import SignIn from "./modals/SignIn";
+import ChangePassword from "./modals/ChangePassword";
+import RemoveAccount from "./modals/RemoveAccount";
 import UserAccountDropdown from "./buttons/UserAccountButton";
 
 // All the hooks
@@ -122,33 +122,12 @@ export default function YearlyTracker() {
         <a onClick={() => setShowSettings(true)}>Settings</a>
       </footer>
       
-      <Configuration
-        year={year}
-        showSettings={showSettings}
-        configuration={configuration}
-        setShowSettings={setShowSettings}
-        setConfiguration={setConfigurationState}
-      />
-
-      <Help
-        showHelp={showHelp}
-        setShowHelp={setShowHelp}
-      />
-
-      <SignInModal
-        isOpen={showSignIn}
-        onClose={() => setShowSignIn(false)}
-      />
-
-      <ChangePasswordModal
-        isOpen={showChangePassword}
-        onClose={() => setShowChangePassword(false)}
-      />
-
-      <RemoveAccountModal
-        isOpen={showRemoveAccount}
-        onClose={() => setShowRemoveAccount(false)}
-      />
+      {/* Modals */}
+      <Configuration year={year} showSettings={showSettings} configuration={configuration} setShowSettings={setShowSettings} setConfiguration={setConfigurationState} />
+      <Help showHelp={showHelp} setShowHelp={setShowHelp} />
+      <SignIn isOpen={showSignIn} onClose={() => setShowSignIn(false)} />
+      <ChangePassword isOpen={showChangePassword} onClose={() => setShowChangePassword(false)} />
+      <RemoveAccount isOpen={showRemoveAccount} onClose={() => setShowRemoveAccount(false)} />
     </main>
   );
 }
