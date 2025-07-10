@@ -63,7 +63,7 @@ export default function MonthlyTopic(
   useEffect(() => {
     setTopicName(localStorageMonthlyTopicName(user?.id, year, month, topicId));
     // eslint-disable-next-line
-  }, [year, month]);
+  }, [user?.id, year, month, topicId]);
 
   // Save to localStorage whenever topics change
   useEffect(() => {
@@ -80,13 +80,13 @@ export default function MonthlyTopic(
   useEffect(() => {
     setEvents(localStorageMonthlyTopicEvents(user?.id, year, month, topicId));
     // eslint-disable-next-line
-  }, [year, month]);
+  }, [user?.id, year, month, topicId]);
 
   // Save to localStorage whenever ranges change
   useEffect(() => {
     localStorageSetMonthlyTopicEvents(user?.id, year, month, topicId, events);
     // eslint-disable-next-line
-  }, [events, year, month]);
+  }, [user?.id, events, year, month]);
 
   const removeEvent = (day: number) => {
     setEvents(events.filter(range => range.start != day));

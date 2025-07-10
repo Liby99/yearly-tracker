@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
-import type ConfigurationType from "../utils/Configuration";
-import type { ExternalCalendar } from "../utils/Configuration";
-import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../utils/CalendarData";
-import { generatePdfFromMain } from "../utils/PdfUtils";
-import { useSessionUser } from "../hooks/useSessionUser";
+import type ConfigurationType from "../../utils/Configuration";
+import type { ExternalCalendar } from "../../utils/Configuration";
+import { downloadCalendarData, localStorageSetCalendarData, localStorageClearCalendarData } from "../../utils/CalendarData";
+import { generatePdfFromMain } from "../../utils/PdfUtils";
+import { useSessionUser } from "../../hooks/useSessionUser";
 
 interface ConfigurationProps {
   year: number;
@@ -48,7 +48,9 @@ export default function Configuration({
       }
 
       localStorageSetCalendarData(user?.id, json);
-      window.location.reload(); // Reload to reflect changes
+      setTimeout(() => {
+        window.location.reload(); // Reload to reflect changes
+      }, 500);
     };
 
     reader.readAsText(file);
@@ -58,7 +60,9 @@ export default function Configuration({
   const handleErase = () => {
     if (confirm(`Do you want to erase all notes and events in the year of ${year}?`)) {
       localStorageClearCalendarData(user?.id);
-      window.location.reload(); // Reload to reflect changes
+      setTimeout(() => {
+        window.location.reload(); // Reload to reflect changes
+      }, 500);
     }
   };
 

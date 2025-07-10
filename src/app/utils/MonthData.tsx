@@ -17,7 +17,7 @@ export function localStorageMonthlyTopicOrderKey(userId: string | undefined, yea
   if (userId) {
     return `user-${userId}/year-${year}/month-${month}/topic-order`;
   } else {
-    return `year-${year}/month-${month}/topic-order`;
+    return `local/year-${year}/month-${month}/topic-order`;
   }
 }
 

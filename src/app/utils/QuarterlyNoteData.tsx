@@ -22,17 +22,19 @@ export function localStorageQuarterlyNotesKey(userId: string | undefined, year: 
   if (userId) {
     return `user-${userId}/year-${year}/quarter-${quarter}/notes`;
   } else {
-    return `year-${year}/quarter-${quarter}/notes`;
+    return `local/year-${year}/quarter-${quarter}/notes`;
   }
 }
 
 export function localStorageQuarterlyNotes(userId: string | undefined, year: number, quarter: number) : Array<QuarterlyNoteData> {
-  const saved = localStorage.getItem(localStorageQuarterlyNotesKey(userId, year, quarter));
+  const key = localStorageQuarterlyNotesKey(userId, year, quarter);
+  const saved = localStorage.getItem(key);
   return saved ? JSON.parse(saved) : [];
 }
 
 export function localStorageSetQuarterlyNotes(userId: string | undefined, year: number, quarter: number, notes: Array<QuarterlyNoteData>) {
-  localStorage.setItem(localStorageQuarterlyNotesKey(userId, year, quarter), JSON.stringify(notes));
+  const key = localStorageQuarterlyNotesKey(userId, year, quarter);
+  localStorage.setItem(key, JSON.stringify(notes));
 }
 
 export function localStorageClearQuarterlyNotes(userId: string | undefined, year: number, quarter: number) {
